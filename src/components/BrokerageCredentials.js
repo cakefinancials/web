@@ -29,9 +29,9 @@ export default class BrokerageCredentials extends Component {
             isLoading: true,
             brokerageCredentialsExist: null,
             showForm: false,
-            username: "",
-            password: "",
-            brokerage: "",
+            username: '',
+            password: '',
+            brokerage: '',
         };
     }
 
@@ -68,7 +68,14 @@ export default class BrokerageCredentials extends Component {
                 password: this.state.password,
                 brokerage: this.state.brokerage,
             });
-            this.setState({ isLoading: false, showForm: false, brokerageCredentialsExist: true });
+            this.setState({
+                isLoading: false,
+                showForm: false,
+                brokerageCredentialsExist: true,
+                username: '',
+                password: '',
+                brokerage: '',
+            });
         } catch (e) {
             alert(e);
             this.setState({ isLoading: false });

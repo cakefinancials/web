@@ -41,8 +41,8 @@ export default class BankAccountInfo extends Component {
             isLoading: true,
             bankAccountInfoExists: null,
             showForm: false,
-            routingNumber: "",
-            accountNumber: "",
+            routingNumber: '',
+            accountNumber: '',
         };
     }
 
@@ -78,7 +78,13 @@ export default class BankAccountInfo extends Component {
                 routingNumber: this.state.routingNumber,
                 accountNumber: this.state.accountNumber,
             });
-            this.setState({ isLoading: false, showForm: false, bankAccountInfoExists: true });
+            this.setState({
+                isLoading: false,
+                showForm: false,
+                bankAccountInfoExists: true,
+                routingNumber: '',
+                accountNumber: '',
+            });
         } catch (e) {
             alert(e);
             this.setState({ isLoading: false });
