@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from "react";
 import {
     Button,
+    Col,
     ControlLabel,
     FormControl,
     FormGroup,
     HelpBlock,
+    Row,
 } from "react-bootstrap";
 import "./BankAccountInfo.css";
 import { API } from "aws-amplify";
@@ -48,7 +50,7 @@ export default class BankAccountInfo extends Component {
 
     async queryForExistenceOfBankAccountInfo() {
         try {
-            const response = await API.get("cake", "/bank/account_info");
+            const response = await API.get("cake", "/bank/account_info/exists");
             return !!response.exists;
         } catch (e) {
             alert(e);
@@ -167,10 +169,26 @@ export default class BankAccountInfo extends Component {
         this.setState({ showForm: true });
     }
 
+    renderObfuscatedData = () => {
+        return (
+            this.state.bankAccountInfoExists ?
+                <Row>
+                    <Col xs={12} className="obfuscated-bank-info">
+                        <ObfuscatedBankAccountInfo bankAccountInfoExists={this.state.bankAccountInfoExists} />
+                    </Col>
+                </Row> : null
+        );
+    }
+
     renderLoaded = () => {
         return (
             this.state.showForm ? (
                 <Fragment>
+                    <Row>
+                        <Col xs={12}>
+                            { this.renderObfuscatedData() }
+                        </Col>
+                    </Row>
                     <p>Please enter your bank info</p>
                     {this.renderBankInfoForm()}
                 </Fragment>
@@ -188,6 +206,66 @@ export default class BankAccountInfo extends Component {
             <div>
                 <h2>Bank Account Info</h2>
                 {this.state.isLoading ? this.renderLoading() : this.renderLoaded()}
+            </div>
+        );
+    }
+}
+
+class ObfuscatedBankAccountInfo extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoading: true,
+            obfuscatedRoutingNumber: "",
+            obfuscatedAccountNumber: "",
+        };
+    }
+
+    async queryForObfuscatedBankAccountInfo() {
+        try {
+            const response = await API.get("cake", "/bank/account_info/obfuscated");
+            console.log(response);
+            return {
+                obfuscatedAccountNumber: response.accountNumber,
+                obfuscatedRoutingNumber: response.routingNumber,
+            };
+        } catch (e) {
+            alert(e);
+        }
+
+        return undefined;
+    }
+
+    async componentDidMount() {
+        const obfuscatedBankAccountInfo = await this.queryForObfuscatedBankAccountInfo();
+        this.setState({
+            isLoading: false,
+            ...obfuscatedBankAccountInfo
+        });
+    }
+
+    renderLoading = () => {
+        return (
+            <LoadingSpinner bsSize="large" text="Loading existing bank account info..." />
+        );
+    }
+
+    renderLoaded = () => {
+        return (
+            <Fragment>
+                <p>{`Current Routing Number: ${this.state.obfuscatedRoutingNumber}`}</p>
+                <p>{`Current Account Number: ${this.state.obfuscatedAccountNumber}`}</p>
+            </Fragment>
+        );
+    }
+
+    render = () => {
+        if (!this.props.bankAccountInfoExists) { return null; }
+
+        return (
+            <div>
+                { this.state.isLoading ? this.renderLoading() : this.renderLoaded() }
             </div>
         );
     }

@@ -37,7 +37,7 @@ export default class BrokerageCredentials extends Component {
 
     async queryForExistenceOfBrokerageCredentials() {
         try {
-            const response = await API.get("cake", "/brokerage/credentials");
+            const response = await API.get("cake", "/brokerage/credentials/exists");
             return !!response.exists;
         } catch (e) {
             alert(e);
