@@ -1,12 +1,10 @@
 import React, { Component, Fragment } from "react";
 import {
     Button,
-    Col,
     ControlLabel,
     FormControl,
     FormGroup,
     HelpBlock,
-    Row,
 } from "react-bootstrap";
 import "./BankAccountInfo.css";
 import { API } from "aws-amplify";
@@ -170,25 +168,14 @@ export default class BankAccountInfo extends Component {
     }
 
     renderObfuscatedData = () => {
-        return (
-            this.state.bankAccountInfoExists ?
-                <Row>
-                    <Col xs={12} className="obfuscated-bank-info">
-                        <ObfuscatedBankAccountInfo bankAccountInfoExists={this.state.bankAccountInfoExists} />
-                    </Col>
-                </Row> : null
-        );
+        return this.state.bankAccountInfoExists ? <ObfuscatedBankAccountInfo /> : null;
     }
 
     renderLoaded = () => {
         return (
             this.state.showForm ? (
                 <Fragment>
-                    <Row>
-                        <Col xs={12}>
-                            { this.renderObfuscatedData() }
-                        </Col>
-                    </Row>
+                    { this.renderObfuscatedData() }
                     <p>Please enter your bank info</p>
                     {this.renderBankInfoForm()}
                 </Fragment>
@@ -225,7 +212,6 @@ class ObfuscatedBankAccountInfo extends Component {
     async queryForObfuscatedBankAccountInfo() {
         try {
             const response = await API.get("cake", "/bank/account_info/obfuscated");
-            console.log(response);
             return {
                 obfuscatedAccountNumber: response.accountNumber,
                 obfuscatedRoutingNumber: response.routingNumber,
@@ -261,8 +247,6 @@ class ObfuscatedBankAccountInfo extends Component {
     }
 
     render = () => {
-        if (!this.props.bankAccountInfoExists) { return null; }
-
         return (
             <div>
                 { this.state.isLoading ? this.renderLoading() : this.renderLoaded() }

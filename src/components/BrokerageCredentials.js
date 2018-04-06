@@ -172,10 +172,15 @@ export default class BrokerageCredentials extends Component {
         this.setState({ showForm: true });
     }
 
+    renderObfuscatedData = () => {
+        return this.state.brokerageCredentialsExist ? <ObfuscatedBrokerageCredentials /> : null;
+    }
+
     renderLoaded = () => {
         return (
             this.state.showForm ? (
                 <Fragment>
+                    { this.renderObfuscatedData() }
                     <p>Please enter your brokerage credentials</p>
                     {this.renderBrokerageCredentialsForm()}
                 </Fragment>
@@ -193,6 +198,63 @@ export default class BrokerageCredentials extends Component {
             <div>
                 <h2>Brokerage Credentials</h2>
                 {this.state.isLoading ? this.renderLoading() : this.renderLoaded()}
+            </div>
+        );
+    }
+}
+
+class ObfuscatedBrokerageCredentials extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoading: true,
+            obfuscatedUsername: "",
+            obfuscatedBrokerage: "",
+        };
+    }
+
+    async queryForObfuscatedData() {
+        try {
+            const response = await API.get("cake", "/brokerage/credentials/obfuscated");
+            return {
+                obfuscatedUsername: response.username,
+                obfuscatedBrokerage: response.brokerage,
+            };
+        } catch (e) {
+            alert(e);
+        }
+
+        return undefined;
+    }
+
+    async componentDidMount() {
+        const obfuscatedData = await this.queryForObfuscatedData();
+        this.setState({
+            isLoading: false,
+            ...obfuscatedData
+        });
+    }
+
+    renderLoading = () => {
+        return (
+            <LoadingSpinner bsSize="large" text="Loading existing brokerage credentials..." />
+        );
+    }
+
+    renderLoaded = () => {
+        return (
+            <Fragment>
+                <p>{`Current Brokerage: ${this.state.obfuscatedBrokerage}`}</p>
+                <p>{`Current Username: ${this.state.obfuscatedUsername}`}</p>
+            </Fragment>
+        );
+    }
+
+    render = () => {
+        return (
+            <div>
+                { this.state.isLoading ? this.renderLoading() : this.renderLoaded() }
             </div>
         );
     }
