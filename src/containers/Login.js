@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import queryString from "query-string";
+
 import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
 import { Auth } from "aws-amplify";
@@ -7,10 +9,11 @@ import { Auth } from "aws-amplify";
 export default class Login extends Component {
     constructor(props) {
         super(props);
+        const parsedSearch = queryString.parse(this.props.location.search);
 
         this.state = {
             isLoading: false,
-            email: "",
+            email: parsedSearch.email || "",
             password: ""
         };
     }
@@ -32,6 +35,10 @@ export default class Login extends Component {
 
         try {
             await Auth.signIn(this.state.email, this.state.password);
+
+            const userInfo = await Auth.currentUserInfo();
+            console.log(userInfo);
+
             const currentSession = await Auth.currentSession();
 
             this.props.userHasAuthenticated(currentSession);
@@ -48,7 +55,7 @@ export default class Login extends Component {
                     <FormGroup controlId="email" bsSize="large">
                         <ControlLabel>Email</ControlLabel>
                         <FormControl
-                            autoFocus
+                            autoFocus={this.state.email.length === 0}
                             type="email"
                             value={this.state.email}
                             onChange={this.handleChange}
@@ -57,6 +64,7 @@ export default class Login extends Component {
                     <FormGroup controlId="password" bsSize="large">
                         <ControlLabel>Password</ControlLabel>
                         <FormControl
+                            autoFocus={this.state.email.length > 0}
                             value={this.state.password}
                             onChange={this.handleChange}
                             type="password"
