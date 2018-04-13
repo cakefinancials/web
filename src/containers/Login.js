@@ -1,3 +1,4 @@
+import { API } from "aws-amplify";
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import queryString from "query-string";
@@ -36,8 +37,8 @@ export default class Login extends Component {
         try {
             await Auth.signIn(this.state.email, this.state.password);
 
-            const userInfo = await Auth.currentUserInfo();
-            console.log(userInfo);
+            // save link, don't wait for result
+            API.post("cake", "/link_email_to_id", {});
 
             const currentSession = await Auth.currentSession();
 
