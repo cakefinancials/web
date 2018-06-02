@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { Grid, PageHeader } from "react-bootstrap";
 import "./Home.css";
 
-import BankAccountInfo from "../components/BankAccountInfo";
-import BrokerageCredentials from "../components/BrokerageCredentials";
+import Dashboard from "../components/Dashboard";
 
 export default class Home extends Component {
     renderLander() {
@@ -16,13 +14,7 @@ export default class Home extends Component {
     }
 
     renderAuthedHome() {
-        return (
-            <Grid className="main">
-                <PageHeader>Your Dashboard</PageHeader>
-                <BankAccountInfo />
-                <BrokerageCredentials />
-            </Grid>
-        );
+        return ( <Dashboard /> );
     }
 
     render() {

@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
-import registerServiceWorker from "./registerServiceWorker";
+//import registerServiceWorker from "./registerServiceWorker";
 import "./index.css";
 import Amplify from "aws-amplify";
 import config from "./config";
@@ -37,4 +37,6 @@ ReactDOM.render(
     </Router>,
     document.getElementById("root")
 );
-registerServiceWorker();
+
+// disable for now, not well understood and generating an error
+// registerServiceWorker();
