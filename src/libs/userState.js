@@ -56,14 +56,6 @@ export const updateUserState = async () => {
     notify();
 };
 
-const setterWrapper = (setterFn) => (...setterArgs) => {
-    const updatedLocalUserState = setterFn(...setterArgs);
-    userStateChangeHistory.push(updatedLocalUserState);
-    localUserState = updatedLocalUserState;
-
-    notify();
-};
-
 export const userStateActions = (() => {
     const CONSTANTS = {
         WALKTHROUGH: {
@@ -75,14 +67,29 @@ export const userStateActions = (() => {
         }
     };
 
+    const createSetter = (pathInUserStateBag) => (valueToSet) => {
+        const updatedLocalUserState = localUserState.setIn(
+            pathInUserStateBag,
+            valueToSet
+        );
+        userStateChangeHistory.push(updatedLocalUserState);
+        localUserState = updatedLocalUserState;
+
+        notify();
+    };
+
+    const createGetter = (pathInUserStateBag, notSetValue) => () => {
+        const value = localUserState.getIn(pathInUserStateBag, notSetValue);
+        if (Immutable.isImmutable(value)) {
+            return value.toJS();
+        } else {
+            return value;
+        }
+    };
+
     return {
         CONSTANTS,
-        setWalkthroughStep: setterWrapper((walkthroughStep) => {
-            return localUserState.setIn(
-                ['walkthrough', 'step'],
-                walkthroughStep
-            );
-        }),
-        getWalkthroughStep: () => localUserState.getIn(['walkthrough', 'step'], CONSTANTS.WALKTHROUGH.PAGE1)
+        setWalkthroughStep: createSetter(['walkthrough', 'step']),
+        getWalkthroughStep: createGetter(['walkthrough', 'step'], CONSTANTS.WALKTHROUGH.PAGE1)
     };
 })();

@@ -25,27 +25,50 @@ const getNextStep = (walkthroughStep) => {
 const getPreviousStep = (walkthroughStep) => {
     return R.pipe(
         R.findIndex(R.equals(walkthroughStep)),
-        R.subtract(1),
+        R.subtract(R.__, 1),
         R.prop(R.__, WALKTHROUGH_ORDER)
     )(WALKTHROUGH_ORDER);
 };
 
 export default class Walkthrough extends Component {
-    constructor(props) {
-        super(props);
-    }
+    renderCurrentStep(currentWalkthroughStep) {
+        console.log(currentWalkthroughStep);
+        return ({
+            [WALKTHROUGH.PAGE1]: () => <span>PAGE 1!!!!</span>,
+            [WALKTHROUGH.PAGE2]: () => <span>PAGE 2!!!!</span>,
+            [WALKTHROUGH.PAGE3]: () => <span>PAGE 3!!!!</span>,
+            [WALKTHROUGH.PAGE4]: () => {
+                return (
+                    <div>
+                        PAGE 4!!!!
+                        <Button
+                            block
+                            bsStyle="warning"
+                            bsSize="large"
+                            onClick={e => {
+                                userStateActions.setWalkthroughStep(WALKTHROUGH.DONE)
+                                updateUserState();
+                            }}
+                        >
+                            FINISH HIM!!!
+                        </Button>
+                    </div>
+                );
+            }
+        })[currentWalkthroughStep]();
+    };
 
     renderMainContent() {
         const currentWalkthroughStep = userStateActions.getWalkthroughStep();
 
         return (
             <div>
-                Current walkthrough step: { currentWalkthroughStep }
+                { this.renderCurrentStep(currentWalkthroughStep) }
                 <Button
                     block
                     bsStyle="warning"
                     bsSize="large"
-                    disabled={currentWalkthroughStep === WALKTHROUGH.PAGE1}
+                    disabled={currentWalkthroughStep === R.head(WALKTHROUGH_ORDER)}
                     onClick={e => {
                         userStateActions.setWalkthroughStep(getPreviousStep(currentWalkthroughStep))
                         updateUserState();
@@ -57,7 +80,7 @@ export default class Walkthrough extends Component {
                     block
                     bsStyle="warning"
                     bsSize="large"
-                    disabled={currentWalkthroughStep === WALKTHROUGH.PAGE4}
+                    disabled={currentWalkthroughStep === R.head(R.slice(-2, -1, WALKTHROUGH_ORDER))}
                     onClick={e => {
                         userStateActions.setWalkthroughStep(getNextStep(currentWalkthroughStep));
                         updateUserState();

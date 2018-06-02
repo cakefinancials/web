@@ -16,8 +16,6 @@ export default class Dashboard extends Component {
 
         this.state = {
             isLoadingUserState: true,
-            lastSyncedUserState: null,
-            localUserState: null,
             syncErrors: [],
             syncing: false,
         };
@@ -50,7 +48,7 @@ export default class Dashboard extends Component {
             return (
                 <div>
                     <h1>WALKTHROUGH!!!</h1>
-                    <Walkthrough localUserState={this.state.localUserState} />
+                    <Walkthrough />
                 </div>
             );
         };
