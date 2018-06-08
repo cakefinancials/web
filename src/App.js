@@ -5,6 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import "./App.css";
 import Routes from "./Routes";
+import { subscribeSessionChange, setCurrentUserSession } from "./libs/userState";
 
 class App extends Component {
     constructor(props) {
@@ -15,13 +16,21 @@ class App extends Component {
             currentSession: null,
             isAuthenticating: true
         };
+
+        subscribeSessionChange((session) => {
+            if (session === null) {
+                this.setState({ isAuthenticated: false, currentSession: null })
+            } else {
+                this.setState({ isAuthenticated: true, currentSession: session });
+            }
+        });
     }
 
     async componentDidMount() {
         try {
             const currentSession = await Auth.currentSession();
             if (currentSession) {
-                this.userHasAuthenticated(currentSession);
+                setCurrentUserSession(currentSession);
             }
         }
         catch (e) {
@@ -33,25 +42,16 @@ class App extends Component {
         this.setState({ isAuthenticating: false });
     }
 
-    userHasAuthenticated = session => {
-        this.setState({ isAuthenticated: true, currentSession: session });
-    }
-
-    userHasLoggedOut = () => {
-        this.setState({ isAuthenticated: false, currentSession: null })
-    }
-
     handleLogout = async event => {
         await Auth.signOut();
 
-        this.userHasLoggedOut();
+        setCurrentUserSession(null);
         this.props.history.push("/login");
     }
 
     render() {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
-            userHasAuthenticated: this.userHasAuthenticated
         };
 
         return (

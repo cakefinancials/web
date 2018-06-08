@@ -8,9 +8,9 @@ let syncing = false;
 
 const userStateChangeHistory = [];
 
-let notifyFunctions = [];
-const notify = () => {
-    notifyFunctions.forEach(fn => fn({
+let userStateNotifyFunctions = [];
+const notifyUserStateChange = () => {
+    userStateNotifyFunctions.forEach(fn => fn({
         lastSyncedUserState,
         localUserState,
         syncErrors,
@@ -18,8 +18,8 @@ const notify = () => {
     }));
 };
 
-export const subscribe = (notifyFunction) => {
-    notifyFunctions.push(notifyFunction);
+export const subscribeUserStateChange = (notifyFunction) => {
+    userStateNotifyFunctions.push(notifyFunction);
 };
 
 export const fetchUserState = async () => {
@@ -28,13 +28,13 @@ export const fetchUserState = async () => {
     lastSyncedUserState = Immutable.fromJS(response);
     localUserState = lastSyncedUserState;
 
-    notify();
+    notifyUserStateChange();
 };
 
 export const updateUserState = async () => {
     try {
         syncing = true;
-        notify();
+        notifyUserStateChange();
 
         await API.post(
             "cake",
@@ -53,14 +53,14 @@ export const updateUserState = async () => {
     }
 
     syncing = false;
-    notify();
+    notifyUserStateChange();
 };
 
 export const userStateActions = (() => {
     const CONSTANTS = {
         WALKTHROUGH: {
-            PAGE1: 'PAGE1',
-            PAGE2: 'PAGE2',
+            WELCOME: 'WELCOME',
+            PERSONAL_DETAILS: 'PERSONAL_DETAILS',
             PAGE3: 'PAGE3',
             PAGE4: 'PAGE4',
             DONE: 'DONE'
@@ -75,7 +75,7 @@ export const userStateActions = (() => {
         userStateChangeHistory.push(updatedLocalUserState);
         localUserState = updatedLocalUserState;
 
-        notify();
+        notifyUserStateChange();
     };
 
     const createGetter = (pathInUserStateBag, notSetValue) => () => {
@@ -90,6 +90,24 @@ export const userStateActions = (() => {
     return {
         CONSTANTS,
         setWalkthroughStep: createSetter(['walkthrough', 'step']),
-        getWalkthroughStep: createGetter(['walkthrough', 'step'], CONSTANTS.WALKTHROUGH.PAGE1)
+        getWalkthroughStep: createGetter(['walkthrough', 'step'], CONSTANTS.WALKTHROUGH.WELCOME)
     };
 })();
+
+let currentUserSession = null;
+
+export const setCurrentUserSession = (session) => {
+    currentUserSession = session;
+    notifySessionChange();
+};
+
+export const getCurrentUserSession = () => currentUserSession;
+
+let sessionNotifyFunctions = [];
+const notifySessionChange = () => {
+    sessionNotifyFunctions.forEach(fn => fn(currentUserSession));
+};
+
+export const subscribeSessionChange = (notifyFunction) => {
+    sessionNotifyFunctions.push(notifyFunction);
+};

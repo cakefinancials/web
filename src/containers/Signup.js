@@ -48,12 +48,12 @@ export default class Signup extends Component {
             });
             const qs = queryString.stringify({email: this.state.email});
 
+            this.setState({ isLoading: false });
             this.props.history.push(`/verify?${qs}`);
         } catch (e) {
             alert(e.message);
+            this.setState({ isLoading: false });
         }
-
-        this.setState({ isLoading: false });
     }
 
     renderForm() {

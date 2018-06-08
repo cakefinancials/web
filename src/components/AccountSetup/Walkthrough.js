@@ -5,12 +5,13 @@ import * as R from "ramda";
 import { userStateActions, updateUserState } from "../../libs/userState";
 
 import Welcome from "./Welcome";
+import PersonalDetails from "./PersonalDetails";
 
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
 
 const WALKTHROUGH_ORDER = [
-    WALKTHROUGH.PAGE1,
-    WALKTHROUGH.PAGE2,
+    WALKTHROUGH.WELCOME,
+    WALKTHROUGH.PERSONAL_DETAILS,
     WALKTHROUGH.PAGE3,
     WALKTHROUGH.PAGE4,
     WALKTHROUGH.DONE
@@ -33,8 +34,8 @@ const getPreviousStep = (walkthroughStep) => {
 };
 
 const WALKTHROUGH_PAGE_TO_COMPONENT = {
-    [WALKTHROUGH.PAGE1]: Welcome,
-    [WALKTHROUGH.PAGE2]: function Screen2(props) { return <h1>Screen 2 folksl!!!</h1>; },
+    [WALKTHROUGH.WELCOME]: Welcome,
+    [WALKTHROUGH.PERSONAL_DETAILS]: PersonalDetails,
     [WALKTHROUGH.PAGE3]: function Screen3(props) { return <h1>Screen 3 folksl!!!</h1>; },
     [WALKTHROUGH.PAGE4]: function Screen4(props) { return <h1>Screen 4 folksl!!!</h1>; },
 };

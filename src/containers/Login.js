@@ -6,6 +6,7 @@ import queryString from "query-string";
 import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
 import { Auth } from "aws-amplify";
+import { setCurrentUserSession } from "../libs/userState";
 
 export default class Login extends Component {
     constructor(props) {
@@ -42,7 +43,7 @@ export default class Login extends Component {
 
             const currentSession = await Auth.currentSession();
 
-            this.props.userHasAuthenticated(currentSession);
+            setCurrentUserSession(currentSession);
         } catch (e) {
             this.setState({ isLoading: false });
             alert(e.message);

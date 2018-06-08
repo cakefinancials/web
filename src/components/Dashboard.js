@@ -6,7 +6,7 @@ import BrokerageCredentials from "./BrokerageCredentials";
 import LoadingSpinner from "./LoadingSpinner";
 import Walkthrough from "./AccountSetup/Walkthrough";
 
-import { fetchUserState, subscribe, userStateActions } from "../libs/userState";
+import { fetchUserState, subscribeUserStateChange, userStateActions } from "../libs/userState";
 
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
 
@@ -20,7 +20,7 @@ export default class Dashboard extends Component {
             syncing: false,
         };
 
-        subscribe(userStateUpdates => {
+        subscribeUserStateChange(userStateUpdates => {
             this.setState(userStateUpdates);
         });
     }
