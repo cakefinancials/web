@@ -1,0 +1,94 @@
+.step-personal-details {
+    background-image: url(../../public/walkthrough/personal_information.png);
+}
+
+.step-brokerage-access {
+    background-image: url(../../public/walkthrough/brokerage_access.png);
+}
+
+.step-bank-details {
+    background-image: url(../../public/walkthrough/bank_details.png);
+}
+
+.step-estimated-earnings {
+    /*background-image: url(../../public/walkthrough/estimated_earnings.png);*/
+    background-image: url(../../public/walkthrough/bank_details.png);
+}
+
+.step-loan-paperwork {
+    background-image: url(../../public/walkthrough/loan_paperwork.png);
+}
+
+.steps-header-icon {
+    background-size: cover;
+    height: 50px;
+    width: 50px;
+}
+
+div.steps-header-container .rc-steps-item .rc-steps-item-title:after {
+    background-color: #979797;
+    top: 5em;
+}
+
+div.steps-header-container .rc-steps-horizontal:not(.rc-steps-label-vertical) .rc-steps-item {
+    margin-right: -5px;
+}
+
+div.steps-header-container .rc-steps-item-icon {
+    display: none;
+}
+
+div.steps-header-container .rc-steps-item-description {
+    margin-right: 10px;
+}
+
+div.steps-header-container .rc-steps-item-content {
+    text-align: center;
+}
+
+div.steps-header-container {
+    margin-top: 20px;
+}
+
+.number-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 14px;
+    font-family: Lato;
+    color: white;
+    border: 1px solid #85D0BC;
+    background-color: #85D0BC;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    padding-right: 1px;
+}
+
+.description-text {
+    height: 34px;
+    color: #4A4A4A;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 17px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.steps-tooltip > .tooltip-inner {
+    background-color: #85D0BC;
+    opacity: 1;
+}
+
+div.steps-tooltip > .tooltip-arrow {
+    /* could not figure out, please fix */
+    border-right-color: #85D0BC !important;
+}
+
+.tooltip.in {
+    /* same here */
+    opacity: 1 !important;
+}
