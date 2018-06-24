@@ -4,7 +4,7 @@ import React, { Component, Fragment } from "react";
 import ReactDOM from 'react-dom';
 import Steps, { Step } from 'rc-steps';
 import * as R from "ramda";
-import { Grid, Row, Col, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import "./StepsHeader.css";
 import { userStateActions } from "../../libs/userState";
@@ -29,7 +29,7 @@ const STEPS_CONFIG_WELCOME = [
     [ WALKTHROUGH.BROKERAGE_ACCESS, 'step-brokerage-access', 'Brokerage Access', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
     [ WALKTHROUGH.BANK_DETAILS, 'step-bank-details', 'Bank Details', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
     [ WALKTHROUGH.ESTIMATED_EARNINGS, 'step-estimated-earnings', 'Estimated Earnings', HOVER_TEXT.ESTIMATED_EARNINGS, STEP_ICON.NUMBER ],
-    [ WALKTHROUGH.LOAN_PAPERWORK, 'step-loan-paperwork', 'Load Paperwork', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
+    [ WALKTHROUGH.LOAN_PAPERWORK, 'step-loan-paperwork', 'Loan Paperwork', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
 ];
 
 const STEPS_CONFIG_DEFAULT = [
@@ -46,46 +46,77 @@ const StepsIcon = ({ stepClassName, ...props }) => {
     );
 };
 
-const CheckStyle = {
-    color: '#1DBA1D',
-    opacity: '1',
-    marginLeft: '1px',
-    marginTop: '-3px',
-    fontSize: '22px',
-}
-
-const LockStyle = {
-    fontSize: '22px',
-    opacity: '1',
-    color: '#7F7F7F'
-};
-
 const Lock = ({check, ...props}) => {
+    const LockCheckStyle = {
+        color: '#1DBA1D',
+        opacity: '1',
+        marginLeft: '1px',
+        marginTop: '-3px',
+        fontSize: '22px',
+    }
+
+    const LockStyle = {
+        fontSize: '22px',
+        opacity: '1',
+        color: '#7F7F7F'
+    };
+
     return (
         <span {...props} className="fa-layers fa-fw lock-container" >
             <i className="fas fa-lock" style={LockStyle}></i>
-            { check ? <i className="fas fa-check" style={CheckStyle}></i> : null }
+            { check ? <i className="fas fa-check" style={LockCheckStyle}></i> : null }
         </span>
     );
 };
 
 const mapIndexed = R.addIndex(R.map);
 
+const NumberCircle = ({text, highlighted, ...props}) => {
+    return (
+        <div {...props} className={`number-circle ${highlighted ? 'highlighted-number-circle' : ''}`}>
+            { text }
+        </div>
+    );
+}
+
+const CompletedCircle = ({...props}) => {
+    const CircleCheckStyle = {
+        color: '#1DBA1D',
+        opacity: '1',
+        marginLeft: '4px',
+        marginTop: '-3px',
+        fontSize: '20px',
+    }
+
+    const CircleStyle = {
+        fontSize: '24px',
+        marginTop: '-4px',
+        opacity: '1',
+        color: '#85D0BC'
+    };
+
+    return (
+        <span {...props} className="fa-layers fa-fw lock-container" >
+            <i className="far fa-circle" style={CircleStyle}></i>
+            <i className="fas fa-check" style={CircleCheckStyle}></i>
+        </span>
+    );
+}
+
 export default class StepsHeader extends Component {
-    renderStepIcon(stepIconType, highlighted, idx) {
-        if (stepIconType === STEP_ICON.NUMBER) {
-            return (
-                <div className={`number-circle ${highlighted ? 'highlighted-number-circle' : ''}`}>
-                    {`${idx + 1}`}
-                </div>
-            );
+    renderStepIcon(stepIconType, highlighted, completed, idx) {
+        if (completed) {
+            return <CompletedCircle />;
+        } else if (stepIconType === STEP_ICON.NUMBER || highlighted) {
+            return <NumberCircle text={ `${idx + 1}` } highlighted={ highlighted } />;
         } else {
             return <Lock />;
         }
     }
 
-    renderBody() {
-        const highlightedSteps = this.props.highlightedSteps || [];
+    render() {
+        const highlightedSteps = this.props.highlightedSteps || [ ];
+        const completedSteps = this.props.completedSteps || [ ];
         const stepsConfig = this.props.stepsVersion === 'welcome' ? STEPS_CONFIG_WELCOME : STEPS_CONFIG_DEFAULT;
 
         return (
@@ -101,9 +132,10 @@ export default class StepsHeader extends Component {
                                 stepIconType
                             ] = val;
 
-                            const title = <StepsIcon stepClassName={stepClassName}/>;
+                            const title = <StepsIcon stepClassName={ stepClassName }/>;
                             const highlighted = R.contains(stepName, highlightedSteps);
-                            let stepIcon = this.renderStepIcon(stepIconType, highlighted, idx);
+                            const completed = R.contains(stepName, completedSteps);
+                            let stepIcon = this.renderStepIcon(stepIconType, highlighted, completed, idx);
 
                             if (stepHoverState) {
                                 const tooltip = (
@@ -138,18 +170,6 @@ export default class StepsHeader extends Component {
                     }
                 </Steps>
             </div>
-        );
-    }
-
-    render() {
-        return (
-            <Grid>
-                <Row>
-                    <Col xs={8} xsOffset={2}>
-                        { this.renderBody() }
-                    </Col>
-                </Row>
-            </Grid>
         );
     }
 }

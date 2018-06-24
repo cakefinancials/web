@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
 
 import StepsHeader from "./StepsHeader";
 
@@ -11,7 +12,16 @@ export default class Welcome extends Component {
         return (
             <div className="welcome">
                 WELCOME TO CAKE - YADA YADA YADA
-                <StepsHeader highlightedSteps={[WALKTHROUGH.ESTIMATED_EARNINGS]}/>
+                <Grid>
+                    <Row>
+                        <Col xs={8} xsOffset={2}>
+                            <StepsHeader
+                                highlightedSteps={ [ WALKTHROUGH.ESTIMATED_EARNINGS ] }
+                                stepsVersion={ 'welcome' }
+                            />
+                        </Col>
+                    </Row>
+                </Grid>
                 <Button
                     block
                     bsStyle="warning"
