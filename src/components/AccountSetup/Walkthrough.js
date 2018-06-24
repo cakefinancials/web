@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Grid, Row, Col } from "react-bootstrap";
 import * as R from "ramda";
 
 import { userStateActions, updateUserState } from "../../libs/userState";
 
 import Welcome from "./Welcome";
 import PersonalDetails from "./PersonalDetails";
+import StepsHeader, { STEPS_CONFIG_DEFAULT, STEPS_HEADER_VERSIONS } from "./StepsHeader";
 
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
 
@@ -14,6 +15,8 @@ const WALKTHROUGH_ORDER = [
     WALKTHROUGH.PERSONAL_DETAILS,
     WALKTHROUGH.BROKERAGE_ACCESS,
     WALKTHROUGH.BANK_DETAILS,
+    WALKTHROUGH.ESTIMATED_EARNINGS,
+    WALKTHROUGH.LOAN_PAPERWORK,
     WALKTHROUGH.DONE
 ];
 
@@ -38,6 +41,8 @@ const WALKTHROUGH_PAGE_TO_COMPONENT = {
     [WALKTHROUGH.PERSONAL_DETAILS]: PersonalDetails,
     [WALKTHROUGH.BROKERAGE_ACCESS]: function Screen3(props) { return <h1>Screen 3 folksl!!!</h1>; },
     [WALKTHROUGH.BANK_DETAILS]: function Screen4(props) { return <h1>Screen 4 folksl!!!</h1>; },
+    [WALKTHROUGH.ESTIMATED_EARNINGS]: function Screen5(props) { return <h1>Screen 5 folksl!!!</h1>; },
+    [WALKTHROUGH.LOAN_PAPERWORK]: function Screen6(props) { return <h1>Screen 6 folksl!!!</h1>; },
 };
 
 export default class Walkthrough extends Component {
@@ -57,11 +62,38 @@ export default class Walkthrough extends Component {
         return <ComponentForPage navigateToNext={navigateToNext} navigateToPrevious={navigateToPrevious} />;
     };
 
+    renderStepsHeader(currentWalkthroughStep) {
+        if (currentWalkthroughStep === WALKTHROUGH.WELCOME) {
+            return null;
+        }
+
+        const walkthroughSteps = R.map(R.head, STEPS_CONFIG_DEFAULT);
+        const currentStepIdx = R.indexOf(currentWalkthroughStep, walkthroughSteps);
+        const filterIndexed = R.addIndex(R.filter);
+
+        const completedSteps = filterIndexed((step, idx) => idx < currentStepIdx, walkthroughSteps);
+
+        return (
+            <Grid>
+                <Row>
+                    <Col xs={8} xsOffset={2}>
+                        <StepsHeader
+                            highlightedSteps={ [ currentWalkthroughStep ] }
+                            completedSteps={ completedSteps }
+                            stepsVersion={ STEPS_HEADER_VERSIONS.DEFAULT }
+                        />
+                    </Col>
+                </Row>
+            </Grid>
+        );
+    }
+
     renderMainContent() {
         const currentWalkthroughStep = userStateActions.getWalkthroughStep();
 
         return (
             <div>
+                { this.renderStepsHeader(currentWalkthroughStep) }
                 { this.renderCurrentStep(currentWalkthroughStep) }
             </div>
         );

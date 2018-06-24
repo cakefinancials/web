@@ -32,7 +32,7 @@ const STEPS_CONFIG_WELCOME = [
     [ WALKTHROUGH.LOAN_PAPERWORK, 'step-loan-paperwork', 'Loan Paperwork', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
 ];
 
-const STEPS_CONFIG_DEFAULT = [
+export const STEPS_CONFIG_DEFAULT = [
     [ WALKTHROUGH.PERSONAL_DETAILS, 'step-personal-details', 'Personal Information', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
     [ WALKTHROUGH.BROKERAGE_ACCESS, 'step-brokerage-access', 'Brokerage Access', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
     [ WALKTHROUGH.BANK_DETAILS, 'step-bank-details', 'Bank Details', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
@@ -103,6 +103,11 @@ const CompletedCircle = ({...props}) => {
     );
 }
 
+export const STEPS_HEADER_VERSIONS = {
+    DEFAULT: 'DEFAULT',
+    WELCOME: 'WELCOME',
+}
+
 export default class StepsHeader extends Component {
     renderStepIcon(stepIconType, highlighted, completed, idx) {
         if (completed) {
@@ -117,7 +122,7 @@ export default class StepsHeader extends Component {
     render() {
         const highlightedSteps = this.props.highlightedSteps || [ ];
         const completedSteps = this.props.completedSteps || [ ];
-        const stepsConfig = this.props.stepsVersion === 'welcome' ? STEPS_CONFIG_WELCOME : STEPS_CONFIG_DEFAULT;
+        const stepsConfig = this.props.stepsVersion === STEPS_HEADER_VERSIONS.WELCOME ? STEPS_CONFIG_WELCOME : STEPS_CONFIG_DEFAULT;
 
         return (
             <div className="steps-header-container">

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { Grid, Row, Col } from "react-bootstrap";
 
-import StepsHeader from "./StepsHeader";
+import StepsHeader, { STEPS_HEADER_VERSIONS } from "./StepsHeader";
 
 import { userStateActions } from "../../libs/userState";
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
@@ -17,7 +17,7 @@ export default class Welcome extends Component {
                         <Col xs={8} xsOffset={2}>
                             <StepsHeader
                                 highlightedSteps={ [ WALKTHROUGH.ESTIMATED_EARNINGS ] }
-                                stepsVersion={ 'welcome' }
+                                stepsVersion={ STEPS_HEADER_VERSIONS.WELCOME }
                             />
                         </Col>
                     </Row>
