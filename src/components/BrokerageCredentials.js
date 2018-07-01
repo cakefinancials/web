@@ -61,7 +61,7 @@ export default class BrokerageCredentials extends Component {
                             this.setState({ brokerageCredentialsExist: true, showForm: false })
                         }}
                         onCancelClicked={() => { this.setState({ showForm: false }) }}
-                        showCancel
+                        showCancel={ !!this.state.brokerageCredentialsExist }
                     />
                 </Fragment>
             ) : (

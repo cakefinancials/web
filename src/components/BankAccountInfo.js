@@ -10,29 +10,6 @@ import "./BankAccountInfo.css";
 import { API } from "aws-amplify";
 import LoadingSpinner from "./LoadingSpinner";
 
-const validateABARoutingNumber = (routingNumber) => {
-    const match = routingNumber.match(/^([\d]{9})$/);
-    if (!match) {
-        return false;
-    }
-
-    const weights = [3, 7, 1];
-    const aba = match[1];
-
-    var sum = 0;
-    for (var i = 0; i < 9; ++i) {
-        sum += aba.charAt(i) * weights[i % 3];
-    }
-
-    return (sum !== 0 && sum % 10 === 0);
-}
-
-const validateAccountNumber = (accountNumber) => {
-    const match = accountNumber.match(/^([\d]{4,18})$/);
-
-    return match;
-};
-
 export default class BankAccountInfo extends Component {
     constructor(props) {
         super(props);
@@ -40,9 +17,7 @@ export default class BankAccountInfo extends Component {
         this.state = {
             isLoading: true,
             bankAccountInfoExists: null,
-            showForm: false,
-            routingNumber: '',
-            accountNumber: '',
+            showForm: false
         };
     }
 
@@ -68,27 +43,104 @@ export default class BankAccountInfo extends Component {
         );
     }
 
+    handleUpdateClick = event => {
+        this.setState({ showForm: true });
+    }
+
+    renderObfuscatedData = () => {
+        return this.state.bankAccountInfoExists ? <ObfuscatedBankAccountInfo /> : null;
+    }
+
+    renderLoaded = () => {
+        return (
+            this.state.showForm ? (
+                <Fragment>
+                    { this.renderObfuscatedData() }
+                    <p>Please enter your bank info</p>
+                    <BankAccountInfoEditor
+                        bankAccountInfoSaved={() => {
+                            this.setState({ bankAccountInfoExists: true, showForm: false })
+                        }}
+                        onCancelClicked={() => { this.setState({ showForm: false }) }}
+                        showCancel={ !!this.state.bankAccountInfoExists }
+                    />
+                </Fragment>
+            ) : (
+                <Fragment>
+                    <p>You've already added bank info</p>
+                    <Button onClick={this.handleUpdateClick}>Update</Button>
+                </Fragment>
+            )
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                <h2>Bank Account Info</h2>
+                {this.state.isLoading ? this.renderLoading() : this.renderLoaded()}
+            </div>
+        );
+    }
+}
+
+export class BankAccountInfoEditor extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isSaving: false,
+            routingNumber: '',
+            accountNumber: '',
+        };
+    }
+
+    validateABARoutingNumber = (routingNumber) => {
+        const match = routingNumber.match(/^([\d]{9})$/);
+        if (!match) {
+            return false;
+        }
+
+        const weights = [3, 7, 1];
+        const aba = match[1];
+
+        var sum = 0;
+        for (var i = 0; i < 9; ++i) {
+            sum += aba.charAt(i) * weights[i % 3];
+        }
+
+        return (sum !== 0 && sum % 10 === 0);
+    }
+
+    validateAccountNumber = (accountNumber) => {
+        const match = accountNumber.match(/^([\d]{4,18})$/);
+
+        return match;
+    }
+
+    validateBankInfoForm = () => {
+        return {
+            routingNumberValidation: this.validateABARoutingNumber(this.state.routingNumber),
+            accountNumberValidation: this.validateAccountNumber(this.state.accountNumber),
+        };
+    }
+
     handleSubmit = async event => {
         event.preventDefault();
 
-        this.setState({ isLoading: true });
+        this.setState({ isSaving: true });
 
         try {
             await this.saveBankInfo({
                 routingNumber: this.state.routingNumber,
                 accountNumber: this.state.accountNumber,
             });
-            this.setState({
-                isLoading: false,
-                showForm: false,
-                bankAccountInfoExists: true,
-                routingNumber: '',
-                accountNumber: '',
-            });
         } catch (e) {
             alert(e);
-            this.setState({ isLoading: false });
         }
+
+        this.setState({ isSaving: false });
+        this.props.bankAccountInfoSaved();
     }
 
     saveBankInfo(bankInfo) {
@@ -101,14 +153,13 @@ export default class BankAccountInfo extends Component {
         });
     }
 
-    validateBankInfoForm = () => {
-        return {
-            routingNumberValidation: validateABARoutingNumber(this.state.routingNumber),
-            accountNumberValidation: validateAccountNumber(this.state.accountNumber),
-        };
+    renderSavingContent = () => {
+        return (
+            <LoadingSpinner bsSize="large" text="Saving..." />
+        );
     }
 
-    renderBankInfoForm = () => {
+    renderSaveForm = () => {
         const { routingNumberValidation, accountNumberValidation } = this.validateBankInfoForm();
         return (
             <div>
@@ -151,13 +202,13 @@ export default class BankAccountInfo extends Component {
                         Save
                     </Button>
                     {
-                        this.state.bankAccountInfoExists ? (
+                        this.props.showCancel ? (
                             <Button
                                 block
                                 bsStyle="warning"
                                 bsSize="large"
                                 onClick={e => {
-                                    this.setState({ showForm: false });
+                                    this.props.onCancelClicked();
                                 }}
                             >
                                 Cancel
@@ -169,38 +220,8 @@ export default class BankAccountInfo extends Component {
         );
     }
 
-    handleUpdateClick = event => {
-        this.setState({ showForm: true });
-    }
-
-    renderObfuscatedData = () => {
-        return this.state.bankAccountInfoExists ? <ObfuscatedBankAccountInfo /> : null;
-    }
-
-    renderLoaded = () => {
-        return (
-            this.state.showForm ? (
-                <Fragment>
-                    { this.renderObfuscatedData() }
-                    <p>Please enter your bank info</p>
-                    {this.renderBankInfoForm()}
-                </Fragment>
-            ) : (
-                <Fragment>
-                    <p>You've already added bank info</p>
-                    <Button onClick={this.handleUpdateClick}>Update</Button>
-                </Fragment>
-            )
-        );
-    }
-
-    render() {
-        return (
-            <div>
-                <h2>Bank Account Info</h2>
-                {this.state.isLoading ? this.renderLoading() : this.renderLoaded()}
-            </div>
-        );
+    render = () => {
+        return this.state.isSaving ? this.renderSavingContent() : this.renderSaveForm();
     }
 }
 
