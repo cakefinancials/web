@@ -6,6 +6,7 @@ import { userStateActions, updateUserState } from "../../libs/userState";
 
 import Welcome from "./Welcome";
 import PersonalDetails from "./PersonalDetails";
+import BrokerageAccess from "./BrokerageAccess";
 import StepsHeader, { STEPS_CONFIG_DEFAULT, STEPS_HEADER_VERSIONS } from "./StepsHeader";
 
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
@@ -39,7 +40,7 @@ const getPreviousStep = (walkthroughStep) => {
 const WALKTHROUGH_PAGE_TO_COMPONENT = {
     [WALKTHROUGH.WELCOME]: Welcome,
     [WALKTHROUGH.PERSONAL_DETAILS]: PersonalDetails,
-    [WALKTHROUGH.BROKERAGE_ACCESS]: function Screen3(props) { return <h1>Screen 3 folksl!!!</h1>; },
+    [WALKTHROUGH.BROKERAGE_ACCESS]: BrokerageAccess,
     [WALKTHROUGH.BANK_DETAILS]: function Screen4(props) { return <h1>Screen 4 folksl!!!</h1>; },
     [WALKTHROUGH.ESTIMATED_EARNINGS]: function Screen5(props) { return <h1>Screen 5 folksl!!!</h1>; },
     [WALKTHROUGH.LOAN_PAPERWORK]: function Screen6(props) { return <h1>Screen 6 folksl!!!</h1>; },

@@ -20,6 +20,11 @@ const notifyUserStateChange = () => {
 
 export const subscribeUserStateChange = (notifyFunction) => {
     userStateNotifyFunctions.push(notifyFunction);
+
+    const location = userStateNotifyFunctions.length - 1;
+    return function unsubscribe() {
+        userStateNotifyFunctions.splice(location, 1);
+    };
 };
 
 export const fetchUserState = async () => {

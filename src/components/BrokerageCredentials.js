@@ -9,18 +9,6 @@ import {
 import { API } from "aws-amplify";
 import LoadingSpinner from "./LoadingSpinner";
 
-const validateUsername = (username) => {
-    return username.length > 0;
-}
-
-const validatePassword = (password) => {
-    return password.length > 0;
-};
-
-const validateBrokerage = (brokerage) => {
-    return brokerage.length > 0;
-};
-
 export default class BrokerageCredentials extends Component {
     constructor(props) {
         super(props);
@@ -29,9 +17,6 @@ export default class BrokerageCredentials extends Component {
             isLoading: true,
             brokerageCredentialsExist: null,
             showForm: false,
-            username: '',
-            password: '',
-            brokerage: '',
         };
     }
 
@@ -57,10 +42,63 @@ export default class BrokerageCredentials extends Component {
         );
     }
 
+    handleUpdateClick = event => {
+        this.setState({ showForm: true });
+    }
+
+    renderObfuscatedData = () => {
+        return this.state.brokerageCredentialsExist ? <ObfuscatedBrokerageCredentials /> : null;
+    }
+
+    renderLoaded = () => {
+        return (
+            this.state.showForm ? (
+                <Fragment>
+                    { this.renderObfuscatedData() }
+                    <p>Please enter your brokerage credentials</p>
+                    <BrokerageCredentialsEditor
+                        brokerageCredentialsSaved={() => {
+                            this.setState({ brokerageCredentialsExist: true, showForm: false })
+                        }}
+                        onCancelClicked={() => { this.setState({ showForm: false }) }}
+                        showCancel
+                    />
+                </Fragment>
+            ) : (
+                    <Fragment>
+                        <p>You've already added your brokerage credentials</p>
+                        <Button onClick={this.handleUpdateClick}>Update</Button>
+                    </Fragment>
+                )
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                <h2>Brokerage Credentials</h2>
+                {this.state.isLoading ? this.renderLoading() : this.renderLoaded()}
+            </div>
+        );
+    }
+}
+
+export class BrokerageCredentialsEditor extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isSaving: false,
+            username: '',
+            password: '',
+            brokerage: '',
+        };
+    }
+
     handleSubmit = async event => {
         event.preventDefault();
 
-        this.setState({ isLoading: true });
+        this.setState({ isSaving: true });
 
         try {
             await this.saveBrokerageCredentials({
@@ -68,18 +106,12 @@ export default class BrokerageCredentials extends Component {
                 password: this.state.password,
                 brokerage: this.state.brokerage,
             });
-            this.setState({
-                isLoading: false,
-                showForm: false,
-                brokerageCredentialsExist: true,
-                username: '',
-                password: '',
-                brokerage: '',
-            });
         } catch (e) {
             alert(e);
-            this.setState({ isLoading: false });
         }
+
+        this.setState({ isSaving: false });
+        this.props.brokerageCredentialsSaved();
     }
 
     saveBrokerageCredentials(brokerageCredentials) {
@@ -92,15 +124,33 @@ export default class BrokerageCredentials extends Component {
         });
     }
 
+    validateUsername = (username) => {
+        return username.length > 0;
+    }
+
+    validatePassword = (password) => {
+        return password.length > 0;
+    }
+
+    validateBrokerage = (brokerage) => {
+        return brokerage.length > 0;
+    }
+
     validateBrokerageCredentialsForm = () => {
         return {
-            usernameValidation: validateUsername(this.state.username),
-            passwordValidation: validatePassword(this.state.password),
-            brokerageValidation: validateBrokerage(this.state.brokerage),
+            usernameValidation: this.validateUsername(this.state.username),
+            passwordValidation: this.validatePassword(this.state.password),
+            brokerageValidation: this.validateBrokerage(this.state.brokerage),
         };
     }
 
-    renderBrokerageCredentialsForm = () => {
+    renderSavingContent = () => {
+        return (
+            <LoadingSpinner bsSize="large" text="Saving..." />
+        );
+    }
+
+    renderSaveForm = () => {
         const {usernameValidation, passwordValidation, brokerageValidation} = this.validateBrokerageCredentialsForm();
         return (
             <div>
@@ -157,17 +207,17 @@ export default class BrokerageCredentials extends Component {
                         Save
                     </Button>
                     {
-                        this.state.brokerageCredentialsExist ? (
+                        this.props.showCancel ? (
                             <Button
                                 block
                                 bsStyle="warning"
                                 bsSize="large"
                                 onClick={e => {
-                                    this.setState({ showForm: false });
+                                    this.props.onCancelClicked();
                                 }}
                             >
                                 Cancel
-                                </Button>
+                            </Button>
                         ) : null
                     }
                 </form>
@@ -175,40 +225,10 @@ export default class BrokerageCredentials extends Component {
         );
     }
 
-    handleUpdateClick = event => {
-        this.setState({ showForm: true });
+    render = () => {
+        return this.state.isSaving ? this.renderSavingContent() : this.renderSaveForm();
     }
-
-    renderObfuscatedData = () => {
-        return this.state.brokerageCredentialsExist ? <ObfuscatedBrokerageCredentials /> : null;
-    }
-
-    renderLoaded = () => {
-        return (
-            this.state.showForm ? (
-                <Fragment>
-                    { this.renderObfuscatedData() }
-                    <p>Please enter your brokerage credentials</p>
-                    {this.renderBrokerageCredentialsForm()}
-                </Fragment>
-            ) : (
-                    <Fragment>
-                        <p>You've already added your brokerage credentials</p>
-                        <Button onClick={this.handleUpdateClick}>Update</Button>
-                    </Fragment>
-                )
-        );
-    }
-
-    render() {
-        return (
-            <div>
-                <h2>Brokerage Credentials</h2>
-                {this.state.isLoading ? this.renderLoading() : this.renderLoaded()}
-            </div>
-        );
-    }
-}
+};
 
 class ObfuscatedBrokerageCredentials extends Component {
     constructor(props) {
