@@ -46,23 +46,29 @@ export default class BrokerageAccess extends Component {
                             <p>
                                 <strong>1)</strong> Enroll in your ESPP at max contribution. { maxContribTooltip }
                             </p>
+                            <small><small>
+                                <p>
+                                    Our analysts are legally only allowed to touch ESPP stocks.
+                                    <br />
+                                    Examples of things we can't touch include:
+                                </p>
+                                <ul class="dashed">
+                                    <li>RSUs</li>
+                                    <li>Common Stock</li>
+                                    <li>Options</li>
+                                    <li>Any other financial holdings</li>
+                                </ul>
+                            </small></small>
                             <br />
-                            <p>
-                                Our analysts are legally only allowed to touch ESPP stocks. Examples of things we can't touch include:
-                            </p>
-                            <ul class="dashed">
-                                <li>RSUs</li>
-                                <li>Common Stock</li>
-                                <li>Options</li>
-                                <li>Any other financial holdings</li>
-                            </ul>
                             <br />
                             <p>
                                 <strong>2)</strong> Sell your ESPP stock as soon as it is available**
                             <br />
                             </p>
                             <p>
-                                <i>** This is the Cake policy so that risk exposure is minimized and your gains reach you as soon as possible</i>
+                                <small><small>
+                                    <i>** This is the Cake policy so that risk exposure is minimized and your gains reach you as soon as possible</i>
+                                </small></small>
                             </p>
                         </div>
                         <BrokerageCredentialsEditor
