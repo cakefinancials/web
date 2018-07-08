@@ -7,6 +7,7 @@ import * as R from "ramda";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import "./StepsHeader.css";
+import "./StepsTooltip.css";
 import { userStateActions } from "../../libs/userState";
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
 

@@ -91,19 +91,6 @@ div.steps-header-container {
     margin-top: 5px;
 }
 
-.steps-tooltip > .tooltip-inner {
-    background-color: #85D0BC;
-    opacity: 1;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
-}
-
-.tooltip.in {
-    /* could not figure out how to do without important */
-    opacity: 1 !important;
-}
-
 .rc-steps-item-description .lock-container {
     margin-left: -5px;
     margin-top: 7px;

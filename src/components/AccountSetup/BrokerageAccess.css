@@ -1,0 +1,22 @@
+ul {
+    margin: 0;
+}
+
+ul.dashed {
+    list-style-type: none;
+    display: inline-block;
+    text-align: left;
+}
+
+ul.dashed > li {
+    text-indent: -5px;
+}
+
+ul.dashed > li:before {
+    content: "— ";
+    text-indent: -5px;
+}
+
+.centered-text {
+    text-align: center
+}
