@@ -11,6 +11,10 @@ const maxContribTooltipText = `Why do we always enroll you at max contribution? 
 to enroll you at max contribution as minimum contribution. Yes, it costs more upfront, but we cover
 those costs. Max contribution is how you (and Cake) can make the most money.`;
 
+const ourCTOSaysSpeechBubbleText = `Your credentials will be encrypted and stored on an Amazon server. Only 1 person,
+your Cake Analyst, will have the encryption key, which is stored indepedently of your credentials. They will only
+access your account to do the 2 things outlined above`;
+
 export default class BrokerageAccess extends Component {
     constructor(props) { super(props); }
 
@@ -52,7 +56,7 @@ export default class BrokerageAccess extends Component {
                                     <br />
                                     Examples of things we can't touch include:
                                 </p>
-                                <ul class="dashed">
+                                <ul className="dashed">
                                     <li>RSUs</li>
                                     <li>Common Stock</li>
                                     <li>Options</li>
@@ -70,6 +74,18 @@ export default class BrokerageAccess extends Component {
                                     <i>** This is the Cake policy so that risk exposure is minimized and your gains reach you as soon as possible</i>
                                 </small></small>
                             </p>
+                        </div>
+                        <div className="cto-speech-bubble-container">
+                            <div>
+                                <small><i>
+                                    Our CTO, <br /> Samuel says:
+                                </i></small>
+                            </div>
+                            <div>
+                                <Tooltip id="brokerage-access-cto-says-tooltip" className="steps-tooltip in">
+                                    <big>{ ourCTOSaysSpeechBubbleText }</big>
+                                </Tooltip>
+                            </div>
                         </div>
                         <BrokerageCredentialsEditor
                             brokerageCredentialsSaved={() => this.props.navigateToNext()}

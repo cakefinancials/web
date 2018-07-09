@@ -20,3 +20,16 @@ ul.dashed > li:before {
 .centered-text {
     text-align: center
 }
+
+.cto-speech-bubble-container {
+    display: flex
+}
+
+#brokerage-access-cto-says-tooltip > .tooltip-inner {
+    max-width: none;
+}
+
+.steps-tooltip {
+    /* same as bootstraps padding for col-xs-10 */
+    margin-right: 15px;
+}
