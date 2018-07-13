@@ -85,8 +85,10 @@ export default class BrokerageAccess extends Component {
                             <SpeechBubble text={ ourCTOSaysSpeechBubbleText } />
                         </div>
                         <br />
+                        <br />
                         <BrokerageCredentialsEditor
                             brokerageCredentialsSaved={() => this.props.navigateToNext()}
+                            saveButtonText='Save & Continue'
                         />
                     </Col>
                 </Row>

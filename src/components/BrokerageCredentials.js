@@ -11,8 +11,9 @@ import {
 import { API } from "aws-amplify";
 import LoadingSpinner from "./LoadingSpinner";
 import Lock from "./helpers/Lock";
+import CakeButton from "./helpers/CakeButton";
 
-import "./styles/FormStyles.css";
+import "./helpers/FormStyles.css";
 
 export default class BrokerageCredentials extends Component {
     constructor(props) {
@@ -164,10 +165,10 @@ export class BrokerageCredentialsEditor extends Component {
                         controlId="brokerage"
                         validationState={brokerageValidation ? null : "error"}
                     >
-                        <Col componentClass={ControlLabel} className={'cake-form-label'} sm={3}>
+                        <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
                             Brokerage Website
                         </Col>
-                        <Col sm={8}>
+                        <Col xs={8}>
                             <FormControl
                                 className={'cake-form-input'}
                                 onChange={this.handleChange}
@@ -178,7 +179,7 @@ export class BrokerageCredentialsEditor extends Component {
                                     <HelpBlock>Your brokerage website cannot be blank</HelpBlock>
                             }
                         </Col>
-                        <Col className='checked-lock-icon' sm={1}>
+                        <Col className='checked-lock-icon' xs={1}>
                             <Lock check />
                         </Col>
                     </FormGroup>
@@ -186,10 +187,10 @@ export class BrokerageCredentialsEditor extends Component {
                         controlId="username"
                         validationState={usernameValidation ? null : "error"}
                     >
-                        <Col componentClass={ControlLabel} className={'cake-form-label'} sm={3}>
+                        <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
                             Username
                         </Col>
-                        <Col sm={8}>
+                        <Col xs={8}>
                             <FormControl
                                 className={'cake-form-input'}
                                 onChange={this.handleChange}
@@ -200,7 +201,7 @@ export class BrokerageCredentialsEditor extends Component {
                                     <HelpBlock>The username that you use to login to your brokerage cannot be blank</HelpBlock>
                             }
                         </Col>
-                        <Col className='checked-lock-icon' sm={1}>
+                        <Col className='checked-lock-icon' xs={1}>
                             <Lock check />
                         </Col>
                     </FormGroup>
@@ -208,10 +209,10 @@ export class BrokerageCredentialsEditor extends Component {
                         controlId="password"
                         validationState={passwordValidation ? null : "error"}
                     >
-                        <Col componentClass={ControlLabel} className={'cake-form-label'} sm={3}>
+                        <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
                             Password
                         </Col>
-                        <Col sm={8}>
+                        <Col xs={8}>
                             <FormControl
                                 className={'cake-form-input'}
                                 onChange={this.handleChange}
@@ -222,33 +223,35 @@ export class BrokerageCredentialsEditor extends Component {
                                     <HelpBlock>The password that you use to login to your brokerage cannot be blank</HelpBlock>
                             }
                         </Col>
-                        <Col className='checked-lock-icon' sm={1}>
+                        <Col className='checked-lock-icon' xs={1}>
                             <Lock check />
                         </Col>
                     </FormGroup>
-                    <Button
-                        block
-                        bsStyle="primary"
-                        bsSize="large"
-                        disabled={!(usernameValidation && passwordValidation && brokerageValidation)}
-                        type="submit"
-                    >
-                        Save
-                    </Button>
-                    {
-                        this.props.showCancel ? (
-                            <Button
-                                block
-                                bsStyle="warning"
-                                bsSize="large"
-                                onClick={e => {
-                                    this.props.onCancelClicked();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                        ) : null
-                    }
+                    <br />
+                    <Col xs={6} xsOffset={3}>
+                        <CakeButton
+                            block
+                            bsSize="large"
+                            disabled={!(usernameValidation && passwordValidation && brokerageValidation)}
+                            type="submit"
+                        >
+                            { this.props.saveButtonText || 'Save' }
+                        </CakeButton>
+                        {
+                            this.props.showCancel ? (
+                                <Button
+                                    block
+                                    bsStyle="warning"
+                                    bsSize="large"
+                                    onClick={e => {
+                                        this.props.onCancelClicked();
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                            ) : null
+                        }
+                    </Col>
                 </Form>
             </div>
         );
