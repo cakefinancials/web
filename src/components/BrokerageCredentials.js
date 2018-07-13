@@ -1,13 +1,18 @@
 import React, { Component, Fragment } from "react";
 import {
     Button,
+    Col,
     ControlLabel,
+    Form,
     FormControl,
     FormGroup,
     HelpBlock,
 } from "react-bootstrap";
 import { API } from "aws-amplify";
 import LoadingSpinner from "./LoadingSpinner";
+import Lock from "./helpers/Lock";
+
+import "./styles/FormStyles.css";
 
 export default class BrokerageCredentials extends Component {
     constructor(props) {
@@ -154,48 +159,72 @@ export class BrokerageCredentialsEditor extends Component {
         const {usernameValidation, passwordValidation, brokerageValidation} = this.validateBrokerageCredentialsForm();
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
+                <Form horizontal onSubmit={this.handleSubmit}>
                     <FormGroup
                         controlId="brokerage"
                         validationState={brokerageValidation ? null : "error"}
                     >
-                        <ControlLabel>Brokerage Website</ControlLabel>
-                        <FormControl
-                            onChange={this.handleChange}
-                            value={this.state.brokerage}
-                        />
-                        {
-                            brokerageValidation ? null :
-                                <HelpBlock>Your brokerage website cannot be blank</HelpBlock>
-                        }
+                        <Col componentClass={ControlLabel} className={'cake-form-label'} sm={3}>
+                            Brokerage Website
+                        </Col>
+                        <Col sm={8}>
+                            <FormControl
+                                className={'cake-form-input'}
+                                onChange={this.handleChange}
+                                value={this.state.brokerage}
+                            />
+                            {
+                                brokerageValidation ? null :
+                                    <HelpBlock>Your brokerage website cannot be blank</HelpBlock>
+                            }
+                        </Col>
+                        <Col className='checked-lock-icon' sm={1}>
+                            <Lock check />
+                        </Col>
                     </FormGroup>
                     <FormGroup
                         controlId="username"
                         validationState={usernameValidation ? null : "error"}
                     >
-                        <ControlLabel>Username</ControlLabel>
-                        <FormControl
-                            onChange={this.handleChange}
-                            value={this.state.username}
-                        />
-                        {
-                            usernameValidation ? null :
-                                <HelpBlock>The username that you use to login to your brokerage cannot be blank</HelpBlock>
-                        }
+                        <Col componentClass={ControlLabel} className={'cake-form-label'} sm={3}>
+                            Username
+                        </Col>
+                        <Col sm={8}>
+                            <FormControl
+                                className={'cake-form-input'}
+                                onChange={this.handleChange}
+                                value={this.state.username}
+                            />
+                            {
+                                usernameValidation ? null :
+                                    <HelpBlock>The username that you use to login to your brokerage cannot be blank</HelpBlock>
+                            }
+                        </Col>
+                        <Col className='checked-lock-icon' sm={1}>
+                            <Lock check />
+                        </Col>
                     </FormGroup>
                     <FormGroup
                         controlId="password"
                         validationState={passwordValidation ? null : "error"}
                     >
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            onChange={this.handleChange}
-                            value={this.state.password}
-                        />
-                        {
-                            passwordValidation ? null :
-                                <HelpBlock>The password that you use to login to your brokerage cannot be blank</HelpBlock>
-                        }
+                        <Col componentClass={ControlLabel} className={'cake-form-label'} sm={3}>
+                            Password
+                        </Col>
+                        <Col sm={8}>
+                            <FormControl
+                                className={'cake-form-input'}
+                                onChange={this.handleChange}
+                                value={this.state.password}
+                            />
+                            {
+                                passwordValidation ? null :
+                                    <HelpBlock>The password that you use to login to your brokerage cannot be blank</HelpBlock>
+                            }
+                        </Col>
+                        <Col className='checked-lock-icon' sm={1}>
+                            <Lock check />
+                        </Col>
                     </FormGroup>
                     <Button
                         block
@@ -220,7 +249,7 @@ export class BrokerageCredentialsEditor extends Component {
                             </Button>
                         ) : null
                     }
-                </form>
+                </Form>
             </div>
         );
     }

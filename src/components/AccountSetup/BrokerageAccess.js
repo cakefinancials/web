@@ -84,6 +84,7 @@ export default class BrokerageAccess extends Component {
                             </div>
                             <SpeechBubble text={ ourCTOSaysSpeechBubbleText } />
                         </div>
+                        <br />
                         <BrokerageCredentialsEditor
                             brokerageCredentialsSaved={() => this.props.navigateToNext()}
                         />

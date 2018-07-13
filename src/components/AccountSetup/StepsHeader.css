@@ -11,8 +11,7 @@
 }
 
 .step-estimated-earnings {
-    /*background-image: url(../../public/walkthrough/estimated_earnings.png);*/
-    background-image: url(../../public/walkthrough/bank_details.png);
+    background-image: url(../../public/walkthrough/estimated_earnings.png);
 }
 
 .step-loan-paperwork {

@@ -45,12 +45,7 @@ export default class Dashboard extends Component {
     renderCurrentDashboardStep() {
         const walkthroughStep = userStateActions.getWalkthroughStep();
         if (walkthroughStep !== WALKTHROUGH.DONE) {
-            return (
-                <div>
-                    <h1>WALKTHROUGH!!!</h1>
-                    <Walkthrough />
-                </div>
-            );
+            return <Walkthrough />;
         };
 
         // default is main dash

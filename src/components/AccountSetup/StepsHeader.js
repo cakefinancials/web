@@ -8,8 +8,11 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import "./StepsHeader.css";
 import "./StepsTooltip.css";
+import Lock from "../helpers/Lock";
+
 import { userStateActions } from "../../libs/userState";
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
+
 
 const HOVER_TEXT = {
     ESTIMATED_EARNINGS: `
@@ -44,29 +47,6 @@ export const STEPS_CONFIG_DEFAULT = [
 const StepsIcon = ({ stepClassName, ...props }) => {
     return (
         <div {...props} className={`steps-header-icon ${stepClassName}`}></div>
-    );
-};
-
-const Lock = ({check, ...props}) => {
-    const LockCheckStyle = {
-        color: '#1DBA1D',
-        opacity: '1',
-        marginLeft: '1px',
-        marginTop: '-3px',
-        fontSize: '22px',
-    }
-
-    const LockStyle = {
-        fontSize: '22px',
-        opacity: '1',
-        color: '#7F7F7F'
-    };
-
-    return (
-        <span {...props} className="fa-layers fa-fw lock-container" >
-            <i className="fas fa-lock" style={LockStyle}></i>
-            { check ? <i className="fas fa-check" style={LockCheckStyle}></i> : null }
-        </span>
     );
 };
 

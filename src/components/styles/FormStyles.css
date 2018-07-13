@@ -1,0 +1,12 @@
+input.cake-form-input {
+    background: #f5f5f5;
+}
+
+label.cake-form-label {
+    font-weight: 550;
+}
+
+.checked-lock-icon .lock-container {
+    margin-left: -16px;
+    margin-top: 7px;
+}
