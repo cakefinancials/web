@@ -1,7 +1,39 @@
 .App {
-  margin-top: 15px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+nav.navbar {
+  border-radius: 0px;
+  border: 0px;
 }
 
 .App .navbar-brand {
   font-weight: bold;
+  margin-left: -30px;
+}
+
+.App .navbar-header {
+  margin-left: 50%;
+}
+
+.app-logo {
+    background-image: url(./public/app/navbar-logo.png);
+    background-size: cover;
+    height: 35px;
+    width: 55px;
+    margin-top: 7px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.App .navbar-default .navbar-nav>li>a {
+    color: white;
+}
+
+.App .navbar-default .navbar-nav>.active>a {
+    background-color: #6c23ab;
 }
