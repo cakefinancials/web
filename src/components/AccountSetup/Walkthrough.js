@@ -76,17 +76,13 @@ export default class Walkthrough extends Component {
         const completedSteps = filterIndexed((step, idx) => idx < currentStepIdx, walkthroughSteps);
 
         return (
-            <Grid>
-                <Row>
-                    <Col xs={8} xsOffset={2}>
-                        <StepsHeader
-                            highlightedSteps={ [ currentWalkthroughStep ] }
-                            completedSteps={ completedSteps }
-                            stepsVersion={ STEPS_HEADER_VERSIONS.DEFAULT }
-                        />
-                    </Col>
-                </Row>
-            </Grid>
+            <Col xs={8} xsOffset={2}>
+                <StepsHeader
+                    highlightedSteps={ [ currentWalkthroughStep ] }
+                    completedSteps={ completedSteps }
+                    stepsVersion={ STEPS_HEADER_VERSIONS.DEFAULT }
+                />
+            </Col>
         );
     }
 
@@ -94,10 +90,12 @@ export default class Walkthrough extends Component {
         const currentWalkthroughStep = userStateActions.getWalkthroughStep();
 
         return (
-            <div>
-                { this.renderStepsHeader(currentWalkthroughStep) }
-                { this.renderCurrentStep(currentWalkthroughStep) }
-            </div>
+            <Grid>
+                <Row>
+                    { this.renderStepsHeader(currentWalkthroughStep) }
+                    { this.renderCurrentStep(currentWalkthroughStep) }
+                </Row>
+            </Grid>
         );
     }
 

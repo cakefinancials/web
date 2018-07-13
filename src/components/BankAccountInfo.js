@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from "react";
 import {
     Button,
+    Col,
     ControlLabel,
+    Form,
     FormControl,
     FormGroup,
     HelpBlock,
@@ -9,7 +11,10 @@ import {
 import "./BankAccountInfo.css";
 import { API } from "aws-amplify";
 import LoadingSpinner from "./LoadingSpinner";
+import Lock from "./helpers/Lock";
+import CakeButton from "./helpers/CakeButton";
 
+import "./helpers/FormStyles.css";
 export default class BankAccountInfo extends Component {
     constructor(props) {
         super(props);
@@ -163,59 +168,77 @@ export class BankAccountInfoEditor extends Component {
         const { routingNumberValidation, accountNumberValidation } = this.validateBankInfoForm();
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
+                <Form horizontal onSubmit={this.handleSubmit}>
                     <FormGroup
                         controlId="routingNumber"
                         validationState={routingNumberValidation ? null : "error"}
                     >
-                        <ControlLabel>Routing Number</ControlLabel>
-                        <FormControl
-                            onChange={this.handleChange}
-                            value={this.state.routingNumber}
-                        />
-                        {
-                            routingNumberValidation ? null :
-                                <HelpBlock>Routing numbers must be 9 digits long</HelpBlock>
-                        }
+                        <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
+                            Routing Number
+                        </Col>
+                        <Col xs={8}>
+                            <FormControl
+                                className={'cake-form-input'}
+                                onChange={this.handleChange}
+                                value={this.state.routingNumber}
+                            />
+                            {
+                                routingNumberValidation ? null :
+                                    <HelpBlock>Routing numbers must be 9 digits long</HelpBlock>
+                            }
+                        </Col>
+                        <Col className='checked-lock-icon' xs={1}>
+                            <Lock check />
+                        </Col>
                     </FormGroup>
                     <FormGroup
                         controlId="accountNumber"
                         validationState={accountNumberValidation ? null : "error"}
                     >
-                        <ControlLabel>Account Number</ControlLabel>
-                        <FormControl
-                            onChange={this.handleChange}
-                            value={this.state.accountNumber}
-                        />
-                        {
-                            accountNumberValidation ? null :
-                                <HelpBlock>Account numbers are between 4 and 18 digits long</HelpBlock>
-                        }
+                        <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
+                            Account Number
+                        </Col>
+                        <Col xs={8}>
+                            <FormControl
+                                className={'cake-form-input'}
+                                onChange={this.handleChange}
+                                value={this.state.accountNumber}
+                            />
+                            {
+                                accountNumberValidation ? null :
+                                    <HelpBlock>Account numbers are between 4 and 18 digits long</HelpBlock>
+                            }
+                        </Col>
+                        <Col className='checked-lock-icon' xs={1}>
+                            <Lock check />
+                        </Col>
                     </FormGroup>
-                    <Button
-                        block
-                        bsStyle="primary"
-                        bsSize="large"
-                        disabled={!(routingNumberValidation && accountNumberValidation)}
-                        type="submit"
-                    >
-                        Save
-                    </Button>
-                    {
-                        this.props.showCancel ? (
-                            <Button
-                                block
-                                bsStyle="warning"
-                                bsSize="large"
-                                onClick={e => {
-                                    this.props.onCancelClicked();
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                        ) : null
-                    }
-                </form>
+                    <br />
+                    <Col xs={6} xsOffset={3}>
+                        <CakeButton
+                            block
+                            bsSize="large"
+                            disabled={!(routingNumberValidation && accountNumberValidation)}
+                            type="submit"
+                        >
+                            { this.props.saveButtonText || 'Save' }
+                        </CakeButton>
+                        {
+                            this.props.showCancel ? (
+                                <Button
+                                    block
+                                    bsStyle="warning"
+                                    bsSize="large"
+                                    onClick={e => {
+                                        this.props.onCancelClicked();
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                            ) : null
+                        }
+                    </Col>
+                </Form>
             </div>
         );
     }
