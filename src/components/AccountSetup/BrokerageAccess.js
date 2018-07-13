@@ -3,6 +3,7 @@ import { Grid, Row, Col, Glyphicon, OverlayTrigger, Tooltip } from "react-bootst
 import * as typeformEmbed from '@typeform/embed';
 
 import { BrokerageCredentialsEditor } from "../BrokerageCredentials";
+import { SpeechBubble } from "./helpers/SpeechBubble";
 
 import "./BrokerageAccess.css";
 import "./StepsTooltip.css";
@@ -13,7 +14,7 @@ those costs. Max contribution is how you (and Cake) can make the most money.`;
 
 const ourCTOSaysSpeechBubbleText = `Your credentials will be encrypted and stored on an Amazon server. Only 1 person,
 your Cake Analyst, will have the encryption key, which is stored indepedently of your credentials. They will only
-access your account to do the 2 things outlined above`;
+access your account to do the 2 things outlined above.`;
 
 export default class BrokerageAccess extends Component {
     constructor(props) { super(props); }
@@ -81,11 +82,7 @@ export default class BrokerageAccess extends Component {
                                     Our CTO, <br /> Samuel says:
                                 </i></small>
                             </div>
-                            <div>
-                                <Tooltip id="brokerage-access-cto-says-tooltip" className="steps-tooltip in">
-                                    <big>{ ourCTOSaysSpeechBubbleText }</big>
-                                </Tooltip>
-                            </div>
+                            <SpeechBubble text={ ourCTOSaysSpeechBubbleText } />
                         </div>
                         <BrokerageCredentialsEditor
                             brokerageCredentialsSaved={() => this.props.navigateToNext()}

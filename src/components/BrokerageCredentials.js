@@ -159,14 +159,14 @@ export class BrokerageCredentialsEditor extends Component {
                         controlId="brokerage"
                         validationState={brokerageValidation ? null : "error"}
                     >
-                        <ControlLabel>Brokerage</ControlLabel>
+                        <ControlLabel>Brokerage Website</ControlLabel>
                         <FormControl
                             onChange={this.handleChange}
                             value={this.state.brokerage}
                         />
                         {
                             brokerageValidation ? null :
-                                <HelpBlock>The name of your brokerage cannot be blank</HelpBlock>
+                                <HelpBlock>Your brokerage website cannot be blank</HelpBlock>
                         }
                     </FormGroup>
                     <FormGroup
