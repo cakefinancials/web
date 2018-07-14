@@ -1,7 +1,7 @@
 import 'rc-steps/assets/index.css';
 import 'rc-steps/assets/iconfont.css';
 
-import React, { Component, Fragment } from "react";
+import React from "react";
 
 const Lock = ({check, ...props}) => {
     const LockCheckStyle = {

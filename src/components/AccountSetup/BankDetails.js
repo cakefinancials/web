@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Button } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 
 import { BankAccountInfoEditor } from "../BankAccountInfo";
 import { SpeechBubble } from "./helpers/SpeechBubble";
@@ -10,8 +10,6 @@ const ourCTOSaysSpeechBubbleText = `The credentials below will NOT allow us to a
 will only allow us to send money to your specified bank account. That is a great thing, right?!`;
 
 export default class BankDetails extends Component {
-    constructor(props) { super(props); }
-
     componentDidMount() { }
 
     render() {
@@ -29,7 +27,7 @@ export default class BankDetails extends Component {
                         Our analyst will also take into account all tax considerations
                         when performing the calculations.
                         <br />
-                        <a target="_blank" href="//google.com">Read More About Taxes Here</a>
+                        <a rel="noopener noreferrer" target="_blank" href="//google.com">Read More About Taxes Here</a>
                     </p>
                 </div>
                 <br />

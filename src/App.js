@@ -1,6 +1,6 @@
 import { Auth } from "aws-amplify";
 import React, { Component, Fragment } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import "./App.css";
@@ -86,6 +86,15 @@ class App extends Component {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
         };
+
+        // is this naughty? probably!
+        const { location: { pathname: currentPath } } = this.props;
+        if (currentPath === '/login' || currentPath === '/signup') {
+            document.body.classList.add('login-signup-background');
+        } else {
+            document.body.classList.remove('login-signup-background');
+        }
+
 
         return (
             !this.state.isAuthenticating &&

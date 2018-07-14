@@ -5,6 +5,7 @@ import queryString from "query-string";
 
 import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
+import "./LoginSignupBackground.css";
 import { Auth } from "aws-amplify";
 import { setCurrentUserSession } from "../libs/userState";
 

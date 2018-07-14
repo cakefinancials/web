@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
 import * as R from "ramda";
 
 import { userStateActions, updateUserState } from "../../libs/userState";

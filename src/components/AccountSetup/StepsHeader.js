@@ -1,7 +1,6 @@
 import 'rc-steps/assets/index.css';
 import 'rc-steps/assets/iconfont.css';
 import React, { Component, Fragment } from "react";
-import ReactDOM from 'react-dom';
 import Steps, { Step } from 'rc-steps';
 import * as R from "ramda";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";

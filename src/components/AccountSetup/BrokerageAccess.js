@@ -16,8 +16,6 @@ your Cake Analyst, will have the encryption key, which is stored indepedently of
 access your account to do the 2 things outlined above.`;
 
 export default class BrokerageAccess extends Component {
-    constructor(props) { super(props); }
-
     componentDidMount() { }
 
     render() {

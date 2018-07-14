@@ -30,6 +30,10 @@ nav.navbar {
     align-items: center;
 }
 
+.App .navbar-default .navbar-text {
+    color: white;
+}
+
 .App .navbar-default .navbar-nav>li>a {
     color: white;
 }
