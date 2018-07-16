@@ -1,11 +1,12 @@
 import { API } from "aws-amplify";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import queryString from "query-string";
 
 import LoaderButton from "../components/LoaderButton";
 import "./Login.css";
-import "./LoginSignupBackground.css";
+import "./LoginSignupStyles.css";
 import { Auth } from "aws-amplify";
 import { setCurrentUserSession } from "../libs/userState";
 
@@ -53,23 +54,28 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div className="Login">
+            <div className="Login center-text">
+                <div className="cake-logo-container"></div>
+                <h1>Cake Financials</h1>
+                <br />
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="email" bsSize="large">
-                        <ControlLabel>Email</ControlLabel>
                         <FormControl
                             autoFocus={this.state.email.length === 0}
+                            className={'login-signup-input'}
                             type="email"
                             value={this.state.email}
                             onChange={this.handleChange}
+                            placeholder={'Email'}
                         />
                     </FormGroup>
                     <FormGroup controlId="password" bsSize="large">
-                        <ControlLabel>Password</ControlLabel>
                         <FormControl
                             autoFocus={this.state.email.length > 0}
+                            className={'login-signup-input'}
                             value={this.state.password}
                             onChange={this.handleChange}
+                            placeholder={'Password'}
                             type="password"
                         />
                     </FormGroup>
@@ -83,6 +89,7 @@ export default class Login extends Component {
                         loadingText="Logging in…"
                     />
                 </form>
+                <small>Don't have an account? Create one <Link to="/signup">here</Link></small>
             </div>
         );
     }

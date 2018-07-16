@@ -8,7 +8,7 @@ nav.navbar {
   border: 0px;
 }
 
-.App .navbar-brand {
+.App .app-logo.navbar-brand {
   font-weight: bold;
   margin-left: -30px;
 }

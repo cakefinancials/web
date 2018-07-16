@@ -1,0 +1,29 @@
+body.login-signup-background {
+    background-image: url(../public/app/background_path.png);
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 70%;
+}
+
+html {
+    height: 100%;
+}
+
+div.center-text {
+    text-align: center;
+}
+
+div.cake-logo-container {
+    background-image: url(../public/app/logo.png);
+    background-size: cover;
+    width: 147px;
+    height: 169px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+input.form-control.login-signup-input {
+    background-color: #f7ebfe;
+    border-radius: 30px;
+    height: 55px;
+}

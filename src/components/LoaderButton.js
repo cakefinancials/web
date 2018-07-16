@@ -1,6 +1,8 @@
 import React from "react";
-import { Button, Glyphicon } from "react-bootstrap";
+import { Glyphicon } from "react-bootstrap";
 import "./LoaderButton.css";
+
+import CakeButton from "./helpers/CakeButton";
 
 export default ({
   isLoading,
@@ -10,11 +12,11 @@ export default ({
     disabled = false,
     ...props
 }) =>
-    <Button
+    <CakeButton
         className={`LoaderButton ${className}`}
         disabled={disabled || isLoading}
         {...props}
     >
         {isLoading && <Glyphicon glyph="refresh" className="spinning" />}
         {!isLoading ? text : loadingText}
-    </Button>;
+    </CakeButton>;

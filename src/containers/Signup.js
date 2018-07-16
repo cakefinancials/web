@@ -9,6 +9,7 @@ import queryString from "query-string";
 
 import LoaderButton from "../components/LoaderButton";
 import "./Signup.css";
+import "./LoginSignupStyles.css";
 
 export default class Signup extends Component {
     constructor(props) {
