@@ -14,9 +14,11 @@ const CakeButton = (props) => {
     modifiedProps.className = (modifiedProps.className || '') + ' cake-form-button';
 
     return (
-        <Button { ...modifiedProps }>
-            { modifiedProps.children }
-        </Button>
+        <div className='cake-button-parent'>
+            <Button { ...modifiedProps }>
+                { modifiedProps.children }
+            </Button>
+        </div>
     );
 };
 

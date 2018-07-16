@@ -1,7 +1,7 @@
 import { API } from "aws-amplify";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { FormGroup, FormControl } from "react-bootstrap";
 import queryString from "query-string";
 
 import LoaderButton from "../components/LoaderButton";
@@ -79,6 +79,7 @@ export default class Login extends Component {
                             type="password"
                         />
                     </FormGroup>
+                    <div>
                     <LoaderButton
                         block
                         bsSize="large"
@@ -87,7 +88,7 @@ export default class Login extends Component {
                         isLoading={this.state.isLoading}
                         text="Login"
                         loadingText="Logging in…"
-                    />
+                    /></div>
                 </form>
                 <small>Don't have an account? Create one <Link to="/signup">here</Link></small>
             </div>

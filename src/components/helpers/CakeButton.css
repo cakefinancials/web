@@ -4,3 +4,8 @@ button.cake-form-button {
     color: white;
     line-height: 1.5;
 }
+
+div.cake-button-parent {
+    border-radius: 30px;
+    background-color: white;
+}

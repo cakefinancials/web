@@ -1,9 +1,9 @@
 import { Auth } from "aws-amplify";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
     FormGroup,
     FormControl,
-    ControlLabel
 } from "react-bootstrap";
 import queryString from "query-string";
 
@@ -61,28 +61,31 @@ export default class Signup extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <FormGroup controlId="email" bsSize="large">
-                    <ControlLabel>Email</ControlLabel>
                     <FormControl
                         autoFocus
+                        className={'login-signup-input'}
+                        onChange={this.handleChange}
+                        placeholder={'Email'}
                         type="email"
                         value={this.state.email}
-                        onChange={this.handleChange}
                     />
                 </FormGroup>
                 <FormGroup controlId="password" bsSize="large">
-                    <ControlLabel>Password</ControlLabel>
                     <FormControl
-                        value={this.state.password}
+                        className={'login-signup-input'}
                         onChange={this.handleChange}
+                        placeholder={'Password'}
                         type="password"
+                        value={this.state.password}
                     />
                 </FormGroup>
                 <FormGroup controlId="confirmPassword" bsSize="large">
-                    <ControlLabel>Confirm Password</ControlLabel>
                     <FormControl
-                        value={this.state.confirmPassword}
+                        className={'login-signup-input'}
                         onChange={this.handleChange}
+                        placeholder={'Confirm Password'}
                         type="password"
+                        value={this.state.confirmPassword}
                     />
                 </FormGroup>
                 <LoaderButton
@@ -100,8 +103,24 @@ export default class Signup extends Component {
 
     render() {
         return (
-            <div className="Signup">
+            <div className="Signup center-text">
+                <div className="cake-logo-container"></div>
+                <h1>Create Account</h1>
+                <p><small>Welcome to Cake! Please sign up below to begin making money with cake</small></p>
+                <br />
                 {this.renderForm()}
+                <small>Already have an account? Login <Link to="/login">here</Link></small>
+                <br />
+                <br />
+                <br />
+                <br />
+                <p className="ts-and-cs-pp">
+                    <small>
+                        <a rel="noopener noreferrer" target="_blank" href="//google.com">Terms and Conditions</a>
+                        |
+                        <a rel="noopener noreferrer" target="_blank" href="//google.com">Privacy Policy</a>
+                    </small>
+                </p>
             </div>
         );
     }
