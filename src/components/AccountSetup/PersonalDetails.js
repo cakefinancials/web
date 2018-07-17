@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import * as typeformEmbed from '@typeform/embed';
 import queryString from "query-string";
 
+import CakeButton from "../helpers/CakeButton";
 import "./PersonalDetails.css";
 import { getCurrentUserSession } from "../../libs/userState";
 
@@ -40,23 +41,27 @@ export default class PersonalDetails extends Component {
     render() {
         return (
             <div className="personaldetails">
-                I WANT SOME DEETS - YADA YADA YADA
-                <div className="react-typeform-embed" ref={tf => { this.typeformElm = tf; }} />
-                <Button
-                    block
-                    bsStyle="warning"
-                    bsSize="large"
-                    disabled={this.state.submittedTypeform === false}
-                    onClick={e => {
-                        this.props.navigateToNext();
-                    }}
-                >
-                    {
-                        this.state.submittedTypeform === false ?
-                            'Complete the survey above to proceed' :
-                            'Next Step: Brokerage Access'
-                    }
-                </Button>
+                <Row>
+                    <div className="react-typeform-embed" ref={tf => { this.typeformElm = tf; }} />
+                </Row>
+                <br />
+                <Row>
+                    <Col xs={4} xsOffset={4}>
+                        <CakeButton
+                            bsSize="large"
+                            disabled={this.state.submittedTypeform === false}
+                            onClick={e => {
+                                this.props.navigateToNext();
+                            }}
+                        >
+                            {
+                                this.state.submittedTypeform === false ?
+                                    'Complete the survey above to proceed' :
+                                    'Next Step: Brokerage Access'
+                            }
+                        </CakeButton>
+                    </Col>
+                </Row>
             </div>
         );
     }

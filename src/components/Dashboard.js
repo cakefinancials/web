@@ -58,21 +58,13 @@ export default class Dashboard extends Component {
         )
     }
 
-    renderDashboard() {
-        return (
-            <div className="dashboard">
-                { this.renderCurrentDashboardStep() }
-            </div>
-        );
-    }
-
     getRenderBody() {
         if (this.state.isLoadingUserState) {
             return this.renderInitialLoading();
         } else if (this.state.syncing) {
             return this.renderSyncing();
         } else {
-            return this.renderDashboard();
+            return this.renderCurrentDashboardStep();
         }
     }
 

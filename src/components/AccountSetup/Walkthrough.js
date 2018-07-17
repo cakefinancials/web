@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Row, Col } from "react-bootstrap";
 import * as R from "ramda";
 
@@ -88,10 +88,16 @@ export default class Walkthrough extends Component {
         const currentWalkthroughStep = userStateActions.getWalkthroughStep();
 
         return (
-            <Row>
-                { this.renderStepsHeader(currentWalkthroughStep) }
-                { this.renderCurrentStep(currentWalkthroughStep) }
-            </Row>
+            <Fragment>
+                <Row>
+                    { this.renderStepsHeader(currentWalkthroughStep) }
+                </Row>
+                <br />
+                <br />
+                <Row>
+                    { this.renderCurrentStep(currentWalkthroughStep) }
+                </Row>
+            </Fragment>
         );
     }
 

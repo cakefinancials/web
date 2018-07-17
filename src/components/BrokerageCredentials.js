@@ -216,6 +216,7 @@ export class BrokerageCredentialsEditor extends Component {
                             <FormControl
                                 className={'cake-form-input'}
                                 onChange={this.handleChange}
+                                type="password"
                                 value={this.state.password}
                             />
                             {
