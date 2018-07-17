@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, PageHeader } from "react-bootstrap";
+import { PageHeader } from "react-bootstrap";
 
 import BankAccountInfo from "./BankAccountInfo";
 import BrokerageCredentials from "./BrokerageCredentials";
@@ -60,9 +60,9 @@ export default class Dashboard extends Component {
 
     renderDashboard() {
         return (
-            <Grid className="dashboard">
+            <div className="dashboard">
                 { this.renderCurrentDashboardStep() }
-            </Grid>
+            </div>
         );
     }
 

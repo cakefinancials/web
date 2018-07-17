@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import * as R from "ramda";
 
 import { userStateActions, updateUserState } from "../../libs/userState";
@@ -18,7 +18,6 @@ const WALKTHROUGH_ORDER = [
     WALKTHROUGH.BROKERAGE_ACCESS,
     WALKTHROUGH.BANK_DETAILS,
     WALKTHROUGH.ESTIMATED_EARNINGS,
-    WALKTHROUGH.LOAN_PAPERWORK,
     WALKTHROUGH.DONE
 ];
 
@@ -44,7 +43,6 @@ const WALKTHROUGH_PAGE_TO_COMPONENT = {
     [WALKTHROUGH.BROKERAGE_ACCESS]: BrokerageAccess,
     [WALKTHROUGH.BANK_DETAILS]: BankDetails,
     [WALKTHROUGH.ESTIMATED_EARNINGS]: function Screen5(props) { return <h1>Screen 5 folksl!!!</h1>; },
-    [WALKTHROUGH.LOAN_PAPERWORK]: function Screen6(props) { return <h1>Screen 6 folksl!!!</h1>; },
 };
 
 export default class Walkthrough extends Component {
@@ -90,12 +88,10 @@ export default class Walkthrough extends Component {
         const currentWalkthroughStep = userStateActions.getWalkthroughStep();
 
         return (
-            <Grid>
-                <Row>
-                    { this.renderStepsHeader(currentWalkthroughStep) }
-                    { this.renderCurrentStep(currentWalkthroughStep) }
-                </Row>
-            </Grid>
+            <Row>
+                { this.renderStepsHeader(currentWalkthroughStep) }
+                { this.renderCurrentStep(currentWalkthroughStep) }
+            </Row>
         );
     }
 

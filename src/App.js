@@ -51,34 +51,36 @@ class App extends Component {
 
     renderNavbar() {
         return (
-            <Navbar fluid collapseOnSelect style={{backgroundColor: '#8f2cfa'}}>
-                <Navbar.Header>
-                    <Navbar.Brand>
-                        <div className={'app-logo'}></div>
-                    </Navbar.Brand>
-                </Navbar.Header>
-                <Navbar.Collapse>
-                    <Nav pullRight>
-                        {this.state.isAuthenticated
-                            ? (
-                                <Fragment>
-                                    <Navbar.Text>{this.state.currentSession.idToken.payload.email}</Navbar.Text>
-                                    <NavItem onClick={this.handleLogout}>Logout</NavItem>
-                                </Fragment>
-                            ) : (
-                                <Fragment>
-                                    <LinkContainer to="/signup">
-                                        <NavItem>Signup</NavItem>
-                                    </LinkContainer>
-                                    <LinkContainer to="/login">
-                                        <NavItem>Login</NavItem>
-                                    </LinkContainer>
-                                </Fragment>
-                            )
-                        }
-                    </Nav>
-                </Navbar.Collapse>
-            </Navbar>
+            <div className="app-nav-container container-fluid">
+                <Navbar fluid collapseOnSelect style={{backgroundColor: '#8f2cfa'}}>
+                    <Navbar.Header>
+                        <Navbar.Brand>
+                            <div className={'app-logo'}></div>
+                        </Navbar.Brand>
+                    </Navbar.Header>
+                    <Navbar.Collapse>
+                        <Nav pullRight>
+                            {this.state.isAuthenticated
+                                ? (
+                                    <Fragment>
+                                        <Navbar.Text>{this.state.currentSession.idToken.payload.email}</Navbar.Text>
+                                        <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                                    </Fragment>
+                                ) : (
+                                    <Fragment>
+                                        <LinkContainer to="/signup">
+                                            <NavItem>Signup</NavItem>
+                                        </LinkContainer>
+                                        <LinkContainer to="/login">
+                                            <NavItem>Login</NavItem>
+                                        </LinkContainer>
+                                    </Fragment>
+                                )
+                            }
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+            </div>
         );
     }
 
@@ -98,9 +100,11 @@ class App extends Component {
 
         return (
             !this.state.isAuthenticating &&
-            <div className="App container-fluid">
+            <div>
                 { this.renderNavbar() }
-                <Routes childProps={childProps} />
+                <div className="App container">
+                    <Routes childProps={childProps} />
+                </div>
             </div>
         );
     }

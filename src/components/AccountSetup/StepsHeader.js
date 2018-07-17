@@ -18,10 +18,6 @@ const HOVER_TEXT = {
         Here is the fun part, after we ensure the accuracy of your data we will
         predict how much money you will make with Cake.
     `,
-    LOAN_PAPERWORK: `
-        We can't draft your specific loan paperwork until all of the previous steps are completed.
-        You can see an example cake loan agreement with generic details ***somewhere***
-    `,
     NONE: null
 }
 
@@ -32,7 +28,6 @@ const STEPS_CONFIG_WELCOME = [
     [ WALKTHROUGH.BROKERAGE_ACCESS, 'step-brokerage-access', 'Brokerage Access', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
     [ WALKTHROUGH.BANK_DETAILS, 'step-bank-details', 'Bank Details', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
     [ WALKTHROUGH.ESTIMATED_EARNINGS, 'step-estimated-earnings', 'Estimated Earnings', HOVER_TEXT.ESTIMATED_EARNINGS, STEP_ICON.NUMBER ],
-    [ WALKTHROUGH.LOAN_PAPERWORK, 'step-loan-paperwork', 'Loan Paperwork', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
 ];
 
 export const STEPS_CONFIG_DEFAULT = [
@@ -40,7 +35,6 @@ export const STEPS_CONFIG_DEFAULT = [
     [ WALKTHROUGH.BROKERAGE_ACCESS, 'step-brokerage-access', 'Brokerage Access', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
     [ WALKTHROUGH.BANK_DETAILS, 'step-bank-details', 'Bank Details', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
     [ WALKTHROUGH.ESTIMATED_EARNINGS, 'step-estimated-earnings', 'Estimated Earnings', HOVER_TEXT.NONE, STEP_ICON.NUMBER ],
-    [ WALKTHROUGH.LOAN_PAPERWORK, 'step-loan-paperwork', 'Loan Paperwork', HOVER_TEXT.LOAN_PAPERWORK, STEP_ICON.LOCK ],
 ];
 
 const StepsIcon = ({ stepClassName, ...props }) => {

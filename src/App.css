@@ -1,4 +1,4 @@
-.App {
+.app-nav-container {
     padding-left: 0px;
     padding-right: 0px;
 }
@@ -8,12 +8,12 @@ nav.navbar {
   border: 0px;
 }
 
-.App .app-logo.navbar-brand {
+.app-nav-container .app-logo.navbar-brand {
   font-weight: bold;
   margin-left: -30px;
 }
 
-.App .navbar-header {
+.app-nav-container .navbar-header {
   margin-left: 50%;
 }
 
@@ -30,14 +30,14 @@ nav.navbar {
     align-items: center;
 }
 
-.App .navbar-default .navbar-text {
+.app-nav-container .navbar-default .navbar-text {
     color: white;
 }
 
-.App .navbar-default .navbar-nav>li>a {
+.app-nav-container .navbar-default .navbar-nav>li>a {
     color: white;
 }
 
-.App .navbar-default .navbar-nav>.active>a {
+.app-nav-container .navbar-default .navbar-nav>.active>a {
     background-color: #6c23ab;
 }

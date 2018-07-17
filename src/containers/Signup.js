@@ -11,6 +11,8 @@ import LoaderButton from "../components/LoaderButton";
 import "./Signup.css";
 import "./LoginSignupStyles.css";
 
+import termsAndConditions from '../public/app/terms_and_conditions.pdf';
+
 export default class Signup extends Component {
     constructor(props) {
         super(props);
@@ -116,9 +118,9 @@ export default class Signup extends Component {
                 <br />
                 <p className="ts-and-cs-pp">
                     <small>
-                        <a rel="noopener noreferrer" target="_blank" href="//google.com">Terms and Conditions</a>
+                        <a href={termsAndConditions} target="_blank">Terms and Conditions</a>
                         |
-                        <a rel="noopener noreferrer" target="_blank" href="//google.com">Privacy Policy</a>
+                        <a href={termsAndConditions} target="_blank">Privacy Policy</a>
                     </small>
                 </p>
             </div>

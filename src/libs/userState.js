@@ -69,7 +69,6 @@ export const userStateActions = (() => {
             BROKERAGE_ACCESS: 'BROKERAGE_ACCESS',
             BANK_DETAILS: 'BANK_DETAILS',
             ESTIMATED_EARNINGS: 'ESTIMATED_EARNINGS',
-            LOAN_PAPERWORK: 'LOAN_PAPERWORK',
             DONE: 'DONE'
         }
     };
