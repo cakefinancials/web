@@ -8,6 +8,7 @@ import Welcome from "./Welcome";
 import PersonalDetails from "./PersonalDetails";
 import BrokerageAccess from "./BrokerageAccess";
 import BankDetails from "./BankDetails";
+import EstimatedEarnings from "./EstimatedEarnings";
 import StepsHeader, { STEPS_CONFIG_DEFAULT, STEPS_HEADER_VERSIONS } from "./StepsHeader";
 
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
@@ -42,7 +43,7 @@ const WALKTHROUGH_PAGE_TO_COMPONENT = {
     [WALKTHROUGH.PERSONAL_DETAILS]: PersonalDetails,
     [WALKTHROUGH.BROKERAGE_ACCESS]: BrokerageAccess,
     [WALKTHROUGH.BANK_DETAILS]: BankDetails,
-    [WALKTHROUGH.ESTIMATED_EARNINGS]: function Screen5(props) { return <h1>Screen 5 folksl!!!</h1>; },
+    [WALKTHROUGH.ESTIMATED_EARNINGS]: EstimatedEarnings,
 };
 
 export default class Walkthrough extends Component {
