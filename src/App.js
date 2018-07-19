@@ -91,7 +91,7 @@ class App extends Component {
 
         // is this naughty? probably!
         const { location: { pathname: currentPath } } = this.props;
-        if (currentPath === '/login' || currentPath === '/signup') {
+        if (currentPath === '/login' || currentPath === '/signup' || currentPath === '/verify') {
             document.body.classList.add('login-signup-background');
         } else {
             document.body.classList.remove('login-signup-background');

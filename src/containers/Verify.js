@@ -4,11 +4,11 @@ import {
     HelpBlock,
     FormGroup,
     FormControl,
-    ControlLabel
 } from "react-bootstrap";
 import queryString from "query-string";
 
 import LoaderButton from "../components/LoaderButton";
+import "./LoginSignupStyles.css";
 import "./Verify.css";
 
 export default class Verify extends Component {
@@ -53,37 +53,43 @@ export default class Verify extends Component {
 
     renderConfirmationForm() {
         return (
-            <form onSubmit={this.handleConfirmationSubmit}>
-                <FormGroup controlId="email" bsSize="large">
-                    <ControlLabel>Email</ControlLabel>
-                    <FormControl
-                        autoFocus={this.state.email.length === 0}
-                        type="email"
-                        value={this.state.email}
-                        onChange={this.handleChange}
+            <div className="Login center-text">
+                <div className="cake-logo-container"></div>
+                <h1>Verify Account</h1>
+                <form onSubmit={this.handleConfirmationSubmit}>
+                    <FormGroup controlId="email" bsSize="large">
+                        <FormControl
+                            autoFocus={this.state.email.length === 0}
+                            className={'login-signup-input'}
+                            type="email"
+                            value={this.state.email}
+                            onChange={this.handleChange}
+                            placeholder={'Email'}
+                        />
+                        <HelpBlock>Enter the email you used when signing up.</HelpBlock>
+                    </FormGroup>
+                    <FormGroup controlId="confirmationCode" bsSize="large">
+                        <FormControl
+                            autoFocus={this.state.email.length > 0}
+                            className={'login-signup-input'}
+                            type="tel"
+                            value={this.state.confirmationCode}
+                            onChange={this.handleChange}
+                            placeholder={'Confirmation Code'}
+                        />
+                        <HelpBlock>Please check your email for the code.</HelpBlock>
+                    </FormGroup>
+                    <LoaderButton
+                        block
+                        bsSize="large"
+                        disabled={!this.validateConfirmationForm()}
+                        type="submit"
+                        isLoading={this.state.isLoading}
+                        text="Verify"
+                        loadingText="Verifying…"
                     />
-                    <HelpBlock>Enter the email you used when signing up.</HelpBlock>
-                </FormGroup>
-                <FormGroup controlId="confirmationCode" bsSize="large">
-                    <ControlLabel>Confirmation Code</ControlLabel>
-                    <FormControl
-                        autoFocus={this.state.email.length > 0}
-                        type="tel"
-                        value={this.state.confirmationCode}
-                        onChange={this.handleChange}
-                    />
-                    <HelpBlock>Please check your email for the code.</HelpBlock>
-                </FormGroup>
-                <LoaderButton
-                    block
-                    bsSize="large"
-                    disabled={!this.validateConfirmationForm()}
-                    type="submit"
-                    isLoading={this.state.isLoading}
-                    text="Verify"
-                    loadingText="Verifying…"
-                />
-            </form>
+                </form>
+            </div>
         );
     }
 
