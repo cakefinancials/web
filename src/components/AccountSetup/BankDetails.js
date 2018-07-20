@@ -44,6 +44,7 @@ export default class BankDetails extends Component {
                 <br />
                 <BankAccountInfoEditor
                     bankAccountInfoSaved={() => this.props.navigateToNext()}
+                    saveButtonText='Save & Continue'
                 />
             </Col>
         );

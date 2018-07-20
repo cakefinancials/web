@@ -19,7 +19,7 @@ export default class EstimatedEarnings extends Component {
                     <p>
                         Here is an example analysis done for a hypothetical Intuit employee:
                     </p>
-                    <img src={cakeEstimatedEarningsExampleSrc} />
+                    <img alt="" src={cakeEstimatedEarningsExampleSrc} />
                 </Row>
                 <br />
                 <Row>

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 
 import CakeButton from "../helpers/CakeButton";
 import StepsHeader, { STEPS_HEADER_VERSIONS } from "./StepsHeader";
