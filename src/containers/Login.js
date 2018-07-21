@@ -1,7 +1,7 @@
 import { API } from "aws-amplify";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { FormGroup, FormControl } from "react-bootstrap";
+import { HelpBlock, FormGroup, FormControl } from "react-bootstrap";
 import queryString from "query-string";
 
 import LoaderButton from "../components/LoaderButton";
@@ -18,7 +18,8 @@ export default class Login extends Component {
         this.state = {
             isLoading: false,
             email: parsedSearch.email || "",
-            password: ""
+            password: "",
+            errorMessage: undefined
         };
     }
 
@@ -47,8 +48,7 @@ export default class Login extends Component {
 
             setCurrentUserSession(currentSession);
         } catch (e) {
-            this.setState({ isLoading: false });
-            alert(e.message);
+            this.setState({ isLoading: false, errorMessage: e.message });
         }
     }
 
@@ -58,6 +58,12 @@ export default class Login extends Component {
                 <div className="cake-logo-container"></div>
                 <h1>Cake Financials</h1>
                 <br />
+                {
+                    !!this.state.errorMessage ?
+                    <div className='has-error'>
+                        <HelpBlock>{this.state.errorMessage}</HelpBlock>
+                    </div> : null
+                }
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="email" bsSize="large">
                         <FormControl
