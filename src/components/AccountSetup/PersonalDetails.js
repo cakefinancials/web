@@ -56,8 +56,8 @@ export default class PersonalDetails extends Component {
                         >
                             {
                                 this.state.submittedTypeform === false ?
-                                    'Complete survey to proceed' :
-                                    'Next Step: Brokerage Access'
+                                    'COMPLETE SURVEY TO PROCEED' :
+                                    'NEXT STEP: BROKERAGE ACCESS'
                             }
                         </CakeButton>
                     </Col>

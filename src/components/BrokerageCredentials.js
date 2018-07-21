@@ -248,7 +248,7 @@ export class BrokerageCredentialsEditor extends Component {
                                         this.props.onCancelClicked();
                                     }}
                                 >
-                                    Cancel
+                                    CANCEL
                                 </Button>
                             ) : null
                         }

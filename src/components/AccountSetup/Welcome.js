@@ -46,7 +46,7 @@ export default class Welcome extends Component {
                                 this.props.navigateToNext();
                             }}
                         >
-                            Get Started
+                            GET STARTED
                         </CakeButton>
                     </Col>
                 </Row>

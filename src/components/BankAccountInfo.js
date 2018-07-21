@@ -233,7 +233,7 @@ export class BankAccountInfoEditor extends Component {
                                         this.props.onCancelClicked();
                                     }}
                                 >
-                                    Cancel
+                                    CANCEL
                                 </Button>
                             ) : null
                         }

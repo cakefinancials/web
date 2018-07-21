@@ -30,7 +30,7 @@ export default class EstimatedEarnings extends Component {
                                 this.props.navigateToNext();
                             }}
                         >
-                            Go to dashboard
+                            GO TO DASHBOARD
                         </CakeButton>
                     </Col>
                 </Row>

@@ -86,7 +86,7 @@ export default class Verify extends Component {
                         type="submit"
                         isLoading={this.state.isLoading}
                         text="Verify"
-                        loadingText="Verifying…"
+                        loadingText="VERIFYING…"
                     />
                 </form>
             </div>

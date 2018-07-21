@@ -98,7 +98,7 @@ export default class Signup extends Component {
                     type="submit"
                     isLoading={this.state.isLoading}
                     text="Signup"
-                    loadingText="Signing up…"
+                    loadingText="SIGNING UP…"
                 />
             </form>
         );
