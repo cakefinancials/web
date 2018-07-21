@@ -1,16 +1,12 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import "./Home.css";
 
 import Dashboard from "../components/Dashboard";
 
 export default class Home extends Component {
     renderLander() {
-        return (
-            <div className="lander">
-                <h1>Cake</h1>
-                <p>A simple $$$ making app. Login or signup to view your dashboard.</p>
-            </div>
-        );
+        return <Redirect to="/login" />;
     }
 
     renderAuthedHome() {

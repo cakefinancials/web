@@ -1,3 +1,8 @@
+const URL_STAGES = {
+    production: "https://g2cx8m6l2b.execute-api.us-east-2.amazonaws.com/prod",
+    development: "https://nx253m7fba.execute-api.us-east-2.amazonaws.com/dev",
+};
+
 export default {
     s3: {
         REGION: "us-east-2",
@@ -5,7 +10,7 @@ export default {
     },
     apiGateway: {
         REGION: "us-east-2",
-        URL: "https://g2cx8m6l2b.execute-api.us-east-2.amazonaws.com/prod"
+        URL: URL_STAGES[process.env.NODE_ENV]
     },
     cognito: {
         REGION: "us-east-2",
