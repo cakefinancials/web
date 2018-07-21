@@ -26,4 +26,5 @@ input.form-control.login-signup-input {
     background-color: #f7ebfe;
     border-radius: 30px;
     height: 55px;
+    border: 0px;
 }

@@ -1,5 +1,6 @@
 import { Auth } from "aws-amplify";
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import {
     HelpBlock,
     FormGroup,
@@ -85,7 +86,7 @@ export default class Verify extends Component {
                         disabled={!this.validateConfirmationForm()}
                         type="submit"
                         isLoading={this.state.isLoading}
-                        text="Verify"
+                        text="VERIFY"
                         loadingText="VERIFYING…"
                     />
                 </form>
@@ -95,15 +96,12 @@ export default class Verify extends Component {
 
     renderConfirmed() {
         const qs = queryString.stringify({email: this.state.email});
-        const loginLink = `/login?${qs}`;
 
-        return (
-            <div className="lander">
-                <p>
-                    You've successfully confirmed your account. Please go <a href={loginLink}>here</a> to log in
-                </p>
-            </div>
-        );
+        return <Redirect to={{
+            pathname: '/login',
+            search: `?${qs}`,
+            state: { emailVerified: true }
+        }} />;
     }
 
     render() {

@@ -4,7 +4,6 @@ import * as R from "ramda";
 
 import { userStateActions, updateUserState } from "../../libs/userState";
 
-import Welcome from "./Welcome";
 import PersonalDetails from "./PersonalDetails";
 import BrokerageAccess from "./BrokerageAccess";
 import BankDetails from "./BankDetails";
@@ -14,7 +13,6 @@ import StepsHeader, { STEPS_CONFIG_DEFAULT, STEPS_HEADER_VERSIONS } from "./Step
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
 
 const WALKTHROUGH_ORDER = [
-    WALKTHROUGH.WELCOME,
     WALKTHROUGH.PERSONAL_DETAILS,
     WALKTHROUGH.BROKERAGE_ACCESS,
     WALKTHROUGH.BANK_DETAILS,
@@ -39,7 +37,6 @@ const getPreviousStep = (walkthroughStep) => {
 };
 
 const WALKTHROUGH_PAGE_TO_COMPONENT = {
-    [WALKTHROUGH.WELCOME]: Welcome,
     [WALKTHROUGH.PERSONAL_DETAILS]: PersonalDetails,
     [WALKTHROUGH.BROKERAGE_ACCESS]: BrokerageAccess,
     [WALKTHROUGH.BANK_DETAILS]: BankDetails,
@@ -64,10 +61,6 @@ export default class Walkthrough extends Component {
     };
 
     renderStepsHeader(currentWalkthroughStep) {
-        if (currentWalkthroughStep === WALKTHROUGH.WELCOME) {
-            return null;
-        }
-
         const walkthroughSteps = R.map(R.head, STEPS_CONFIG_DEFAULT);
         const currentStepIdx = R.indexOf(currentWalkthroughStep, walkthroughSteps);
         const filterIndexed = R.addIndex(R.filter);

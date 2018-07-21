@@ -64,7 +64,6 @@ export const updateUserState = async () => {
 export const userStateActions = (() => {
     const CONSTANTS = {
         WALKTHROUGH: {
-            WELCOME: 'WELCOME',
             PERSONAL_DETAILS: 'PERSONAL_DETAILS',
             BROKERAGE_ACCESS: 'BROKERAGE_ACCESS',
             BANK_DETAILS: 'BANK_DETAILS',
@@ -96,7 +95,7 @@ export const userStateActions = (() => {
     return {
         CONSTANTS,
         setWalkthroughStep: createSetter(['walkthrough', 'step']),
-        getWalkthroughStep: createGetter(['walkthrough', 'step'], CONSTANTS.WALKTHROUGH.WELCOME)
+        getWalkthroughStep: createGetter(['walkthrough', 'step'], CONSTANTS.WALKTHROUGH.PERSONAL_DETAILS)
     };
 })();
 
