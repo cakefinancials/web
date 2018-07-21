@@ -11,9 +11,9 @@ const maxContribTooltipText = `Why do we always enroll you at max contribution? 
 to enroll you at max contribution as minimum contribution. Yes, it costs more upfront, but we cover
 those costs. Max contribution is how you (and Cake) can make the most money.`;
 
-const ourCTOSaysSpeechBubbleText = `Your credentials will be encrypted and stored on an Amazon server. Only 1 person,
+const ourCTOSaysSpeechBubbleText = `Your credentials will be encrypted and stored on an Amazon server. Only one person,
 your Cake Analyst, will have the encryption key, which is stored indepedently of your credentials. They will only
-access your account to do the 2 things outlined above.`;
+access your account to do the two things outlined above.`;
 
 export default class BrokerageAccess extends Component {
     componentDidMount() { }

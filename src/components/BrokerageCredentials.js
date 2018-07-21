@@ -188,7 +188,7 @@ export class BrokerageCredentialsEditor extends Component {
                         validationState={usernameValidation ? null : "error"}
                     >
                         <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
-                            Username
+                            Brokerage Username
                         </Col>
                         <Col xs={8}>
                             <FormControl
@@ -210,7 +210,7 @@ export class BrokerageCredentialsEditor extends Component {
                         validationState={passwordValidation ? null : "error"}
                     >
                         <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
-                            Password
+                            Brokerage Password
                         </Col>
                         <Col xs={8}>
                             <FormControl
