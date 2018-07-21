@@ -1,0 +1,16 @@
+img.estimated-earnings-thumbnail {
+    height: 200px;
+}
+
+img.estimated-earnings-modal {
+    max-width: 100%;
+}
+
+div.estimated-earnings {
+    text-align: center
+}
+
+.modal-header.estimated-earnings-modal-header {
+    border-bottom: none;
+    padding: 15px 15px 0px 0px;
+}

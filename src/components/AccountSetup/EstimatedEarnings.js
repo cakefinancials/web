@@ -1,14 +1,54 @@
 import React, { Component } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Modal } from "react-bootstrap";
 
 import CakeButton from "../helpers/CakeButton";
 
+import "./EstimatedEarnings.css";
 import cakeEstimatedEarningsExampleSrc from '../../public/walkthrough/cake-estimated-earnings-example.png';
 
 export default class EstimatedEarnings extends Component {
+    constructor(props, context) {
+        super(props, context);
+
+        this.state = { show: false };
+    }
+
+    handleClose() {
+        this.setState({ show: false });
+    }
+
+    handleShow() {
+        this.setState({ show: true });
+    }
+
+    renderImageModal() {
+        return (
+            <Modal
+                bsSize="large"
+                show={this.state.show}
+                onHide={() => this.handleClose()}
+            >
+            <Modal.Header
+                className="estimated-earnings-modal-header"
+                closeButton
+            />
+            <Modal.Body>
+                <div className="text-center">
+                    <img
+                        alt=""
+                        className="estimated-earnings-modal"
+                        src={cakeEstimatedEarningsExampleSrc}
+                    />
+                </div>
+            </Modal.Body>
+        </Modal>
+        );
+    }
+
     render() {
         return (
-            <div className="estimated-earnings" style={{textAlign: 'center'}}>
+            <div className="estimated-earnings">
+                { this.renderImageModal() }
                 <Row>
                     <p>
                         Awesome, your data has been securely sent to one of our analysts.
@@ -19,7 +59,14 @@ export default class EstimatedEarnings extends Component {
                     <p>
                         Here is an example analysis done for a hypothetical Intuit employee:
                     </p>
-                    <img alt="" src={cakeEstimatedEarningsExampleSrc} />
+                    <Col xs={2} xsOffset={5}>
+                        <img
+                            alt=""
+                            className="estimated-earnings-thumbnail"
+                            onClick={() => this.handleShow()}
+                            src={cakeEstimatedEarningsExampleSrc}
+                        />
+                    </Col>
                 </Row>
                 <br />
                 <Row>
