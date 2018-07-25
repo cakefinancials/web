@@ -1,5 +1,5 @@
 .speech-bubble-text {
-    color: white;
+    color: black;
     padding: 15px;
     margin-bottom: 0px;
 }
@@ -9,6 +9,7 @@
     background: #85D0BC;
     border-radius: .4em;
     margin-left: 25px;
+    box-shadow: 4px 4px 15px 0 rgba(0, 0, 0, 0.26);
 }
 
 .speech-bubble:after {

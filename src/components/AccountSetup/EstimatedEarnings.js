@@ -25,23 +25,24 @@ export default class EstimatedEarnings extends Component {
         return (
             <Modal
                 bsSize="large"
+                className="estimated-earnings-modal"
                 show={this.state.show}
                 onHide={() => this.handleClose()}
             >
-            <Modal.Header
-                className="estimated-earnings-modal-header"
-                closeButton
-            />
-            <Modal.Body>
-                <div className="text-center">
-                    <img
-                        alt=""
-                        className="estimated-earnings-modal"
-                        src={cakeEstimatedEarningsExampleSrc}
-                    />
-                </div>
-            </Modal.Body>
-        </Modal>
+                <Modal.Header
+                    className="estimated-earnings-modal-header"
+                    closeButton
+                />
+                <Modal.Body>
+                    <div className="text-center">
+                        <img
+                            alt=""
+                            className="estimated-earnings-modal"
+                            src={cakeEstimatedEarningsExampleSrc}
+                        />
+                    </div>
+                </Modal.Body>
+            </Modal>
         );
     }
 
@@ -59,21 +60,32 @@ export default class EstimatedEarnings extends Component {
                     <p>
                         Here is an example analysis done for a hypothetical Intuit employee:
                     </p>
+                    <br />
                     <Col xs={2} xsOffset={5}>
-                        <img
-                            alt=""
-                            className="estimated-earnings-thumbnail"
+                        <div
+                            className={'estimated-earnings-thumbnail-container'}
                             onClick={() => this.handleShow()}
-                            src={cakeEstimatedEarningsExampleSrc}
-                        />
+                        >
+                            <img
+                                alt=""
+                                className="estimated-earnings-thumbnail"
+                                src={cakeEstimatedEarningsExampleSrc}
+                            />
+                            <div className="centered-hover-text">Click to see full report</div>
+                        </div>
                     </Col>
                 </Row>
                 <br />
                 <Row>
+                    <br />
+                    <p>
+                        While you wait for your analyst to send you your paperwork, you can head over to your new Cake Dashboard:
+                    </p>
+                    <br />
                     <Col xs={4} xsOffset={4}>
                         <CakeButton
                             bsSize="large"
-                            onClick={e => {
+                            onClick={() => {
                                 this.props.navigateToNext();
                             }}
                         >

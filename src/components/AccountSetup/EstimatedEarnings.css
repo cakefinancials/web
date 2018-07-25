@@ -1,9 +1,12 @@
 img.estimated-earnings-thumbnail {
-    height: 200px;
+    height: 109px;
+    box-shadow: 4px 4px 15px 0 rgba(0, 0, 0, 0.26);
 }
 
 img.estimated-earnings-modal {
     max-width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 div.estimated-earnings {
@@ -13,4 +16,24 @@ div.estimated-earnings {
 .modal-header.estimated-earnings-modal-header {
     border-bottom: none;
     padding: 15px 15px 0px 0px;
+}
+
+div.modal.estimated-earnings-modal div.modal-dialog {
+    width: fit-content;
+}
+
+div.estimated-earnings-thumbnail-container {
+    cursor: pointer;
+    position: relative;
+}
+
+div.estimated-earnings-thumbnail-container .centered-hover-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: #349bdd;
+    white-space: nowrap;
+    font-size: 24px;
 }

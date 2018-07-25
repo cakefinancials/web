@@ -108,7 +108,7 @@ export default class Signup extends Component {
         return (
             <div className="Signup center-text">
                 <div className="cake-logo-container"></div>
-                <h1>Create Account</h1>
+                <h1>CREATE ACCOUNT</h1>
                 <p><small>Welcome to Cake! Please sign up below to begin making money with cake</small></p>
                 <br />
                 {this.renderForm()}
@@ -120,7 +120,7 @@ export default class Signup extends Component {
                 <p className="ts-and-cs-pp">
                     <small>
                         <a href={termsAndConditions} target="_blank">Terms and Conditions</a>
-                        |
+                        { ' | ' }
                         <a href={privacyPolicy} target="_blank">Privacy Policy</a>
                     </small>
                 </p>

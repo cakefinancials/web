@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Col, Glyphicon, OverlayTrigger, Tooltip } from "react-bootstrap";
+import React, { Component } from 'react';
+import { Col, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { BrokerageCredentialsEditor } from "../BrokerageCredentials";
-import { SpeechBubble } from "./helpers/SpeechBubble";
+import { BrokerageCredentialsEditor } from '../BrokerageCredentials';
+import { SpeechBubble } from './helpers/SpeechBubble';
 
-import "./BrokerageAndBankDetails.css";
-import "./StepsTooltip.css";
+import './BrokerageAndBankDetails.css';
+import './StepsTooltip.css';
 
 const maxContribTooltipText = `Why do we always enroll you at max contribution? Because it is the same amount of work for Cake
 to enroll you at max contribution as minimum contribution. Yes, it costs more upfront, but we cover
@@ -63,8 +63,8 @@ export default class BrokerageAccess extends Component {
                     <br />
                     <p>
                         <strong>2)</strong> Sell your ESPP stock as soon as it is available**
-                    <br />
                     </p>
+                    <br />
                     <p>
                         <small><small>
                             <i>** This is the Cake policy so that risk exposure is minimized and your gains reach you as soon as possible</i>
