@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { HelpBlock, FormGroup, FormControl } from 'react-bootstrap';
 import queryString from 'query-string';
+import * as R from 'ramda';
 
 import LoaderButton from '../components/LoaderButton';
 import './Login.css';
@@ -56,7 +57,7 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div className="Login center-text">
+            <div className="Login login-form-container center-text">
                 <div className="cake-logo-container"></div>
                 <h1>Cake Financials</h1>
                 <br />
@@ -100,9 +101,15 @@ export default class Login extends Component {
                 </form>
                 <small> { 'Don\'t have an account? Create one ' } <Link to="/signup">here</Link></small>
                 {
-                    !this.props.location.state.emailVerified ? null :
+                    !R.path([ 'location', 'state', 'emailVerified' ], this.props) ? null :
                         <div className='login-toast'>
                             { 'You\'ve successfully confirmed your account, please login to continue' }
+                        </div>
+                }
+                {
+                    !R.path([ 'location', 'state', 'passwordReset' ], this.props) ? null :
+                        <div className='login-toast'>
+                            { 'You\'ve successfully reset your password, please login to continue' }
                         </div>
                 }
             </div>

@@ -53,7 +53,7 @@ export default class Verify extends Component {
 
     renderConfirmationForm() {
         return (
-            <div className='Login center-text'>
+            <div className='center-text'>
                 <div className='cake-logo-container'></div>
                 <h1>Verify Account</h1>
                 {
@@ -110,7 +110,7 @@ export default class Verify extends Component {
 
     render() {
         return (
-            <div className='Verify'>
+            <div className='Verify login-form-container'>
                 {this.state.confirmed ? this.renderConfirmed() : this.renderConfirmationForm()}
             </div>
         );

@@ -63,7 +63,7 @@ export default class Signup extends Component {
             this.setState({ isLoading: false });
             this.props.history.push(`/verify?${qs}`);
         } catch (e) {
-            let errorMessage = 'Your password must be at least 8 characters long and have a number and a special character'
+            let errorMessage = 'Your password must be at least 8 characters long and have a number and a special character';
             if (!e.message.toUpperCase().includes('PASSWORD')) {
                 errorMessage = e.message;
             }
@@ -116,7 +116,7 @@ export default class Signup extends Component {
 
     render() {
         return (
-            <div className="Signup center-text">
+            <div className="Signup login-form-container center-text">
                 <div className="cake-logo-container"></div>
                 <h1>CREATE ACCOUNT</h1>
                 <p><small>Welcome to Cake! Please sign up below to begin making money with cake</small></p>

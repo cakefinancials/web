@@ -13,6 +13,15 @@ div.center-text {
     text-align: center;
 }
 
+div.login-form-container {
+    padding: 60px 0;
+}
+
+div.login-form-container form {
+    margin: 0 auto;
+    max-width: 320px;
+}
+
 div.cake-logo-container {
     background-image: url(../public/app/logo.png);
     background-size: cover;
