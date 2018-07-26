@@ -1,10 +1,10 @@
-import { API } from "aws-amplify";
-import Immutable from "immutable";
+import { API } from 'aws-amplify';
+import Immutable from 'immutable';
 
 let lastSyncedUserState;
 let localUserState;
 let syncErrors = [];
-let syncing = false;
+let syncingUserState = false;
 
 const userStateChangeHistory = [];
 
@@ -14,21 +14,16 @@ const notifyUserStateChange = () => {
         lastSyncedUserState,
         localUserState,
         syncErrors,
-        syncing,
+        syncingUserState,
     }));
 };
 
 export const subscribeUserStateChange = (notifyFunction) => {
     userStateNotifyFunctions.push(notifyFunction);
-
-    const location = userStateNotifyFunctions.length - 1;
-    return function unsubscribe() {
-        userStateNotifyFunctions.splice(location, 1);
-    };
 };
 
 export const fetchUserState = async () => {
-    const response = await API.get("cake", "/user/state");
+    const response = await API.get('cake', '/user/state');
 
     lastSyncedUserState = Immutable.fromJS(response);
     localUserState = lastSyncedUserState;
@@ -38,12 +33,12 @@ export const fetchUserState = async () => {
 
 export const updateUserState = async () => {
     try {
-        syncing = true;
+        syncingUserState = true;
         notifyUserStateChange();
 
         await API.post(
-            "cake",
-            "/user/state",
+            'cake',
+            '/user/state',
             {
                 body: {
                     previousState: lastSyncedUserState.toJS(),
@@ -57,7 +52,7 @@ export const updateUserState = async () => {
         syncErrors.push(err);
     }
 
-    syncing = false;
+    syncingUserState = false;
     notifyUserStateChange();
 };
 
@@ -94,8 +89,8 @@ export const userStateActions = (() => {
 
     return {
         CONSTANTS,
-        setWalkthroughStep: createSetter(['walkthrough', 'step']),
-        getWalkthroughStep: createGetter(['walkthrough', 'step'], CONSTANTS.WALKTHROUGH.PERSONAL_DETAILS)
+        setWalkthroughStep: createSetter([ 'walkthrough', 'step' ]),
+        getWalkthroughStep: createGetter([ 'walkthrough', 'step' ], CONSTANTS.WALKTHROUGH.PERSONAL_DETAILS)
     };
 })();
 
@@ -115,4 +110,13 @@ const notifySessionChange = () => {
 
 export const subscribeSessionChange = (notifyFunction) => {
     sessionNotifyFunctions.push(notifyFunction);
+};
+
+let userDashboardData = null;
+export const fetchUserDashboardData = async ({ force = false }) => {
+    if (force || userDashboardData === null) {
+        userDashboardData = (await API.get('cake', '/user/dashboard_data')).dashboardData;
+    }
+
+    return userDashboardData;
 };

@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import "./Home.css";
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import './Home.css';
 
-import Dashboard from "../components/Dashboard";
+import DashboardContainer from '../components/DashboardContainer';
 
 export default class Home extends Component {
     renderLander() {
-        return <Redirect to="/login" />;
+        return <Redirect to='/login' />;
     }
 
     renderAuthedHome() {
-        return ( <Dashboard /> );
+        return ( <DashboardContainer /> );
     }
 
     render() {
         return (
-            <div className="Home">
+            <div className='Home'>
                 {this.props.isAuthenticated ? this.renderAuthedHome() : this.renderLander()}
             </div>
         );

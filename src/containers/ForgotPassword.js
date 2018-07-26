@@ -37,18 +37,22 @@ export default class ForgotPassword extends Component {
     handleSendCodeSubmit = async event => {
         event.preventDefault();
 
-        this.setState({ isLoading: true, errorMessage: undefined });
-
         if (this.state.email.length === 0) {
             this.setState({ errorMessage: 'Please enter your email so you can receive your reset code' });
             return;
         }
 
+        this.setState({ isLoading: true, errorMessage: undefined });
+
         try {
             await Auth.forgotPassword(this.state.email);
             this.setState({ isLoading: false, codeSent: true });
         } catch (e) {
-            this.setState({ isLoading: false, errorMessage: e.message });
+            let errorMessage = 'Email not found.';
+            if (!e.message.toUpperCase().includes('USERNAME')) {
+                errorMessage = e.message;
+            }
+            this.setState({ isLoading: false, errorMessage });
         }
     }
 

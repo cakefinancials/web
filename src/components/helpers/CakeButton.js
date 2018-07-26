@@ -1,9 +1,9 @@
-import React from "react";
-import { Button } from "react-bootstrap";
+import React from 'react';
+import { Button } from 'react-bootstrap';
 
 import * as R from 'ramda';
 
-import "./CakeButton.css";
+import './CakeButton.css';
 
 const CakeButton = (props) => {
     const modifiedProps = R.mergeAll([ props ]);

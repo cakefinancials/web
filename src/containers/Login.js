@@ -100,6 +100,8 @@ export default class Login extends Component {
                     </div>
                 </form>
                 <small> { 'Don\'t have an account? Create one ' } <Link to="/signup">here</Link></small>
+                <br />
+                <small><Link to="/forgot-password">Forgot your password? Click here to reset it.</Link></small>
                 {
                     !R.path([ 'location', 'state', 'emailVerified' ], this.props) ? null :
                         <div className='login-toast'>
