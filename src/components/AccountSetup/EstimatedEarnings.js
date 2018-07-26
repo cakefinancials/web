@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Col, Row, Modal } from "react-bootstrap";
+import React, { Component } from 'react';
+import { Col, Row, Modal } from 'react-bootstrap';
 
-import CakeButton from "../helpers/CakeButton";
+import CakeButton from '../helpers/CakeButton';
 
-import "./EstimatedEarnings.css";
+import './EstimatedEarnings.css';
 import cakeEstimatedEarningsExampleSrc from '../../public/walkthrough/cake-estimated-earnings-example.png';
 
 export default class EstimatedEarnings extends Component {
@@ -24,20 +24,20 @@ export default class EstimatedEarnings extends Component {
     renderImageModal() {
         return (
             <Modal
-                bsSize="large"
-                className="estimated-earnings-modal"
+                bsSize='large'
+                className='estimated-earnings-modal'
                 show={this.state.show}
                 onHide={() => this.handleClose()}
             >
                 <Modal.Header
-                    className="estimated-earnings-modal-header"
+                    className='estimated-earnings-modal-header'
                     closeButton
                 />
                 <Modal.Body>
-                    <div className="text-center">
+                    <div className='text-center'>
                         <img
-                            alt=""
-                            className="estimated-earnings-modal"
+                            alt=''
+                            className='estimated-earnings-modal'
                             src={cakeEstimatedEarningsExampleSrc}
                         />
                     </div>
@@ -48,7 +48,7 @@ export default class EstimatedEarnings extends Component {
 
     render() {
         return (
-            <div className="estimated-earnings">
+            <div className='estimated-earnings'>
                 { this.renderImageModal() }
                 <Row>
                     <p>
@@ -67,11 +67,11 @@ export default class EstimatedEarnings extends Component {
                             onClick={() => this.handleShow()}
                         >
                             <img
-                                alt=""
-                                className="estimated-earnings-thumbnail"
+                                alt=''
+                                className='estimated-earnings-thumbnail'
                                 src={cakeEstimatedEarningsExampleSrc}
                             />
-                            <div className="centered-hover-text">Click to see full report</div>
+                            <div className='centered-hover-text'>Click to see full report</div>
                         </div>
                     </Col>
                 </Row>
@@ -84,7 +84,7 @@ export default class EstimatedEarnings extends Component {
                     <br />
                     <Col xs={4} xsOffset={4}>
                         <CakeButton
-                            bsSize="large"
+                            bsSize='large'
                             onClick={() => {
                                 this.props.navigateToNext();
                             }}

@@ -1,15 +1,16 @@
-import { Auth } from "aws-amplify";
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Auth } from 'aws-amplify';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
     FormGroup,
     FormControl,
-} from "react-bootstrap";
-import queryString from "query-string";
+    HelpBlock,
+} from 'react-bootstrap';
+import queryString from 'query-string';
 
-import LoaderButton from "../components/LoaderButton";
-import "./Signup.css";
-import "./LoginSignupStyles.css";
+import LoaderButton from '../components/LoaderButton';
+import './Signup.css';
+import './LoginSignupStyles.css';
 
 import termsAndConditions from '../public/app/terms_and_conditions.htm';
 import privacyPolicy from '../public/app/privacy_policy.htm';
@@ -20,18 +21,11 @@ export default class Signup extends Component {
 
         this.state = {
             isLoading: false,
-            email: "",
-            password: "",
-            confirmPassword: "",
+            email: '',
+            password: '',
+            confirmPassword: '',
+            errorMessage: undefined,
         };
-    }
-
-    validateForm() {
-        return (
-            this.state.email.length > 0 &&
-            this.state.password.length > 0 &&
-            this.state.password === this.state.confirmPassword
-        );
     }
 
     handleChange = event => {
@@ -43,20 +37,37 @@ export default class Signup extends Component {
     handleSubmit = async event => {
         event.preventDefault();
 
-        this.setState({ isLoading: true });
+        if (
+            this.state.email.length === 0 ||
+            this.state.password.length === 0 ||
+            this.state.confirmPassword.length === 0
+        ) {
+            this.setState({ errorMessage: 'Please fill out the form below to sign up' });
+            return;
+        }
+
+        if (this.state.password !== this.state.confirmPassword) {
+            this.setState({ errorMessage: 'Please make sure the passwords match' });
+            return;
+        }
+
+        this.setState({ isLoading: true, errorMessage: undefined });
 
         try {
             await Auth.signUp({
                 username: this.state.email,
                 password: this.state.password
             });
-            const qs = queryString.stringify({email: this.state.email});
+            const qs = queryString.stringify({ email: this.state.email });
 
             this.setState({ isLoading: false });
             this.props.history.push(`/verify?${qs}`);
         } catch (e) {
-            alert(e.message);
-            this.setState({ isLoading: false });
+            let errorMessage = 'Your password must be at least 8 characters long and have a number and a special character'
+            if (!e.message.toUpperCase().includes('PASSWORD')) {
+                errorMessage = e.message;
+            }
+            this.setState({ isLoading: false, errorMessage });
         }
     }
 
@@ -94,7 +105,6 @@ export default class Signup extends Component {
                 <LoaderButton
                     block
                     bsSize="large"
-                    disabled={!this.validateForm()}
                     type="submit"
                     isLoading={this.state.isLoading}
                     text="Signup"
@@ -111,6 +121,12 @@ export default class Signup extends Component {
                 <h1>CREATE ACCOUNT</h1>
                 <p><small>Welcome to Cake! Please sign up below to begin making money with cake</small></p>
                 <br />
+                {
+                    !this.state.errorMessage ? null :
+                        <div className='has-error'>
+                            <HelpBlock>{this.state.errorMessage}</HelpBlock>
+                        </div>
+                }
                 {this.renderForm()}
                 <small>Already have an account? Login <Link to="/login">here</Link></small>
                 <br />

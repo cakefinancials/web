@@ -1,14 +1,14 @@
-import { API } from "aws-amplify";
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { HelpBlock, FormGroup, FormControl } from "react-bootstrap";
-import queryString from "query-string";
+import { API } from 'aws-amplify';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { HelpBlock, FormGroup, FormControl } from 'react-bootstrap';
+import queryString from 'query-string';
 
-import LoaderButton from "../components/LoaderButton";
-import "./Login.css";
-import "./LoginSignupStyles.css";
-import { Auth } from "aws-amplify";
-import { setCurrentUserSession } from "../libs/userState";
+import LoaderButton from '../components/LoaderButton';
+import './Login.css';
+import './LoginSignupStyles.css';
+import { Auth } from 'aws-amplify';
+import { setCurrentUserSession } from '../libs/userState';
 
 export default class Login extends Component {
     constructor(props) {
@@ -17,14 +17,10 @@ export default class Login extends Component {
 
         this.state = {
             isLoading: false,
-            email: parsedSearch.email || "",
-            password: "",
-            errorMessage: undefined
+            email: parsedSearch.email || '',
+            password: '',
+            errorMessage: undefined,
         };
-    }
-
-    validateForm() {
-        return this.state.email.length > 0 && this.state.password.length > 0;
     }
 
     handleChange = event => {
@@ -36,13 +32,19 @@ export default class Login extends Component {
     handleSubmit = async event => {
         event.preventDefault();
 
-        this.setState({ isLoading: true });
+        if (this.state.email.length === 0 || this.state.password.length === 0) {
+            this.setState({ errorMessage: 'You must enter an email and a password to sign in' });
+
+            return;
+        }
+
+        this.setState({ isLoading: true, errorMessage: undefined });
 
         try {
             await Auth.signIn(this.state.email, this.state.password);
 
             // save link, don't wait for result
-            API.post("cake", "/link_email_to_id", {});
+            API.post('cake', '/link_email_to_id', {});
 
             const currentSession = await Auth.currentSession();
 
@@ -59,10 +61,10 @@ export default class Login extends Component {
                 <h1>Cake Financials</h1>
                 <br />
                 {
-                    !!this.state.errorMessage ?
-                    <div className='has-error'>
-                        <HelpBlock>{this.state.errorMessage}</HelpBlock>
-                    </div> : null
+                    !this.state.errorMessage ? null :
+                        <div className='has-error'>
+                            <HelpBlock>{this.state.errorMessage}</HelpBlock>
+                        </div>
                 }
                 <form onSubmit={this.handleSubmit}>
                     <FormGroup controlId="email" bsSize="large">
@@ -86,17 +88,23 @@ export default class Login extends Component {
                         />
                     </FormGroup>
                     <div>
-                    <LoaderButton
-                        block
-                        bsSize="large"
-                        disabled={!this.validateForm()}
-                        type="submit"
-                        isLoading={this.state.isLoading}
-                        text="LOGIN"
-                        loadingText="LOGGING IN…"
-                    /></div>
+                        <LoaderButton
+                            block
+                            bsSize="large"
+                            type="submit"
+                            isLoading={this.state.isLoading}
+                            text="LOGIN"
+                            loadingText="LOGGING IN…"
+                        />
+                    </div>
                 </form>
-                <small>Don't have an account? Create one <Link to="/signup">here</Link></small>
+                <small> { 'Don\'t have an account? Create one ' } <Link to="/signup">here</Link></small>
+                {
+                    !this.props.location.state.emailVerified ? null :
+                        <div className='login-toast'>
+                            { 'You\'ve successfully confirmed your account, please login to continue' }
+                        </div>
+                }
             </div>
         );
     }

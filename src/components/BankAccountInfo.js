@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment } from 'react';
 import {
     Button,
     Col,
@@ -7,14 +7,14 @@ import {
     FormControl,
     FormGroup,
     HelpBlock,
-} from "react-bootstrap";
-import "./BankAccountInfo.css";
-import { API } from "aws-amplify";
-import LoadingSpinner from "./LoadingSpinner";
-import Lock from "./helpers/Lock";
-import CakeButton from "./helpers/CakeButton";
+} from 'react-bootstrap';
+import './BankAccountInfo.css';
+import { API } from 'aws-amplify';
+import LoadingSpinner from './LoadingSpinner';
+import Lock from './helpers/Lock';
+import CakeButton from './helpers/CakeButton';
 
-import "./helpers/FormStyles.css";
+import './helpers/FormStyles.css';
 export default class BankAccountInfo extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +28,7 @@ export default class BankAccountInfo extends Component {
 
     async queryForExistenceOfBankAccountInfo() {
         try {
-            const response = await API.get("cake", "/bank/account_info/exists");
+            const response = await API.get('cake', '/bank/account_info/exists');
             return !!response.exists;
         } catch (e) {
             alert(e);
@@ -44,11 +44,11 @@ export default class BankAccountInfo extends Component {
 
     renderLoading = () => {
         return (
-            <LoadingSpinner bsSize="large" text="Working..." />
+            <LoadingSpinner bsSize='large' text='Working...' />
         );
     }
 
-    handleUpdateClick = event => {
+    handleUpdateClick = () => {
         this.setState({ showForm: true });
     }
 
@@ -64,15 +64,17 @@ export default class BankAccountInfo extends Component {
                     <p>Please enter your bank info</p>
                     <BankAccountInfoEditor
                         bankAccountInfoSaved={() => {
-                            this.setState({ bankAccountInfoExists: true, showForm: false })
+                            this.setState({ bankAccountInfoExists: true, showForm: false });
                         }}
-                        onCancelClicked={() => { this.setState({ showForm: false }) }}
+                        onCancelClicked={() => {
+                            this.setState({ showForm: false });
+                        }}
                         showCancel={ !!this.state.bankAccountInfoExists }
                     />
                 </Fragment>
             ) : (
                 <Fragment>
-                    <p>You've already added bank info</p>
+                    <p>{ 'You\'ve already added bank info' }</p>
                     <Button onClick={this.handleUpdateClick}>Update</Button>
                 </Fragment>
             )
@@ -106,7 +108,7 @@ export class BankAccountInfoEditor extends Component {
             return false;
         }
 
-        const weights = [3, 7, 1];
+        const weights = [ 3, 7, 1 ];
         const aba = match[1];
 
         var sum = 0;
@@ -149,7 +151,7 @@ export class BankAccountInfoEditor extends Component {
     }
 
     saveBankInfo(bankInfo) {
-        return API.post("cake", "/bank/account_info", { body: bankInfo });
+        return API.post('cake', '/bank/account_info', { body: bankInfo });
     }
 
     handleChange = event => {
@@ -160,7 +162,7 @@ export class BankAccountInfoEditor extends Component {
 
     renderSavingContent = () => {
         return (
-            <LoadingSpinner bsSize="large" text="Saving..." />
+            <LoadingSpinner bsSize='large' text='Saving...' />
         );
     }
 
@@ -170,8 +172,8 @@ export class BankAccountInfoEditor extends Component {
             <div>
                 <Form horizontal onSubmit={this.handleSubmit}>
                     <FormGroup
-                        controlId="routingNumber"
-                        validationState={routingNumberValidation ? null : "error"}
+                        controlId='routingNumber'
+                        validationState={routingNumberValidation ? null : 'error'}
                     >
                         <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
                             Routing Number
@@ -192,8 +194,8 @@ export class BankAccountInfoEditor extends Component {
                         </Col>
                     </FormGroup>
                     <FormGroup
-                        controlId="accountNumber"
-                        validationState={accountNumberValidation ? null : "error"}
+                        controlId='accountNumber'
+                        validationState={accountNumberValidation ? null : 'error'}
                     >
                         <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
                             Account Number
@@ -217,9 +219,9 @@ export class BankAccountInfoEditor extends Component {
                     <Col xs={6} xsOffset={3}>
                         <CakeButton
                             block
-                            bsSize="large"
+                            bsSize='large'
                             disabled={!(routingNumberValidation && accountNumberValidation)}
-                            type="submit"
+                            type='submit'
                         >
                             { this.props.saveButtonText || 'Save' }
                         </CakeButton>
@@ -227,9 +229,9 @@ export class BankAccountInfoEditor extends Component {
                             this.props.showCancel ? (
                                 <Button
                                     block
-                                    bsStyle="warning"
-                                    bsSize="large"
-                                    onClick={e => {
+                                    bsStyle='warning'
+                                    bsSize='large'
+                                    onClick={() => {
                                         this.props.onCancelClicked();
                                     }}
                                 >
@@ -254,14 +256,14 @@ class ObfuscatedBankAccountInfo extends Component {
 
         this.state = {
             isLoading: true,
-            obfuscatedRoutingNumber: "",
-            obfuscatedAccountNumber: "",
+            obfuscatedRoutingNumber: '',
+            obfuscatedAccountNumber: '',
         };
     }
 
     async queryForObfuscatedBankAccountInfo() {
         try {
-            const response = await API.get("cake", "/bank/account_info/obfuscated");
+            const response = await API.get('cake', '/bank/account_info/obfuscated');
             return {
                 obfuscatedAccountNumber: response.accountNumber,
                 obfuscatedRoutingNumber: response.routingNumber,
@@ -283,7 +285,7 @@ class ObfuscatedBankAccountInfo extends Component {
 
     renderLoading = () => {
         return (
-            <LoadingSpinner bsSize="large" text="Loading existing bank account info..." />
+            <LoadingSpinner bsSize='large' text='Loading existing bank account info...' />
         );
     }
 

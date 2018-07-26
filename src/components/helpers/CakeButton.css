@@ -4,6 +4,7 @@ button.cake-form-button {
     color: white;
     line-height: 1.5;
     width: 100%;
+    border: 0px;
 }
 
 button.cake-form-button.btn[disabled] {

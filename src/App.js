@@ -32,8 +32,7 @@ class App extends Component {
             if (currentSession) {
                 setCurrentUserSession(currentSession);
             }
-        }
-        catch (e) {
+        } catch (e) {
             if (e !== 'No current user') {
                 alert(e);
             }
@@ -42,11 +41,11 @@ class App extends Component {
         this.setState({ isAuthenticating: false });
     }
 
-    handleLogout = async event => {
+    handleLogout = async () => {
         await Auth.signOut();
 
         setCurrentUserSession(null);
-        this.props.history.push("/login");
+        this.props.history.push('/login');
     }
 
     renderNavbar() {
