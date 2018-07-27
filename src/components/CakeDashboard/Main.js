@@ -25,14 +25,10 @@ export default class Main extends Component {
     }
 
     async componentDidMount() {
-        try {
-            await fetchUserDashboardData();
-            this.unsubscribeUserDashboardData = subscribeUserDashboardDataChange((userDashboardData) => {
-                this.setState({ userDashboardData, isLoadingUserDashboardData: false });
-            });
-        } catch (e) {
-            this.setState({ isLoadingUserDashboardData: false, errorLoadingDashboardData: true });
-        }
+        fetchUserDashboardData();
+        this.unsubscribeUserDashboardData = subscribeUserDashboardDataChange(({ userDashboardData, loading, error }) => {
+            this.setState({ userDashboardData, isLoadingUserDashboardData: loading, errorLoadingDashboardData: error });
+        });
     }
 
     componentWillUnmount() {

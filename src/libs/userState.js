@@ -140,8 +140,13 @@ export const subscribeSessionChange = userSessionNotifier.subscribe;
 const userDashboardDataNotifier = getSimpleEventListener();
 
 export const fetchUserDashboardData = async () => {
-    const userDashboardData = (await API.get('cake', '/user/dashboard_data')).dashboardData;
-    userDashboardDataNotifier.notify(userDashboardData);
+    userDashboardDataNotifier.notify({ userDashboardData: null, loading: true, error: false });
+    try {
+        const userDashboardData = (await API.get('cake', '/user/dashboard_data')).dashboardData;
+        userDashboardDataNotifier.notify({ userDashboardData, loading: false, error: false });
+    } catch (e) {
+        userDashboardDataNotifier.notify({ userDashboardData: null, loading: false, error: true });
+    }
 };
 
 export const subscribeUserDashboardDataChange = userDashboardDataNotifier.subscribe;
