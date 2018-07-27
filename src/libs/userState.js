@@ -1,26 +1,56 @@
-import { API } from 'aws-amplify';
+import { API, Auth } from 'aws-amplify';
 import Immutable from 'immutable';
+
+const getSimpleEventListener = () => {
+    const notifyFns = [];
+    let notifiedCalledAtLeastOnce = false;
+    let lastNotification = null;
+
+    return {
+        subscribe: (notifyFn) => {
+            notifyFns.push(notifyFn);
+
+            if (notifiedCalledAtLeastOnce) {
+                notifyFn(lastNotification);
+            }
+
+            const unsubscribe = () => {
+                const indexOfNotifyFn = notifyFns.indexOf(notifyFn);
+
+                if (~indexOfNotifyFn) {
+                    notifyFns.splice(indexOfNotifyFn, 1);
+                }
+            };
+
+            return unsubscribe;
+        },
+        notify: (notification) => {
+            lastNotification = notification;
+            notifiedCalledAtLeastOnce = true;
+            notifyFns.forEach(notifyFn => notifyFn(notification));
+        }
+    };
+};
 
 let lastSyncedUserState;
 let localUserState;
-let syncErrors = [];
+const syncErrors = [];
 let syncingUserState = false;
 
 const userStateChangeHistory = [];
 
-let userStateNotifyFunctions = [];
+const userStateNotifier = getSimpleEventListener();
+
 const notifyUserStateChange = () => {
-    userStateNotifyFunctions.forEach(fn => fn({
+    userStateNotifier.notify({
         lastSyncedUserState,
         localUserState,
         syncErrors,
         syncingUserState,
-    }));
+    });
 };
 
-export const subscribeUserStateChange = (notifyFunction) => {
-    userStateNotifyFunctions.push(notifyFunction);
-};
+export const subscribeUserStateChange = userStateNotifier.subscribe;
 
 export const fetchUserState = async () => {
     const response = await API.get('cake', '/user/state');
@@ -94,29 +124,24 @@ export const userStateActions = (() => {
     };
 })();
 
-let currentUserSession = null;
+const userSessionNotifier = getSimpleEventListener();
 
-export const setCurrentUserSession = (session) => {
-    currentUserSession = session;
-    notifySessionChange();
+export const clearCurrentUserSession = () => {
+    userSessionNotifier.notify(null);
 };
 
-export const getCurrentUserSession = () => currentUserSession;
-
-let sessionNotifyFunctions = [];
-const notifySessionChange = () => {
-    sessionNotifyFunctions.forEach(fn => fn(currentUserSession));
+export const fetchCurrentUserSession = async () => {
+    const currentSession = await Auth.currentSession();
+    userSessionNotifier.notify(currentSession);
 };
 
-export const subscribeSessionChange = (notifyFunction) => {
-    sessionNotifyFunctions.push(notifyFunction);
+export const subscribeSessionChange = userSessionNotifier.subscribe;
+
+const userDashboardDataNotifier = getSimpleEventListener();
+
+export const fetchUserDashboardData = async () => {
+    const userDashboardData = (await API.get('cake', '/user/dashboard_data')).dashboardData;
+    userDashboardDataNotifier.notify(userDashboardData);
 };
 
-let userDashboardData = null;
-export const fetchUserDashboardData = async ({ force = false }) => {
-    if (force || userDashboardData === null) {
-        userDashboardData = (await API.get('cake', '/user/dashboard_data')).dashboardData;
-    }
-
-    return userDashboardData;
-};
+export const subscribeUserDashboardDataChange = userDashboardDataNotifier.subscribe;

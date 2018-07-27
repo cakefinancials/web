@@ -5,7 +5,7 @@ import queryString from 'query-string';
 
 import CakeButton from '../helpers/CakeButton';
 import './PersonalDetails.css';
-import { getCurrentUserSession } from '../../libs/userState';
+import { subscribeSessionChange } from '../../libs/userState';
 
 const TYPEFORM_URL = 'https://prodfeedback.typeform.com/to/DTj72J';
 
@@ -20,22 +20,31 @@ export default class PersonalDetails extends Component {
         const elm = this.typeformElm;
 
         const self = this;
-        const qs = queryString.stringify({ user_email: this.getEmailFromSession()});
 
-        // Load Typeform embed widget
-        typeformEmbed.makeWidget(
-            elm,
-            `${TYPEFORM_URL}?${qs}`,
-            {
-                onSubmit: () => {
-                    self.setState({ submittedTypeform: true });
+        this.unsubscribeSessionChange = subscribeSessionChange((session) => {
+            const qs = queryString.stringify({ user_email: this.getEmailFromSession(session) });
+
+            // Load Typeform embed widget
+            typeformEmbed.makeWidget(
+                elm,
+                `${TYPEFORM_URL}?${qs}`,
+                {
+                    onSubmit: () => {
+                        self.setState({ submittedTypeform: true });
+                    }
                 }
-            }
-        );
+            );
+        });
     }
 
-    getEmailFromSession() {
-        return getCurrentUserSession().idToken.payload.email;
+    componentWillUnmount() {
+        if (this.unsubscribeSessionChange) {
+            this.unsubscribeSessionChange();
+        }
+    }
+
+    getEmailFromSession(session) {
+        return session.idToken.payload.email;
     }
 
     render() {
@@ -57,7 +66,7 @@ export default class PersonalDetails extends Component {
                         <CakeButton
                             bsSize='large'
                             disabled={this.state.submittedTypeform === false}
-                            onClick={e => {
+                            onClick={() => {
                                 this.props.navigateToNext();
                             }}
                         >

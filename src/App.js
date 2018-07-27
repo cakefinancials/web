@@ -1,11 +1,11 @@
-import { Auth } from "aws-amplify";
-import React, { Component, Fragment } from "react";
-import { withRouter } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
-import { Nav, Navbar, NavItem } from "react-bootstrap";
-import "./App.css";
-import Routes from "./Routes";
-import { subscribeSessionChange, setCurrentUserSession } from "./libs/userState";
+import { Auth } from 'aws-amplify';
+import React, { Component, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import './App.css';
+import Routes from './Routes';
+import { subscribeSessionChange, clearCurrentUserSession, fetchCurrentUserSession } from './libs/userState';
 
 class App extends Component {
     constructor(props) {
@@ -17,21 +17,24 @@ class App extends Component {
             isAuthenticating: true
         };
 
-        subscribeSessionChange((session) => {
-            if (session === null) {
-                this.setState({ isAuthenticated: false, currentSession: null })
-            } else {
-                this.setState({ isAuthenticated: true, currentSession: session });
-            }
-        });
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribeSessionChange) {
+            this.unsubscribeSessionChange();
+        }
     }
 
     async componentDidMount() {
         try {
-            const currentSession = await Auth.currentSession();
-            if (currentSession) {
-                setCurrentUserSession(currentSession);
-            }
+            this.unsubscribeSessionChange = subscribeSessionChange((session) => {
+                if (session === null) {
+                    this.setState({ isAuthenticated: false, currentSession: null });
+                } else {
+                    this.setState({ isAuthenticated: true, currentSession: session });
+                }
+            });
+            await fetchCurrentUserSession();
         } catch (e) {
             if (e !== 'No current user') {
                 alert(e);
@@ -44,14 +47,14 @@ class App extends Component {
     handleLogout = async () => {
         await Auth.signOut();
 
-        setCurrentUserSession(null);
+        clearCurrentUserSession();
         this.props.history.push('/login');
     }
 
     renderNavbar() {
         return (
-            <div className="app-nav-container container-fluid">
-                <Navbar fluid collapseOnSelect style={{backgroundColor: '#8f2cfa'}}>
+            <div className='app-nav-container container-fluid'>
+                <Navbar fluid collapseOnSelect style={{ backgroundColor: '#8f2cfa' }}>
                     <Navbar.Header>
                         <Navbar.Brand>
                             <div className={'app-logo'}></div>
@@ -67,10 +70,10 @@ class App extends Component {
                                     </Fragment>
                                 ) : (
                                     <Fragment>
-                                        <LinkContainer to="/signup">
+                                        <LinkContainer to='/signup'>
                                             <NavItem>Signup</NavItem>
                                         </LinkContainer>
-                                        <LinkContainer to="/login">
+                                        <LinkContainer to='/login'>
                                             <NavItem>Login</NavItem>
                                         </LinkContainer>
                                     </Fragment>
@@ -101,7 +104,7 @@ class App extends Component {
             !this.state.isAuthenticating &&
             <div>
                 { this.renderNavbar() }
-                <div className="App container">
+                <div className='App container'>
                     <Routes childProps={childProps} />
                 </div>
             </div>

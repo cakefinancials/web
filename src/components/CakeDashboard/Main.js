@@ -11,7 +11,7 @@ import BankAccountInfo from './BankAccountInfo';
 import BrokerageCredentials from './BrokerageCredentials';
 */
 
-import { fetchUserDashboardData } from '../../libs/userState';
+import { fetchUserDashboardData, subscribeUserDashboardDataChange } from '../../libs/userState';
 
 export default class Main extends Component {
     constructor(props) {
@@ -26,10 +26,18 @@ export default class Main extends Component {
 
     async componentDidMount() {
         try {
-            const userDashboardData = await fetchUserDashboardData({ force: true });
-            this.setState({ userDashboardData, isLoadingUserDashboardData: false });
+            await fetchUserDashboardData();
+            this.unsubscribeUserDashboardData = subscribeUserDashboardDataChange((userDashboardData) => {
+                this.setState({ userDashboardData, isLoadingUserDashboardData: false });
+            });
         } catch (e) {
             this.setState({ isLoadingUserDashboardData: false, errorLoadingDashboardData: true });
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribeUserDashboardData) {
+            this.unsubscribeUserDashboardData();
         }
     }
 

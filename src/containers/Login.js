@@ -9,7 +9,7 @@ import LoaderButton from '../components/LoaderButton';
 import './Login.css';
 import './LoginSignupStyles.css';
 import { Auth } from 'aws-amplify';
-import { setCurrentUserSession } from '../libs/userState';
+import { fetchCurrentUserSession } from '../libs/userState';
 
 export default class Login extends Component {
     constructor(props) {
@@ -47,9 +47,7 @@ export default class Login extends Component {
             // save link, don't wait for result
             API.post('cake', '/link_email_to_id', {});
 
-            const currentSession = await Auth.currentSession();
-
-            setCurrentUserSession(currentSession);
+            await fetchCurrentUserSession();
         } catch (e) {
             this.setState({ isLoading: false, errorMessage: e.message });
         }

@@ -23,9 +23,15 @@ export default class DashboardContainer extends Component {
         await fetchUserState();
         this.setState({ isLoadingUserState: false });
 
-        subscribeUserStateChange(userStateUpdates => {
+        this.unsubscribeUserStateChange = subscribeUserStateChange(userStateUpdates => {
             this.setState(userStateUpdates);
         });
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribeUserStateChange) {
+            this.unsubscribeUserStateChange();
+        }
     }
 
     renderInitialLoading = () => {
