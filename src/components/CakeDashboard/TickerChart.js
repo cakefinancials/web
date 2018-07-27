@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Row } from 'react-bootstrap';
 import Script from 'react-load-script';
 import * as R from 'ramda';
 
@@ -51,14 +52,14 @@ export default class TickerChart extends Component {
                             onLoad={this.handleScriptLoad.bind(this)}
                         />
                 }
-                <div className='tradingview-widget-container'>
+                <Row className='tradingview-widget-container'>
                     {
                         !this.state.stockTicker ?
                             <p><small>Enter your company ticker to see stock price details:</small></p>
                             : null
                     }
                     <div id='tradingview_c0310' style={{ height: '700px' }} />
-                </div>
+                </Row>
             </Fragment>
         );
     }

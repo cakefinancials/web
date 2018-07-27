@@ -1,0 +1,31 @@
+div.espp-details span.right {
+    float: right;
+    font-size: larger;
+}
+
+div.espp-details div.col-xs-6 {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+div.espp-details div.border-right {
+    border-right: solid 1px #e2e2e2;
+    position: relative;
+    height: 100%;
+}
+
+div.espp-details span.glyphicon-question-sign {
+    padding-left: 2px;
+    color: #ba6cff;
+}
+
+div.espp-details div.bottom-notes {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}

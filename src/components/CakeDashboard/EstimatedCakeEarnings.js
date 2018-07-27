@@ -1,4 +1,5 @@
 import React from 'react';
+import { Row } from 'react-bootstrap';
 import * as R from 'ramda';
 
 import './EstimatedCakeEarnings.css';
@@ -25,20 +26,20 @@ export const EstimatedCakeEarnings = ({ estimated2017Earnings, enrollmentPeriod 
     const cakePayoutsDollars = formatDollars(cakePayout);
 
     return (
-        <div className='estimated-cake-earnings dashboard-data-container centered-text'>
+        <Row className='estimated-cake-earnings dashboard-data-container centered-text'>
             <h2>CAKE ESTIMATED EARNINGS</h2>
             <div className='text'> Last year you would have made: </div>
             <div className='yearly-earnings'>{ estimated2017EarningsDollars }</div>
             <div className='text'>, for an average Cake payout of <span className='cake-payouts'>{ cakePayoutsDollars }</span></div>
             <br />
             <br />
-        </div>
+        </Row>
     );
 };
 
 export const EstimatedCakeEarningsDefault = () => {
     return (
-        <div className='estimated-cake-earnings dashboard-data-container centered-text'>
+        <Row className='estimated-cake-earnings dashboard-data-container centered-text'>
             <br />
             <div>
                 Last year an Intuit employee making $100,000 would have made:
@@ -52,6 +53,6 @@ export const EstimatedCakeEarningsDefault = () => {
                 And received an average quarterly Cake check for <span className='cake-payouts'>$512.75</span>
             </div>
             <br />
-        </div>
+        </Row>
     );
 };

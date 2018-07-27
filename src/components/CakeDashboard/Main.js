@@ -4,6 +4,7 @@ import { Alert } from 'react-bootstrap';
 import { EstimatedCakeEarnings, EstimatedCakeEarningsDefault } from './EstimatedCakeEarnings';
 import LoadingSpinner from '../LoadingSpinner';
 import TickerChart from './TickerChart';
+import { ESPPDetails } from './ESPPDetails';
 
 import './Main.css';
 /*
@@ -67,18 +68,34 @@ export default class Main extends Component {
             );
         }
 
-        if (this.state.userDashboardData === null || this.state.userDashboardData.company === '') {
+        const { userDashboardData } = this.state;
+
+        if (userDashboardData === null || userDashboardData.company === '') {
             return this.renderDataMissingDashboard();
         }
 
         return (
             <Fragment>
                 <EstimatedCakeEarnings
-                    estimated2017Earnings={this.state.userDashboardData['estimated 2017 earnings']}
-                    enrollmentPeriod={this.state.userDashboardData['Enrollment Period']}
+                    estimated2017Earnings={userDashboardData['estimated 2017 earnings']}
+                    enrollmentPeriod={userDashboardData['Enrollment Period']}
                 />
                 <div className='dashboard-spacing' />
-                <TickerChart stockTicker={this.state.userDashboardData['Stock Ticker']} />
+                <TickerChart stockTicker={userDashboardData['Stock Ticker']} />
+                <div className='dashboard-spacing' />
+                <ESPPDetails
+                    salary={userDashboardData['salary']}
+                    currentPaycheckAmount={userDashboardData['current paycheck amount']}
+                    payPeriod={userDashboardData['pay period']}
+                    lastPaycheck={userDashboardData['last paycheck']}
+                    company={userDashboardData['company']}
+                    companyDiscount={userDashboardData['Company Discount']}
+                    lookback={userDashboardData['Lookback']}
+                    enrollmentPeriod={userDashboardData['Enrollment Period']}
+                    maxAllowableContribution={userDashboardData['Max Allowable Contribution']}
+                    eSPPNotes={userDashboardData['ESPP Notes']}
+                    policyLink={userDashboardData['Policy Link']}
+                />
             </Fragment>
         );
     }

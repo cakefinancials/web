@@ -124,6 +124,10 @@ export const userStateActions = (() => {
     };
 })();
 
+/**
+ * USER SESSION
+ */
+
 const userSessionNotifier = getSimpleEventListener();
 
 export const clearCurrentUserSession = () => {
@@ -136,6 +140,10 @@ export const fetchCurrentUserSession = async () => {
 };
 
 export const subscribeSessionChange = userSessionNotifier.subscribe;
+
+/**
+ * DASHBOARD DATA
+ */
 
 const userDashboardDataNotifier = getSimpleEventListener();
 
