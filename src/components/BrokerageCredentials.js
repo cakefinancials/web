@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment } from 'react';
 import {
     Button,
     Col,
@@ -7,88 +7,15 @@ import {
     FormControl,
     FormGroup,
     HelpBlock,
-} from "react-bootstrap";
-import { API } from "aws-amplify";
-import LoadingSpinner from "./LoadingSpinner";
-import Lock from "./helpers/Lock";
-import CakeButton from "./helpers/CakeButton";
+} from 'react-bootstrap';
+import LoadingSpinner from './LoadingSpinner';
+import Lock from './helpers/Lock';
+import CakeButton from './helpers/CakeButton';
+import * as R from 'ramda';
 
-import "./helpers/FormStyles.css";
+import './helpers/FormStyles.css';
 
-export default class BrokerageCredentials extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isLoading: true,
-            brokerageCredentialsExist: null,
-            showForm: false,
-        };
-    }
-
-    async queryForExistenceOfBrokerageCredentials() {
-        try {
-            const response = await API.get("cake", "/brokerage/credentials/exists");
-            return !!response.exists;
-        } catch (e) {
-            alert(e);
-        }
-
-        return false;
-    }
-
-    async componentDidMount() {
-        const brokerageCredentialsExist = await this.queryForExistenceOfBrokerageCredentials();
-        this.setState({ isLoading: false, brokerageCredentialsExist, showForm: !brokerageCredentialsExist });
-    }
-
-    renderLoading = () => {
-        return (
-            <LoadingSpinner bsSize="large" text="Working..." />
-        );
-    }
-
-    handleUpdateClick = event => {
-        this.setState({ showForm: true });
-    }
-
-    renderObfuscatedData = () => {
-        return this.state.brokerageCredentialsExist ? <ObfuscatedBrokerageCredentials /> : null;
-    }
-
-    renderLoaded = () => {
-        return (
-            this.state.showForm ? (
-                <Fragment>
-                    { this.renderObfuscatedData() }
-                    <p>Please enter your brokerage credentials</p>
-                    <BrokerageCredentialsEditor
-                        brokerageCredentialsSaved={() => {
-                            this.setState({ brokerageCredentialsExist: true, showForm: false })
-                        }}
-                        onCancelClicked={() => { this.setState({ showForm: false }) }}
-                        showCancel={ !!this.state.brokerageCredentialsExist }
-                    />
-                </Fragment>
-            ) : (
-                    <Fragment>
-                        <p>You've already added your brokerage credentials</p>
-                        <Button onClick={this.handleUpdateClick}>Update</Button>
-                    </Fragment>
-                )
-        );
-    }
-
-    render() {
-        return (
-            <div>
-                <h2>Brokerage Credentials</h2>
-                {this.state.isLoading ? this.renderLoading() : this.renderLoaded()}
-            </div>
-        );
-    }
-}
-
+import { saveBrokerageCredentials, subscribeObfuscatedBrokerageData } from '../libs/userState';
 export class BrokerageCredentialsEditor extends Component {
     constructor(props) {
         super(props);
@@ -121,7 +48,7 @@ export class BrokerageCredentialsEditor extends Component {
     }
 
     saveBrokerageCredentials(brokerageCredentials) {
-        return API.post("cake", "/brokerage/credentials", { body: brokerageCredentials });
+        return saveBrokerageCredentials(brokerageCredentials);
     }
 
     handleChange = event => {
@@ -152,18 +79,18 @@ export class BrokerageCredentialsEditor extends Component {
 
     renderSavingContent = () => {
         return (
-            <LoadingSpinner bsSize="large" text="Saving..." />
+            <LoadingSpinner bsSize='large' text='Saving...' />
         );
     }
 
     renderSaveForm = () => {
-        const {usernameValidation, passwordValidation, brokerageValidation} = this.validateBrokerageCredentialsForm();
+        const { usernameValidation, passwordValidation, brokerageValidation } = this.validateBrokerageCredentialsForm();
         return (
             <div>
                 <Form horizontal onSubmit={this.handleSubmit}>
                     <FormGroup
-                        controlId="brokerage"
-                        validationState={brokerageValidation ? null : "error"}
+                        controlId='brokerage'
+                        validationState={brokerageValidation ? null : 'error'}
                     >
                         <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
                             Brokerage Website
@@ -184,8 +111,8 @@ export class BrokerageCredentialsEditor extends Component {
                         </Col>
                     </FormGroup>
                     <FormGroup
-                        controlId="username"
-                        validationState={usernameValidation ? null : "error"}
+                        controlId='username'
+                        validationState={usernameValidation ? null : 'error'}
                     >
                         <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
                             Brokerage Username
@@ -206,8 +133,8 @@ export class BrokerageCredentialsEditor extends Component {
                         </Col>
                     </FormGroup>
                     <FormGroup
-                        controlId="password"
-                        validationState={passwordValidation ? null : "error"}
+                        controlId='password'
+                        validationState={passwordValidation ? null : 'error'}
                     >
                         <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
                             Brokerage Password
@@ -216,7 +143,7 @@ export class BrokerageCredentialsEditor extends Component {
                             <FormControl
                                 className={'cake-form-input'}
                                 onChange={this.handleChange}
-                                type="password"
+                                type='password'
                                 value={this.state.password}
                             />
                             {
@@ -232,9 +159,9 @@ export class BrokerageCredentialsEditor extends Component {
                     <Col xs={6} xsOffset={3}>
                         <CakeButton
                             block
-                            bsSize="large"
+                            bsSize='large'
                             disabled={!(usernameValidation && passwordValidation && brokerageValidation)}
-                            type="submit"
+                            type='submit'
                         >
                             { this.props.saveButtonText || 'Save' }
                         </CakeButton>
@@ -242,9 +169,9 @@ export class BrokerageCredentialsEditor extends Component {
                             this.props.showCancel ? (
                                 <Button
                                     block
-                                    bsStyle="warning"
-                                    bsSize="large"
-                                    onClick={e => {
+                                    bsStyle='warning'
+                                    bsSize='large'
+                                    onClick={() => {
                                         this.props.onCancelClicked();
                                     }}
                                 >
@@ -261,39 +188,36 @@ export class BrokerageCredentialsEditor extends Component {
     render = () => {
         return this.state.isSaving ? this.renderSavingContent() : this.renderSaveForm();
     }
-};
+}
 
-class ObfuscatedBrokerageCredentials extends Component {
+export class ObfuscatedBrokerageCredentials extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             isLoading: true,
-            obfuscatedUsername: "",
-            obfuscatedBrokerage: "",
+            obfuscatedUsername: '',
+            obfuscatedBrokerage: '',
         };
     }
 
-    async queryForObfuscatedData() {
-        try {
-            const response = await API.get("cake", "/brokerage/credentials/obfuscated");
-            return {
-                obfuscatedUsername: response.username,
-                obfuscatedBrokerage: response.brokerage,
-            };
-        } catch (e) {
-            alert(e);
-        }
-
-        return undefined;
+    componentDidMount() {
+        this.unsubscribeObfuscatedBankDetails = subscribeObfuscatedBrokerageData(
+            ({ obfuscatedBrokerageData, loading, error }) => {
+                this.setState({
+                    error,
+                    isLoading: loading,
+                    obfuscatedUsername: R.prop('username', obfuscatedBrokerageData),
+                    obfuscatedBrokerage: R.prop('brokerage', obfuscatedBrokerageData)
+                });
+            }
+        );
     }
 
-    async componentDidMount() {
-        const obfuscatedData = await this.queryForObfuscatedData();
-        this.setState({
-            isLoading: false,
-            ...obfuscatedData
-        });
+    componentWillUnmount() {
+        if (this.unsubscribeObfuscatedBankDetails) {
+            this.unsubscribeObfuscatedBankDetails();
+        }
     }
 
     renderLoading = () => {
@@ -305,8 +229,14 @@ class ObfuscatedBrokerageCredentials extends Component {
     renderLoaded = () => {
         return (
             <Fragment>
-                <p>{`Current Brokerage: ${this.state.obfuscatedBrokerage}`}</p>
-                <p>{`Current Username: ${this.state.obfuscatedUsername}`}</p>
+                <span>Brokerage: <strong>{ this.state.obfuscatedBrokerage }</strong></span>
+                <br />
+                <br />
+                <span>
+                    Username & Password:
+                    <Lock style={{ marginLeft: '5px', marginRight: '5px' }} />
+                    encrypted
+                </span>
             </Fragment>
         );
     }

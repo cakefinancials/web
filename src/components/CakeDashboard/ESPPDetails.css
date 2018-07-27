@@ -1,11 +1,17 @@
+div.espp-details.row {
+    display: table;
+}
+
 div.espp-details span.right {
     float: right;
-    font-size: larger;
 }
 
 div.espp-details div.col-xs-6 {
     padding-left: 40px;
     padding-right: 40px;
+    float: none;
+    display: table-cell;
+    vertical-align: top;
 }
 
 div.espp-details div.border-right {
@@ -14,13 +20,18 @@ div.espp-details div.border-right {
     height: 100%;
 }
 
+div.espp-details div.border-left {
+    border-left: solid 1px #e2e2e2;
+    padding-bottom: 30px;
+}
+
 div.espp-details span.glyphicon-question-sign {
     padding-left: 2px;
     color: #ba6cff;
 }
 
 div.espp-details div.bottom-notes {
-    position: relative;
+    position: absolute;
     margin-left: auto;
     margin-right: auto;
     left: 0;
@@ -28,4 +39,9 @@ div.espp-details div.bottom-notes {
     bottom: 0;
     padding-top: 20px;
     padding-bottom: 20px;
+}
+
+div.espp-details a.modal-link {
+    font-size: 12px;
+    cursor: pointer;
 }

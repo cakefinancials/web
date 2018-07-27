@@ -7,12 +7,8 @@ import TickerChart from './TickerChart';
 import { ESPPDetails } from './ESPPDetails';
 
 import './Main.css';
-/*
-import BankAccountInfo from './BankAccountInfo';
-import BrokerageCredentials from './BrokerageCredentials';
-*/
 
-import { fetchUserDashboardData, subscribeUserDashboardDataChange } from '../../libs/userState';
+import { subscribeUserDashboardDataChange } from '../../libs/userState';
 
 export default class Main extends Component {
     constructor(props) {
@@ -26,7 +22,6 @@ export default class Main extends Component {
     }
 
     async componentDidMount() {
-        fetchUserDashboardData();
         this.unsubscribeUserDashboardData = subscribeUserDashboardDataChange(({ userDashboardData, loading, error }) => {
             this.setState({ userDashboardData, isLoadingUserDashboardData: loading, errorLoadingDashboardData: error });
         });

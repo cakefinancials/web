@@ -6,23 +6,37 @@ const getSimpleEventListener = () => {
     let notifiedCalledAtLeastOnce = false;
     let lastNotification = null;
 
-    return {
-        subscribe: (notifyFn) => {
-            notifyFns.push(notifyFn);
+    const subscribe = (notifyFn) => {
+        notifyFns.push(notifyFn);
 
-            if (notifiedCalledAtLeastOnce) {
-                notifyFn(lastNotification);
+        if (notifiedCalledAtLeastOnce) {
+            notifyFn(lastNotification);
+        }
+
+        const unsubscribe = () => {
+            const indexOfNotifyFn = notifyFns.indexOf(notifyFn);
+
+            if (~indexOfNotifyFn) {
+                notifyFns.splice(indexOfNotifyFn, 1);
             }
+        };
 
-            const unsubscribe = () => {
-                const indexOfNotifyFn = notifyFns.indexOf(notifyFn);
+        return unsubscribe;
+    };
 
-                if (~indexOfNotifyFn) {
-                    notifyFns.splice(indexOfNotifyFn, 1);
+    return {
+        subscribe,
+        subscribeWithInitialization: (initFn) => {
+            let initialized = false;
+
+            return (fn) => {
+                if (!initialized) {
+                    initFn();
+                    initialized = true;
                 }
-            };
 
-            return unsubscribe;
+                return subscribe(fn);
+            };
         },
         notify: (notification) => {
             lastNotification = notification;
@@ -157,4 +171,54 @@ export const fetchUserDashboardData = async () => {
     }
 };
 
-export const subscribeUserDashboardDataChange = userDashboardDataNotifier.subscribe;
+export const subscribeUserDashboardDataChange = userDashboardDataNotifier.subscribeWithInitialization(fetchUserDashboardData);
+
+/**
+ * Brokerage Data
+ */
+
+const obfuscatedBrokerageDataNotifier = getSimpleEventListener();
+
+export const fetchBrokerageData = async () => {
+    obfuscatedBrokerageDataNotifier.notify({ obfuscatedBrokerageData: null, loading: true, error: false });
+    try {
+        const obfuscatedBrokerageData = (await API.get('cake', '/brokerage/credentials/obfuscated'));
+        obfuscatedBrokerageDataNotifier.notify({ obfuscatedBrokerageData, loading: false, error: false });
+    } catch (e) {
+        obfuscatedBrokerageDataNotifier.notify({ obfuscatedBrokerageData: null, loading: false, error: true });
+    }
+};
+
+export const saveBrokerageCredentials = async (brokerageCredentials) => {
+    const result = await API.post('cake', '/brokerage/credentials', { body: brokerageCredentials });
+    fetchBrokerageData();
+
+    return result;
+};
+
+export const subscribeObfuscatedBrokerageData = obfuscatedBrokerageDataNotifier.subscribeWithInitialization(fetchBrokerageData);
+
+/**
+ * Bank Account Data
+ */
+
+const obfuscatedBankDetailsNotifier = getSimpleEventListener();
+
+export const fetchBankDetails = async () => {
+    obfuscatedBankDetailsNotifier.notify({ obfuscatedBankDetails: null, loading: true, error: false });
+    try {
+        const obfuscatedBankDetails = (await API.get('cake', '/bank/account_info/obfuscated'));
+        obfuscatedBankDetailsNotifier.notify({ obfuscatedBankDetails, loading: false, error: false });
+    } catch (e) {
+        obfuscatedBankDetailsNotifier.notify({ obfuscatedBankDetails: null, loading: false, error: true });
+    }
+};
+
+export const saveBankDetails = async (bankDetails) => {
+    const result = await API.post('cake', '/bank/account_info', { body: bankDetails });
+    fetchBankDetails();
+
+    return result;
+};
+
+export const subscribeObfuscatedBankDetails = obfuscatedBankDetailsNotifier.subscribeWithInitialization(fetchBankDetails);

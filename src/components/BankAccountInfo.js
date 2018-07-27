@@ -8,88 +8,14 @@ import {
     FormGroup,
     HelpBlock,
 } from 'react-bootstrap';
-import './BankAccountInfo.css';
-import { API } from 'aws-amplify';
 import LoadingSpinner from './LoadingSpinner';
 import Lock from './helpers/Lock';
 import CakeButton from './helpers/CakeButton';
+import * as R from 'ramda';
 
 import './helpers/FormStyles.css';
-export default class BankAccountInfo extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            isLoading: true,
-            bankAccountInfoExists: null,
-            showForm: false
-        };
-    }
-
-    async queryForExistenceOfBankAccountInfo() {
-        try {
-            const response = await API.get('cake', '/bank/account_info/exists');
-            return !!response.exists;
-        } catch (e) {
-            alert(e);
-        }
-
-        return false;
-    }
-
-    async componentDidMount() {
-        const bankAccountInfoExists = await this.queryForExistenceOfBankAccountInfo();
-        this.setState({ isLoading: false, bankAccountInfoExists, showForm: !bankAccountInfoExists });
-    }
-
-    renderLoading = () => {
-        return (
-            <LoadingSpinner bsSize='large' text='Working...' />
-        );
-    }
-
-    handleUpdateClick = () => {
-        this.setState({ showForm: true });
-    }
-
-    renderObfuscatedData = () => {
-        return this.state.bankAccountInfoExists ? <ObfuscatedBankAccountInfo /> : null;
-    }
-
-    renderLoaded = () => {
-        return (
-            this.state.showForm ? (
-                <Fragment>
-                    { this.renderObfuscatedData() }
-                    <p>Please enter your bank info</p>
-                    <BankAccountInfoEditor
-                        bankAccountInfoSaved={() => {
-                            this.setState({ bankAccountInfoExists: true, showForm: false });
-                        }}
-                        onCancelClicked={() => {
-                            this.setState({ showForm: false });
-                        }}
-                        showCancel={ !!this.state.bankAccountInfoExists }
-                    />
-                </Fragment>
-            ) : (
-                <Fragment>
-                    <p>{ 'You\'ve already added bank info' }</p>
-                    <Button onClick={this.handleUpdateClick}>Update</Button>
-                </Fragment>
-            )
-        );
-    }
-
-    render() {
-        return (
-            <div>
-                <h2>Bank Account Info</h2>
-                {this.state.isLoading ? this.renderLoading() : this.renderLoaded()}
-            </div>
-        );
-    }
-}
+import { saveBankDetails, subscribeObfuscatedBankDetails } from '../libs/userState';
 
 export class BankAccountInfoEditor extends Component {
     constructor(props) {
@@ -151,7 +77,7 @@ export class BankAccountInfoEditor extends Component {
     }
 
     saveBankInfo(bankInfo) {
-        return API.post('cake', '/bank/account_info', { body: bankInfo });
+        return saveBankDetails(bankInfo);
     }
 
     handleChange = event => {
@@ -250,37 +176,35 @@ export class BankAccountInfoEditor extends Component {
     }
 }
 
-class ObfuscatedBankAccountInfo extends Component {
+export class ObfuscatedBankAccountInfo extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            error: false,
             isLoading: true,
             obfuscatedRoutingNumber: '',
             obfuscatedAccountNumber: '',
         };
     }
 
-    async queryForObfuscatedBankAccountInfo() {
-        try {
-            const response = await API.get('cake', '/bank/account_info/obfuscated');
-            return {
-                obfuscatedAccountNumber: response.accountNumber,
-                obfuscatedRoutingNumber: response.routingNumber,
-            };
-        } catch (e) {
-            alert(e);
-        }
-
-        return undefined;
+    componentDidMount() {
+        this.unsubscribeObfuscatedBankDetails = subscribeObfuscatedBankDetails(
+            ({ obfuscatedBankDetails, loading, error }) => {
+                this.setState({
+                    error,
+                    isLoading: loading,
+                    obfuscatedRoutingNumber: R.prop('routingNumber', obfuscatedBankDetails),
+                    obfuscatedAccountNumber: R.prop('accountNumber', obfuscatedBankDetails)
+                });
+            }
+        );
     }
 
-    async componentDidMount() {
-        const obfuscatedBankAccountInfo = await this.queryForObfuscatedBankAccountInfo();
-        this.setState({
-            isLoading: false,
-            ...obfuscatedBankAccountInfo
-        });
+    componentWillUnmount() {
+        if (this.unsubscribeObfuscatedBankDetails) {
+            this.unsubscribeObfuscatedBankDetails();
+        }
     }
 
     renderLoading = () => {
@@ -292,8 +216,10 @@ class ObfuscatedBankAccountInfo extends Component {
     renderLoaded = () => {
         return (
             <Fragment>
-                <p>{`Current Routing Number: ${this.state.obfuscatedRoutingNumber}`}</p>
-                <p>{`Current Account Number: ${this.state.obfuscatedAccountNumber}`}</p>
+                <span>{`Bank Routing Number: ${this.state.obfuscatedRoutingNumber}`}</span>
+                <br />
+                <br />
+                <span>{`Bank Account Number: ${this.state.obfuscatedAccountNumber}`}</span>
             </Fragment>
         );
     }

@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Col, Glyphicon, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
+
+import { ObfuscatedBankAccountInfo } from '../BankAccountInfo';
+import { ObfuscatedBrokerageCredentials } from '../BrokerageCredentials';
 
 import './ESPPDetails.css';
 import '../AccountSetup/StepsTooltip.css';
@@ -19,49 +22,84 @@ const createDetailsTooltip = (tooltipText) => {
     );
 };
 
-export const ESPPDetails = ({
-    salary,
-    currentPaycheckAmount,
-    payPeriod,
-    lastPaycheck,
-    company,
-    companyDiscount,
-    lookback,
-    enrollmentPeriod,
-    maxAllowableContribution,
-    eSPPNotes,
-    policyLink,
-}) => {
-    return (
-        <Row className='espp-details dashboard-data-container'>
-            <Col xs={6} className='border-right'>
-                <h3>Your ESPP: <span className='right'>{ company }</span></h3>
-                <br />
-                Discount: { createDetailsTooltip('SOME TEXT') } <strong>{ companyDiscount }</strong>
-                <br />
-                <br />
-                Lookback: { createDetailsTooltip('SOME TEXT') } <strong>{ lookback }</strong>
-                <br />
-                <br />
-                Enrollment Period Length: { createDetailsTooltip('SOME TEXT') } <strong>{ enrollmentPeriod }</strong>
-                <br />
-                <br />
-                Max Allowable Annual Contribution: { createDetailsTooltip('SOME TEXT') } <strong>{ maxAllowableContribution }</strong>
-                <div className='center-text bottom-notes'>
-                    <small>
-                        <i>{eSPPNotes}</i>
-                        <br />
-                        <a rel="noopener noreferrer" target="_blank" href={policyLink}>
-                            READ FULL DETAILS OF {company.toUpperCase()} POLICY HERE
-                        </a>
-                    </small>
-                </div>
-            </Col>
-            <Col xs={6}>
-            </Col>
-        </Row>
-    );
-};
+export class ESPPDetails extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loadingBrokerage: true
+        };
+    }
+
+    render() {
+        const {
+            salary,
+            currentPaycheckAmount,
+            payPeriod,
+            lastPaycheck,
+            company,
+            companyDiscount,
+            lookback,
+            enrollmentPeriod,
+            maxAllowableContribution,
+            eSPPNotes,
+            policyLink,
+        } = this.props;
+
+        return (
+            <Row className='espp-details dashboard-data-container'>
+                <Col xs={6} className='border-right'>
+                    <h3>Your ESPP: <span className='right'><big>{ company }</big></span></h3>
+                    <br />
+                    Discount: { createDetailsTooltip('SOME TEXT') } <strong>{ companyDiscount }</strong>
+                    <br />
+                    <br />
+                    Lookback: { createDetailsTooltip('SOME TEXT') } <strong>{ lookback }</strong>
+                    <br />
+                    <br />
+                    Enrollment Period Length: { createDetailsTooltip('SOME TEXT') } <strong>{ enrollmentPeriod }</strong>
+                    <br />
+                    <br />
+                    Max Allowable Annual Contribution: { createDetailsTooltip('SOME TEXT') } <strong>{ maxAllowableContribution }</strong>
+                    <div className='center-text bottom-notes'>
+                        <small>
+                            <i>{eSPPNotes}</i>
+                            <br />
+                            <a rel="noopener noreferrer" target="_blank" href={policyLink}>
+                                READ FULL DETAILS OF {company.toUpperCase()} POLICY HERE
+                            </a>
+                        </small>
+                    </div>
+                </Col>
+                <Col xs={6} className='border-left'>
+                    <h3>Your Details: <span className='right'>
+                        <a className='modal-link' onClick={() => {}}>edit my personal details</a>
+                    </span></h3>
+                    <br />
+                    Salary (annual): <strong>{ salary }</strong>
+                    <br />
+                    <br />
+                    Current Paycheck Amount (post taxes): <strong>{ currentPaycheckAmount }</strong>
+                    <br />
+                    <br />
+                    Pay Period: <strong>{ payPeriod }</strong>
+                    <br />
+                    <br />
+                    Last Paycheck: <strong>{ lastPaycheck }</strong>
+                    <br />
+                    <br />
+                    <h3>Financial Details: <span className='right'>
+                        <a className='modal-link' onClick={() => {}}>edit my financial details</a>
+                    </span></h3>
+                    <br />
+                    <ObfuscatedBrokerageCredentials />
+                    <br />
+                    <ObfuscatedBankAccountInfo />
+                </Col>
+            </Row>
+        );
+    }
+}
 
 export const ESPPDetailsDefault = () => {
     return null;
