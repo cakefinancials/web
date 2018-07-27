@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Alert } from 'react-bootstrap';
 
+import { EstimatedCakeEarnings, EstimatedCakeEarningsDefault } from './EstimatedCakeEarnings';
 import LoadingSpinner from '../LoadingSpinner';
-import EstimatedCakeEarnings from './EstimatedCakeEarnings';
+import TickerChart from './TickerChart';
 
 import './Main.css';
 /*
@@ -38,6 +39,21 @@ export default class Main extends Component {
         );
     }
 
+    renderDataMissingDashboard() {
+        return (
+            <Fragment>
+                <div className='center-text'>
+                    <div className='purple-cake-text'>
+                        <big>Welcome to your Cake dashboard! All of your data will populate after your analyst has reviewed your account details.</big>
+                    </div>
+                    <EstimatedCakeEarningsDefault />
+                </div>
+                <div className='dashboard-spacing' />
+                <TickerChart stockTicker={null} />
+            </Fragment>
+        );
+    }
+
     renderMainDashboard() {
         if (this.state.errorLoadingDashboardData) {
             return (
@@ -47,12 +63,18 @@ export default class Main extends Component {
             );
         }
 
+        if (this.state.userDashboardData === null || this.state.userDashboardData.company === '') {
+            return this.renderDataMissingDashboard();
+        }
+
         return (
             <Fragment>
                 <EstimatedCakeEarnings
                     estimated2017Earnings={this.state.userDashboardData['estimated 2017 earnings']}
                     enrollmentPeriod={this.state.userDashboardData['Enrollment Period']}
                 />
+                <div className='dashboard-spacing' />
+                <TickerChart stockTicker={this.state.userDashboardData['Stock Ticker']} />
             </Fragment>
         );
     }

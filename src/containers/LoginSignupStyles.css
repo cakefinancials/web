@@ -9,10 +9,6 @@ html {
     min-height: 100%;
 }
 
-div.center-text {
-    text-align: center;
-}
-
 div.login-form-container {
     padding: 60px 0;
 }

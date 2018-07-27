@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { Col, Row } from "react-bootstrap";
+import React, { Component } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import * as typeformEmbed from '@typeform/embed';
-import queryString from "query-string";
+import queryString from 'query-string';
 
-import CakeButton from "../helpers/CakeButton";
-import "./PersonalDetails.css";
-import { getCurrentUserSession } from "../../libs/userState";
+import CakeButton from '../helpers/CakeButton';
+import './PersonalDetails.css';
+import { getCurrentUserSession } from '../../libs/userState';
 
-const TYPEFORM_URL = "https://prodfeedback.typeform.com/to/DTj72J";
+const TYPEFORM_URL = 'https://prodfeedback.typeform.com/to/DTj72J';
 
 export default class PersonalDetails extends Component {
     constructor(props) {
@@ -40,15 +40,22 @@ export default class PersonalDetails extends Component {
 
     render() {
         return (
-            <div className="personaldetails">
+            <div className='personaldetails'>
                 <Row>
-                    <div className="react-typeform-embed" ref={tf => { this.typeformElm = tf; }} />
+                    <div
+                        className='react-typeform-embed'
+                        ref={
+                            tf => {
+                                this.typeformElm = tf;
+                            }
+                        }
+                    />
                 </Row>
                 <br />
                 <Row>
                     <Col xs={4} xsOffset={4}>
                         <CakeButton
-                            bsSize="large"
+                            bsSize='large'
                             disabled={this.state.submittedTypeform === false}
                             onClick={e => {
                                 this.props.navigateToNext();

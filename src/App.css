@@ -45,3 +45,11 @@ nav.navbar {
 .app-nav-container .navbar-default .navbar-nav>.active>a {
     background-color: #6c23ab;
 }
+
+div.center-text {
+    text-align: center;
+}
+
+.purple-cake-text {
+    color: #a33aff;
+}

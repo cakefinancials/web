@@ -7,6 +7,9 @@ import './index.css';
 import Amplify from 'aws-amplify';
 import config from './config';
 
+// a promise polyfill
+require('es6-promise/auto');
+
 Amplify.configure({
     Auth: {
         mandatorySignIn: true,
