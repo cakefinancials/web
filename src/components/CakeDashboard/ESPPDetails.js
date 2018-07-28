@@ -7,6 +7,8 @@ import { ObfuscatedBrokerageCredentials, BrokerageCredentialsEditor } from '../B
 import CakeButton from '../helpers/CakeButton';
 import { subscribeSessionChange } from '../../libs/userState';
 
+import cakeImageSrc from '../../public/app/cake.png';
+
 import './ESPPDetails.css';
 import '../AccountSetup/StepsTooltip.css';
 
@@ -89,7 +91,7 @@ export class ESPPDetails extends Component {
                             </p>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className='pad-bottom'>
                         <Col xs={4} xsOffset={2}>
                             <CakeButton
                                 bsSize='large'
@@ -216,5 +218,18 @@ export class ESPPDetails extends Component {
 }
 
 export const ESPPDetailsDefault = () => {
-    return null;
+    return (
+        <Row className='espp-details-default dashboard-data-container'>
+            <Col xs={12}>
+                <h4>Your Details</h4>
+                <br />
+                <div className='centered-text'>
+                Your analyst is verifying your data. This section will populate after everything has been reviewed.
+                </div>
+                <br />
+                <br />
+            </Col>
+            <img src={cakeImageSrc} />
+        </Row>
+    );
 };

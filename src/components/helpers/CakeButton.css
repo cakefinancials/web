@@ -12,8 +12,12 @@ button.cake-form-button.cake-form-button-cancel-style {
     color: black;
 }
 
+button.cake-form-button.cake-form-button-cancel-style:hover {
+    opacity: 0.5;
+}
+
 button.cake-form-button.btn[disabled] {
-    opacity: .2;
+    opacity: 0.2;
 }
 
 div.cake-button-parent {

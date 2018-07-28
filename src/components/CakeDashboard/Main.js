@@ -4,7 +4,7 @@ import { Alert } from 'react-bootstrap';
 import { EstimatedCakeEarnings, EstimatedCakeEarningsDefault } from './EstimatedCakeEarnings';
 import LoadingSpinner from '../LoadingSpinner';
 import TickerChart from './TickerChart';
-import { ESPPDetails } from './ESPPDetails';
+import { ESPPDetails, ESPPDetailsDefault } from './ESPPDetails';
 
 import './Main.css';
 
@@ -25,9 +25,12 @@ export default class Main extends Component {
         this.unsubscribeUserDashboardData = subscribeUserDashboardDataChange(({ userDashboardData, loading, error }) => {
             this.setState({ userDashboardData, isLoadingUserDashboardData: loading, errorLoadingDashboardData: error });
         });
+
+        document.body.classList.add('main-dashboard-background');
     }
 
     componentWillUnmount() {
+        document.body.classList.remove('main-dashboard-background');
         if (this.unsubscribeUserDashboardData) {
             this.unsubscribeUserDashboardData();
         }
@@ -50,6 +53,8 @@ export default class Main extends Component {
                 </div>
                 <div className='dashboard-spacing' />
                 <TickerChart stockTicker={null} />
+                <div className='dashboard-spacing' />
+                <ESPPDetailsDefault />
             </Fragment>
         );
     }

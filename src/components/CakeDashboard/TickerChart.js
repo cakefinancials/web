@@ -54,7 +54,7 @@ export default class TickerChart extends Component {
                 }
                 <Row className='tradingview-widget-container'>
                     {
-                        !this.state.stockTicker ?
+                        !this.props.stockTicker ?
                             <p><small>Enter your company ticker to see stock price details:</small></p>
                             : null
                     }

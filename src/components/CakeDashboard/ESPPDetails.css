@@ -14,6 +14,25 @@ div.espp-details div.col-xs-6 {
     vertical-align: top;
 }
 
+div.espp-details-default {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 10px;
+    position: relative;
+}
+
+div.espp-details-default img {
+    position: absolute;
+    right: 35px;
+    height: 70%;
+    top: 14%;
+    margin-top: -10px;
+    -webkit-transform: rotate(30deg);
+    -ms-transform: rotate(30deg);
+    transform: rotate(30deg);
+    opacity: .24;
+}
+
 div.espp-details div.border-right {
     border-right: solid 1px #e2e2e2;
     position: relative;
@@ -59,4 +78,8 @@ div.personal-details-modal-text-content {
     margin: 40px;
     max-width: 100%;
     width: auto;
+}
+
+div.pad-bottom {
+    padding-bottom: 40px;
 }

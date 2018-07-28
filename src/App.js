@@ -99,7 +99,6 @@ class App extends Component {
             document.body.classList.remove('login-signup-background');
         }
 
-
         return (
             !this.state.isAuthenticating &&
             <div>
