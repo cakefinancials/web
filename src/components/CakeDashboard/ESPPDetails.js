@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Col, Glyphicon, Modal, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
+import axios from 'axios';
 
 import { ObfuscatedBankAccountInfo, BankAccountInfoEditor } from '../BankAccountInfo';
 import { ObfuscatedBrokerageCredentials, BrokerageCredentialsEditor } from '../BrokerageCredentials';
+import CakeButton from '../helpers/CakeButton';
+import { subscribeSessionChange } from '../../libs/userState';
 
 import './ESPPDetails.css';
 import '../AccountSetup/StepsTooltip.css';
@@ -27,8 +30,23 @@ export class ESPPDetails extends Component {
         super(props);
 
         this.state = {
-            showEditPersonalDetailsModal: false
+            showEditPersonalDetailsModal: false,
+            showEditFinancialDetailsModal: false,
+            email: null
         };
+    }
+
+    componentDidMount() {
+        this.unsubscribeSessionChange = subscribeSessionChange((session) => {
+            const email = session.idToken.payload.email;
+            this.setState({ email });
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribeSessionChange) {
+            this.unsubscribeSessionChange();
+        }
     }
 
     handleCloseEditPersonalDetailsModal() {
@@ -39,6 +57,14 @@ export class ESPPDetails extends Component {
         this.setState({ showEditPersonalDetailsModal: true });
     }
 
+    handleCloseEditFinancialDetailsModal() {
+        this.setState({ showEditFinancialDetailsModal: false });
+    }
+
+    handleShowEditFinancialDetailsModal() {
+        this.setState({ showEditFinancialDetailsModal: true });
+    }
+
     renderEditPersonalDetailsModal() {
         return (
             <Modal
@@ -46,6 +72,59 @@ export class ESPPDetails extends Component {
                 className='espp-details-modal'
                 show={this.state.showEditPersonalDetailsModal}
                 onHide={() => this.handleCloseEditPersonalDetailsModal()}
+            >
+                <Modal.Header
+                    className='espp-details-modal-header'
+                    closeButton
+                />
+                <Modal.Body>
+                    <Row>
+                        <Col xs={12} className='personal-details-modal-text-content'>
+                            <p><strong>Did your compensation change?</strong></p>
+
+                            <p>
+                                If so, your analyst will verify this via your brokerage account
+                                and update your details accordingly. We need to verify this manually,
+                                as a compensation change may trigger an adjustment to the Cake paperwork.
+                            </p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col xs={4} xsOffset={2}>
+                            <CakeButton
+                                bsSize='large'
+                                onClick={() => {
+                                    axios.get(
+                                        'https://hooks.zapier.com/hooks/catch/403974/gtg3ka/',
+                                        { params: { email: this.state.email } }
+                                    );
+                                }}
+                            >
+                                Yes, there was a change
+                            </CakeButton>
+                        </Col>
+                        <Col xs={4}>
+                            <CakeButton
+                                cancelButton
+                                bsSize='large'
+                                onClick={() => this.handleCloseEditPersonalDetailsModal()}
+                            >
+                                Cancel
+                            </CakeButton>
+                        </Col>
+                    </Row>
+                </Modal.Body>
+            </Modal>
+        );
+    }
+
+    renderEditFinancialDetailsModal() {
+        return (
+            <Modal
+                bsSize='large'
+                className='espp-details-modal'
+                show={this.state.showEditFinancialDetailsModal}
+                onHide={() => this.handleCloseEditFinancialDetailsModal()}
             >
                 <Modal.Header
                     className='espp-details-modal-header'
@@ -82,6 +161,7 @@ export class ESPPDetails extends Component {
         return (
             <Row className='espp-details dashboard-data-container'>
                 { this.renderEditPersonalDetailsModal() }
+                { this.renderEditFinancialDetailsModal() }
                 <Col xs={6} className='border-right'>
                     <h3>Your ESPP: <span className='right'><big>{ company }</big></span></h3>
                     <br />
@@ -107,7 +187,7 @@ export class ESPPDetails extends Component {
                 </Col>
                 <Col xs={6} className='border-left'>
                     <h3>Your Details: <span className='right'>
-                        <a className='modal-link' onClick={() => {}}>edit my personal details</a>
+                        <a className='modal-link' onClick={() => this.handleShowEditPersonalDetailsModal()}>edit my personal details</a>
                     </span></h3>
                     <br />
                     Salary (annual): <strong>{ salary }</strong>
@@ -123,7 +203,7 @@ export class ESPPDetails extends Component {
                     <br />
                     <br />
                     <h3>Financial Details: <span className='right'>
-                        <a className='modal-link' onClick={() => this.handleShowEditPersonalDetailsModal()}>edit my financial details</a>
+                        <a className='modal-link' onClick={() => this.handleShowEditFinancialDetailsModal()}>edit my financial details</a>
                     </span></h3>
                     <br />
                     <ObfuscatedBrokerageCredentials />

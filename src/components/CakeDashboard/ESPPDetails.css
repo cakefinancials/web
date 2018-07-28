@@ -54,3 +54,9 @@ div.espp-details a.modal-link {
 div.modal.espp-details-modal div.modal-dialog {
     margin-top: 100px;
 }
+
+div.personal-details-modal-text-content {
+    margin: 40px;
+    max-width: 100%;
+    width: auto;
+}

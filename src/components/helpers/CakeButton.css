@@ -7,6 +7,11 @@ button.cake-form-button {
     border: 0px;
 }
 
+button.cake-form-button.cake-form-button-cancel-style {
+    border: solid 2px #4a4a4a;
+    color: black;
+}
+
 button.cake-form-button.btn[disabled] {
     opacity: .2;
 }
