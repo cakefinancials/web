@@ -45,3 +45,12 @@ div.espp-details a.modal-link {
     font-size: 12px;
     cursor: pointer;
 }
+
+.modal-header.espp-details-modal-header {
+    border-bottom: none;
+    padding: 15px 15px 0px 0px;
+}
+
+div.modal.espp-details-modal div.modal-dialog {
+    margin-top: 100px;
+}

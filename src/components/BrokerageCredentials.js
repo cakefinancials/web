@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 import Lock from './helpers/Lock';
-import CakeButton from './helpers/CakeButton';
+import LoaderButton from '../components/LoaderButton';
 import * as R from 'ramda';
 
 import './helpers/FormStyles.css';
@@ -20,12 +20,14 @@ export class BrokerageCredentialsEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.DEFAULT_STATE = {
             isSaving: false,
             username: '',
             password: '',
             brokerage: '',
         };
+
+        this.state = this.DEFAULT_STATE;
     }
 
     handleSubmit = async event => {
@@ -39,12 +41,15 @@ export class BrokerageCredentialsEditor extends Component {
                 password: this.state.password,
                 brokerage: this.state.brokerage,
             });
+            this.setState(this.DEFAULT_STATE);
         } catch (e) {
             alert(e);
         }
 
         this.setState({ isSaving: false });
-        this.props.brokerageCredentialsSaved();
+        if (this.props.brokerageCredentialsSaved) {
+            this.props.brokerageCredentialsSaved();
+        }
     }
 
     saveBrokerageCredentials(brokerageCredentials) {
@@ -75,12 +80,6 @@ export class BrokerageCredentialsEditor extends Component {
             passwordValidation: this.validatePassword(this.state.password),
             brokerageValidation: this.validateBrokerage(this.state.brokerage),
         };
-    }
-
-    renderSavingContent = () => {
-        return (
-            <LoadingSpinner bsSize='large' text='Saving...' />
-        );
     }
 
     renderSaveForm = () => {
@@ -157,14 +156,15 @@ export class BrokerageCredentialsEditor extends Component {
                     </FormGroup>
                     <br />
                     <Col xs={6} xsOffset={3}>
-                        <CakeButton
+                        <LoaderButton
                             block
                             bsSize='large'
                             disabled={!(usernameValidation && passwordValidation && brokerageValidation)}
                             type='submit'
-                        >
-                            { this.props.saveButtonText || 'Save' }
-                        </CakeButton>
+                            isLoading={this.state.isSaving}
+                            text={this.props.saveButtonText || 'Save' }
+                            loadingText='Saving…'
+                        />
                         {
                             this.props.showCancel ? (
                                 <Button
@@ -186,7 +186,7 @@ export class BrokerageCredentialsEditor extends Component {
     }
 
     render = () => {
-        return this.state.isSaving ? this.renderSavingContent() : this.renderSaveForm();
+        return this.renderSaveForm();
     }
 }
 
@@ -222,7 +222,7 @@ export class ObfuscatedBrokerageCredentials extends Component {
 
     renderLoading = () => {
         return (
-            <LoadingSpinner bsSize="large" text="Loading existing brokerage credentials..." />
+            <LoadingSpinner bsSize='large' text='Loading existing brokerage credentials...' />
         );
     }
 

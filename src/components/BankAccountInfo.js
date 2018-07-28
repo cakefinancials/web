@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 import Lock from './helpers/Lock';
-import CakeButton from './helpers/CakeButton';
+import LoaderButton from '../components/LoaderButton';
 import * as R from 'ramda';
 
 import './helpers/FormStyles.css';
@@ -21,11 +21,13 @@ export class BankAccountInfoEditor extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
+        this.DEFAULT_STATE = {
             isSaving: false,
             routingNumber: '',
             accountNumber: '',
         };
+
+        this.state = this.DEFAULT_STATE;
     }
 
     validateABARoutingNumber = (routingNumber) => {
@@ -68,12 +70,17 @@ export class BankAccountInfoEditor extends Component {
                 routingNumber: this.state.routingNumber,
                 accountNumber: this.state.accountNumber,
             });
+
+            this.setState(this.DEFAULT_STATE);
         } catch (e) {
             alert(e);
         }
 
         this.setState({ isSaving: false });
-        this.props.bankAccountInfoSaved();
+
+        if (this.props.bankAccountInfoSaved) {
+            this.props.bankAccountInfoSaved();
+        }
     }
 
     saveBankInfo(bankInfo) {
@@ -84,12 +91,6 @@ export class BankAccountInfoEditor extends Component {
         this.setState({
             [event.target.id]: event.target.value
         });
-    }
-
-    renderSavingContent = () => {
-        return (
-            <LoadingSpinner bsSize='large' text='Saving...' />
-        );
     }
 
     renderSaveForm = () => {
@@ -143,14 +144,15 @@ export class BankAccountInfoEditor extends Component {
                     </FormGroup>
                     <br />
                     <Col xs={6} xsOffset={3}>
-                        <CakeButton
+                        <LoaderButton
                             block
                             bsSize='large'
                             disabled={!(routingNumberValidation && accountNumberValidation)}
                             type='submit'
-                        >
-                            { this.props.saveButtonText || 'Save' }
-                        </CakeButton>
+                            isLoading={this.state.isSaving}
+                            text={this.props.saveButtonText || 'Save' }
+                            loadingText='Saving…'
+                        />
                         {
                             this.props.showCancel ? (
                                 <Button
@@ -172,7 +174,7 @@ export class BankAccountInfoEditor extends Component {
     }
 
     render = () => {
-        return this.state.isSaving ? this.renderSavingContent() : this.renderSaveForm();
+        return this.renderSaveForm();
     }
 }
 

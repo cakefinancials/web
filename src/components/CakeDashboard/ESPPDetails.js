@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Col, Glyphicon, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
+import { Col, Glyphicon, Modal, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 
-import { ObfuscatedBankAccountInfo } from '../BankAccountInfo';
-import { ObfuscatedBrokerageCredentials } from '../BrokerageCredentials';
+import { ObfuscatedBankAccountInfo, BankAccountInfoEditor } from '../BankAccountInfo';
+import { ObfuscatedBrokerageCredentials, BrokerageCredentialsEditor } from '../BrokerageCredentials';
 
 import './ESPPDetails.css';
 import '../AccountSetup/StepsTooltip.css';
@@ -27,8 +27,41 @@ export class ESPPDetails extends Component {
         super(props);
 
         this.state = {
-            loadingBrokerage: true
+            showEditPersonalDetailsModal: false
         };
+    }
+
+    handleCloseEditPersonalDetailsModal() {
+        this.setState({ showEditPersonalDetailsModal: false });
+    }
+
+    handleShowEditPersonalDetailsModal() {
+        this.setState({ showEditPersonalDetailsModal: true });
+    }
+
+    renderEditPersonalDetailsModal() {
+        return (
+            <Modal
+                bsSize='large'
+                className='espp-details-modal'
+                show={this.state.showEditPersonalDetailsModal}
+                onHide={() => this.handleCloseEditPersonalDetailsModal()}
+            >
+                <Modal.Header
+                    className='espp-details-modal-header'
+                    closeButton
+                />
+                <Modal.Body>
+                    <Row>
+                        <BankAccountInfoEditor />
+                    </Row>
+                    <hr />
+                    <Row>
+                        <BrokerageCredentialsEditor />
+                    </Row>
+                </Modal.Body>
+            </Modal>
+        );
     }
 
     render() {
@@ -48,6 +81,7 @@ export class ESPPDetails extends Component {
 
         return (
             <Row className='espp-details dashboard-data-container'>
+                { this.renderEditPersonalDetailsModal() }
                 <Col xs={6} className='border-right'>
                     <h3>Your ESPP: <span className='right'><big>{ company }</big></span></h3>
                     <br />
@@ -89,7 +123,7 @@ export class ESPPDetails extends Component {
                     <br />
                     <br />
                     <h3>Financial Details: <span className='right'>
-                        <a className='modal-link' onClick={() => {}}>edit my financial details</a>
+                        <a className='modal-link' onClick={() => this.handleShowEditPersonalDetailsModal()}>edit my financial details</a>
                     </span></h3>
                     <br />
                     <ObfuscatedBrokerageCredentials />
