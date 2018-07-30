@@ -54,7 +54,7 @@ class App extends Component {
     renderNavbar() {
         return (
             <div className='app-nav-container container-fluid'>
-                <Navbar fluid collapseOnSelect style={{ backgroundColor: '#8f2cfa' }}>
+                <Navbar fluid fixedTop collapseOnSelect style={{ backgroundColor: '#8f2cfa' }}>
                     <Navbar.Header>
                         <Navbar.Brand>
                             <div className={'app-logo'}></div>

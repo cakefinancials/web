@@ -14,9 +14,74 @@ div.cake-dashboard-main div.purple-cake-text {
     margin-bottom: 20px;
 }
 
-body.main-dashboard-background {
+body.main-dashboard {
     background-image: url(../../public/app/background_path.png);
     background-position: 50% 100%;
     background-repeat: no-repeat;
     background-size: 100% 30%;
+}
+
+div.cake-dashboard-main div.sidenav {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 230px; /* Set the width of the sidebar */
+    margin-top: 52px;
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #f5eaff; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 20px;
+}
+
+div.cake-dashboard-main div.sidenav p.dashboard-header {
+    font-family: HelveticaNeue;
+    font-size: 36px;
+    font-weight: 100;
+    color: #9013fe;
+    text-align: center;
+}
+
+div.cake-dashboard-main div.sidenav div.sprite-container {
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 33px;
+    color: black;
+    text-align: center;
+    position: relative;
+}
+
+div.cake-dashboard-main div.sidenav div.sprite-container.selected:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border-top: 30px solid transparent;
+	border-right: 15px solid white;
+	border-bottom: 30px solid transparent;
+    border-left: 0;
+    margin-top: -30px;
+    margin-left: -30px;
+}
+
+div.cake-dashboard-main div.sidenav div.sprite-container.selected {
+    background-color: #a33aff;
+    color: white;
+}
+
+div.cake-dashboard-main div.sidenav div.sprite-container img {
+    position: absolute;
+    height: 20px;
+    left: 10px;
+    transform: translateY(-50%);
+    top: 50%;
+}
+
+div.cake-dashboard-main div.main {
+    margin-left: 230px; /* Same as the width of the sidebar */
+    padding: 0px 10px;
 }

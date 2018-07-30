@@ -5,20 +5,26 @@
 
 .App.container {
     margin-bottom: 40px;
+    margin-top: 100px;
 }
 
 nav.navbar {
   border-radius: 0px;
   border: 0px;
+  height: 52px
 }
 
 .app-nav-container .app-logo.navbar-brand {
   font-weight: bold;
-  margin-left: -30px;
+  margin-left: -10px;
 }
 
 .app-nav-container .navbar-header {
   margin-left: 50%;
+}
+
+body.main-dashboard .app-nav-container .navbar-header {
+  margin-left: 80px;
 }
 
 .app-logo {
