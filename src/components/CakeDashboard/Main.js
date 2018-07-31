@@ -155,7 +155,7 @@ export default class Main extends Component {
                                             this.setState({ selectedSidebarTab: name });
                                         }}
                                     >
-                                        <img src={imgSrc} />
+                                        <img alt='' src={imgSrc} />
                                         <span>{mainText}</span>
                                         {
                                             smallText ?

@@ -229,7 +229,7 @@ export const ESPPDetailsDefault = () => {
                 <br />
                 <br />
             </Col>
-            <img src={cakeImageSrc} />
+            <img alt='' src={cakeImageSrc} />
         </Row>
     );
 };
