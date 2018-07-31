@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Alert } from 'react-bootstrap';
+import * as R from 'ramda';
 
 import { EstimatedCakeEarnings, EstimatedCakeEarningsDefault } from './EstimatedCakeEarnings';
 import LoadingSpinner from '../LoadingSpinner';
@@ -8,8 +9,35 @@ import { ESPPDetails, ESPPDetailsDefault } from './ESPPDetails';
 
 import './Main.css';
 import cakeImageSrc from '../../public/app/cake.png';
+import cakeSliceImageSrc from '../../public/app/cake-slice.png';
+import donutImageSrc from '../../public/app/donut.png';
 
 import { subscribeUserDashboardDataChange } from '../../libs/userState';
+
+const SIDEBAR_TABS_NAMES = {
+    DASHBOARD: 'DASHBOARD',
+    ESTIMATED_EARNINGS: 'ESTIMATED_EARNINGS',
+    LEARNING_CENTER: 'LEARNING_CENTER',
+};
+
+const SIDEBAR_TABS = [
+    {
+        name: SIDEBAR_TABS_NAMES.DASHBOARD,
+        imgSrc: cakeImageSrc,
+        mainText: 'Dashboard'
+    },
+    {
+        name: SIDEBAR_TABS_NAMES.ESTIMATED_EARNINGS,
+        imgSrc: donutImageSrc,
+        mainText: 'Estimated Earnings'
+    },
+    {
+        name: SIDEBAR_TABS_NAMES.LEARNING_CENTER,
+        imgSrc: cakeSliceImageSrc,
+        mainText: 'Learning Center',
+        smallText: 'Coming Soon!'
+    },
+];
 
 export default class Main extends Component {
     constructor(props) {
@@ -18,7 +46,8 @@ export default class Main extends Component {
         this.state = {
             isLoadingUserDashboardData: true,
             userDashboardData: null,
-            errorLoadingDashboardData: false
+            errorLoadingDashboardData: false,
+            selectedSidebarTab: SIDEBAR_TABS_NAMES.DASHBOARD
         };
     }
 
@@ -60,6 +89,47 @@ export default class Main extends Component {
         );
     }
 
+    renderSelectedTab() {
+        const renderers = {
+            [SIDEBAR_TABS_NAMES.DASHBOARD]: () => {
+                const { userDashboardData } = this.state;
+
+                if (userDashboardData === null || userDashboardData.company === '') {
+                    return this.renderDataMissingDashboard();
+                }
+
+                return (
+                    <Fragment>
+                        <EstimatedCakeEarnings
+                            estimated2017Earnings={userDashboardData['estimated 2017 earnings']}
+                            enrollmentPeriod={userDashboardData['Enrollment Period']}
+                        />
+                        <div className='dashboard-spacing' />
+                        <TickerChart stockTicker={userDashboardData['Stock Ticker']} />
+                        <div className='dashboard-spacing' />
+                        <ESPPDetails
+                            salary={userDashboardData['salary']}
+                            currentPaycheckAmount={userDashboardData['current paycheck amount']}
+                            payPeriod={userDashboardData['pay period']}
+                            lastPaycheck={userDashboardData['last paycheck']}
+                            company={userDashboardData['company']}
+                            companyDiscount={userDashboardData['Company Discount']}
+                            lookback={userDashboardData['Lookback']}
+                            enrollmentPeriod={userDashboardData['Enrollment Period']}
+                            maxAllowableContribution={userDashboardData['Max Allowable Contribution']}
+                            eSPPNotes={userDashboardData['ESPP Notes']}
+                            policyLink={userDashboardData['Policy Link']}
+                        />
+                    </Fragment>
+                );
+            },
+            [SIDEBAR_TABS_NAMES.ESTIMATED_EARNINGS]: () => <h3>COMING SOON...</h3>,
+            [SIDEBAR_TABS_NAMES.LEARNING_CENTER]: () => <h3>COMING SOON...</h3>,
+        };
+
+        return renderers[this.state.selectedSidebarTab]();
+    }
+
     renderMainDashboard() {
         if (this.state.errorLoadingDashboardData) {
             return (
@@ -69,50 +139,41 @@ export default class Main extends Component {
             );
         }
 
-        const { userDashboardData } = this.state;
-
-        if (userDashboardData === null || userDashboardData.company === '') {
-            return this.renderDataMissingDashboard();
-        }
-
         return (
             <Fragment>
                 <div className='sidenav'>
                     <p className='dashboard-header'>Your Dashboard</p>
-                    <div className='sprite-container selected'>
-                        <img src={cakeImageSrc} />
-                        <span>Dashboard</span>
-                    </div>
-                    <div className='sprite-container'>
-                        <img src={cakeImageSrc} />
-                        <span>Estimated Earnings</span>
-                    </div>
-                    <div className='sprite-container'>
-                        <img src={cakeImageSrc} />
-                        <span>Learning Center</span>
-                    </div>
+                    {
+                        R.map(
+                            ({ name, imgSrc, mainText, smallText }) => {
+                                const selected = name === this.state.selectedSidebarTab;
+                                return (
+                                    <div
+                                        className={'sidenav-option' + (selected ? ' selected' : '')}
+                                        key={name}
+                                        onClick={() => {
+                                            this.setState({ selectedSidebarTab: name });
+                                        }}
+                                    >
+                                        <img src={imgSrc} />
+                                        <span>{mainText}</span>
+                                        {
+                                            smallText ?
+                                                <Fragment>
+                                                    <br />
+                                                    <span className='small-text'>{smallText}</span>
+                                                </Fragment>
+                                                : null
+                                        }
+                                    </div>
+                                );
+                            },
+                            SIDEBAR_TABS
+                        )
+                    }
                 </div>
                 <div className='main'>
-                    <EstimatedCakeEarnings
-                        estimated2017Earnings={userDashboardData['estimated 2017 earnings']}
-                        enrollmentPeriod={userDashboardData['Enrollment Period']}
-                    />
-                    <div className='dashboard-spacing' />
-                    <TickerChart stockTicker={userDashboardData['Stock Ticker']} />
-                    <div className='dashboard-spacing' />
-                    <ESPPDetails
-                        salary={userDashboardData['salary']}
-                        currentPaycheckAmount={userDashboardData['current paycheck amount']}
-                        payPeriod={userDashboardData['pay period']}
-                        lastPaycheck={userDashboardData['last paycheck']}
-                        company={userDashboardData['company']}
-                        companyDiscount={userDashboardData['Company Discount']}
-                        lookback={userDashboardData['Lookback']}
-                        enrollmentPeriod={userDashboardData['Enrollment Period']}
-                        maxAllowableContribution={userDashboardData['Max Allowable Contribution']}
-                        eSPPNotes={userDashboardData['ESPP Notes']}
-                        policyLink={userDashboardData['Policy Link']}
-                    />
+                    { this.renderSelectedTab() }
                 </div>
             </Fragment>
         );

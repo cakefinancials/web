@@ -42,7 +42,7 @@ div.cake-dashboard-main div.sidenav p.dashboard-header {
     text-align: center;
 }
 
-div.cake-dashboard-main div.sidenav div.sprite-container {
+div.cake-dashboard-main div.sidenav div.sidenav-option {
     font-size: 14px;
     font-weight: bold;
     padding-top: 20px;
@@ -51,9 +51,19 @@ div.cake-dashboard-main div.sidenav div.sprite-container {
     color: black;
     text-align: center;
     position: relative;
+    cursor: pointer;
+    min-height: 60px;
+    max-height: 60px;
+    line-height: 0.95;
 }
 
-div.cake-dashboard-main div.sidenav div.sprite-container.selected:after {
+div.cake-dashboard-main div.sidenav div.sidenav-option span.small-text {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+
+div.cake-dashboard-main div.sidenav div.sidenav-option.selected:after {
     content: '';
     position: absolute;
     right: 0;
@@ -68,15 +78,15 @@ div.cake-dashboard-main div.sidenav div.sprite-container.selected:after {
     margin-left: -30px;
 }
 
-div.cake-dashboard-main div.sidenav div.sprite-container.selected {
+div.cake-dashboard-main div.sidenav div.sidenav-option.selected {
     background-color: #a33aff;
     color: white;
 }
 
-div.cake-dashboard-main div.sidenav div.sprite-container img {
+div.cake-dashboard-main div.sidenav div.sidenav-option img {
     position: absolute;
     height: 20px;
-    left: 10px;
+    left: 20px;
     transform: translateY(-50%);
     top: 50%;
 }
