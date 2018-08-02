@@ -29,7 +29,8 @@ const SIDEBAR_TABS = [
     {
         name: SIDEBAR_TABS_NAMES.ESTIMATED_EARNINGS,
         imgSrc: donutImageSrc,
-        mainText: 'Estimated Earnings'
+        mainText: 'Estimated Earnings',
+        smallText: 'Coming Soon!'
     },
     {
         name: SIDEBAR_TABS_NAMES.LEARNING_CENTER,
@@ -149,7 +150,11 @@ export default class Main extends Component {
                                 const selected = name === this.state.selectedSidebarTab;
                                 return (
                                     <div
-                                        className={'sidenav-option' + (selected ? ' selected' : '')}
+                                        className={
+                                            'sidenav-option' +
+                                            (selected ? ' selected' : '') +
+                                            (smallText ? ' small-text' : '')
+                                        }
                                         key={name}
                                         onClick={() => {
                                             this.setState({ selectedSidebarTab: name });

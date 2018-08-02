@@ -7,3 +7,7 @@
 .Signup .ts-and-cs-pp a {
     color: grey;
 }
+
+div.signup-form-container .signup-button {
+    margin-bottom: 10px;
+}

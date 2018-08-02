@@ -9,7 +9,7 @@ import {
 import queryString from 'query-string';
 
 import LoaderButton from '../components/LoaderButton';
-import './LoginSignupStyles.css';
+import './AuthStyles.css';
 
 export default class ForgotPassword extends Component {
     constructor(props) {
@@ -177,6 +177,6 @@ export default class ForgotPassword extends Component {
             content = this.renderSendCodeForm();
         }
 
-        return <div className='ForgotPassword login-form-container'>{ content }</div>;
+        return <div className='ForgotPassword auth-form-container'>{ content }</div>;
     }
 }

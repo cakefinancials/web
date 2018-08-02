@@ -9,7 +9,7 @@ import {
 import queryString from 'query-string';
 
 import LoaderButton from '../components/LoaderButton';
-import './LoginSignupStyles.css';
+import './AuthStyles.css';
 import './Verify.css';
 
 export default class Verify extends Component {
@@ -110,7 +110,7 @@ export default class Verify extends Component {
 
     render() {
         return (
-            <div className='Verify login-form-container'>
+            <div className='Verify auth-form-container'>
                 {this.state.confirmed ? this.renderConfirmed() : this.renderConfirmationForm()}
             </div>
         );

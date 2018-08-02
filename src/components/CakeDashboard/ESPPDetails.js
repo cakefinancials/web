@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Col, Glyphicon, Modal, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -34,7 +34,10 @@ export class ESPPDetails extends Component {
         this.state = {
             showEditPersonalDetailsModal: false,
             showEditFinancialDetailsModal: false,
-            email: null
+            email: null,
+            sentDetailsChangedNotification: false,
+            editedBrokerageDetails: false,
+            editedBankDetails: false,
         };
     }
 
@@ -60,7 +63,11 @@ export class ESPPDetails extends Component {
     }
 
     handleCloseEditFinancialDetailsModal() {
-        this.setState({ showEditFinancialDetailsModal: false });
+        this.setState({
+            showEditFinancialDetailsModal: false,
+            editedBankDetails: false,
+            editedBrokerageDetails: false
+        });
     }
 
     handleShowEditFinancialDetailsModal() {
@@ -68,11 +75,11 @@ export class ESPPDetails extends Component {
     }
 
     renderEditPersonalDetailsModal() {
-        return (
+        return !this.state.showEditPersonalDetailsModal ? null : (
             <Modal
                 bsSize='large'
                 className='espp-details-modal'
-                show={this.state.showEditPersonalDetailsModal}
+                show={true}
                 onHide={() => this.handleCloseEditPersonalDetailsModal()}
             >
                 <Modal.Header
@@ -80,52 +87,81 @@ export class ESPPDetails extends Component {
                     closeButton
                 />
                 <Modal.Body>
-                    <Row>
-                        <Col xs={12} className='personal-details-modal-text-content'>
-                            <p><strong>Did your compensation change?</strong></p>
+                    {
+                        this.state.sentDetailsChangedNotification ? (
+                            <Fragment>
+                                <Row>
+                                    <Col xs={12} className='personal-details-modal-text-content'>
+                                        <p>
+                                            You have successfully submitted a personal details change request.
+                                            Your analyst will reach out via email to continue the process.
+                                        </p>
+                                    </Col>
+                                </Row>
+                                <Row className='pad-bottom'>
+                                    <Col xs={4} xsOffset={4}>
+                                        <CakeButton
+                                            cancelButton
+                                            bsSize='large'
+                                            onClick={() => this.handleCloseEditPersonalDetailsModal()}
+                                        >
+                                            Close
+                                        </CakeButton>
+                                    </Col>
+                                </Row>
+                            </Fragment>
+                        ) : (
+                            <Fragment>
+                                <Row>
+                                    <Col xs={12} className='personal-details-modal-text-content'>
+                                        <p><strong>Did your compensation change?</strong></p>
 
-                            <p>
-                                If so, your analyst will verify this via your brokerage account
-                                and update your details accordingly. We need to verify this manually,
-                                as a compensation change may trigger an adjustment to the Cake paperwork.
-                            </p>
-                        </Col>
-                    </Row>
-                    <Row className='pad-bottom'>
-                        <Col xs={4} xsOffset={2}>
-                            <CakeButton
-                                bsSize='large'
-                                onClick={() => {
-                                    axios.get(
-                                        'https://hooks.zapier.com/hooks/catch/403974/gtg3ka/',
-                                        { params: { email: this.state.email } }
-                                    );
-                                }}
-                            >
-                                Yes, there was a change
-                            </CakeButton>
-                        </Col>
-                        <Col xs={4}>
-                            <CakeButton
-                                cancelButton
-                                bsSize='large'
-                                onClick={() => this.handleCloseEditPersonalDetailsModal()}
-                            >
-                                Cancel
-                            </CakeButton>
-                        </Col>
-                    </Row>
+                                        <p>
+                                            If so, your analyst will verify this via your brokerage account
+                                            and update your details accordingly. We need to verify this manually,
+                                            as a compensation change may trigger an adjustment to the Cake paperwork.
+                                        </p>
+                                    </Col>
+                                </Row>
+                                <Row className='pad-bottom'>
+                                    <Col xs={4} xsOffset={2}>
+                                        <CakeButton
+                                            bsSize='large'
+                                            onClick={() => {
+                                                axios.get(
+                                                    'https://hooks.zapier.com/hooks/catch/403974/gtg3ka/',
+                                                    { params: { email: this.state.email } }
+                                                );
+                                                this.setState({ sentDetailsChangedNotification: true });
+                                            }}
+                                        >
+                                            Yes, there was a change
+                                        </CakeButton>
+                                    </Col>
+                                    <Col xs={4}>
+                                        <CakeButton
+                                            cancelButton
+                                            bsSize='large'
+                                            onClick={() => this.handleCloseEditPersonalDetailsModal()}
+                                        >
+                                            Cancel
+                                        </CakeButton>
+                                    </Col>
+                                </Row>
+                            </Fragment>
+                        )
+                    }
                 </Modal.Body>
             </Modal>
         );
     }
 
     renderEditFinancialDetailsModal() {
-        return (
+        return !this.state.showEditFinancialDetailsModal ? null : (
             <Modal
                 bsSize='large'
                 className='espp-details-modal'
-                show={this.state.showEditFinancialDetailsModal}
+                show={true}
                 onHide={() => this.handleCloseEditFinancialDetailsModal()}
             >
                 <Modal.Header
@@ -134,11 +170,31 @@ export class ESPPDetails extends Component {
                 />
                 <Modal.Body>
                     <Row>
-                        <BankAccountInfoEditor />
+                        {
+                            this.state.editedBankDetails ? (
+                                <div className='centered-text'>
+                                    <p>Update successfully saved</p>
+                                </div>
+                            ) : (
+                                <BankAccountInfoEditor
+                                    bankAccountInfoSaved={() => this.setState({ editedBankDetails: true }) }
+                                />
+                            )
+                        }
                     </Row>
                     <hr />
                     <Row>
-                        <BrokerageCredentialsEditor />
+                        {
+                            this.state.editedBrokerageDetails ? (
+                                <div className='centered-text'>
+                                    <p>Update successfully saved</p>
+                                </div>
+                            ) : (
+                                <BrokerageCredentialsEditor
+                                    brokerageCredentialsSaved={() => this.setState({ editedBrokerageDetails: true }) }
+                                />
+                            )
+                        }
                     </Row>
                 </Modal.Body>
             </Modal>
@@ -160,6 +216,11 @@ export class ESPPDetails extends Component {
             policyLink,
         } = this.props;
 
+        const DISCOUNT_TEXT = 'The % discount is the % amount below the company stock price at which your shares can be purchased after the contribution period is ended. For example, a stock worth $100 at a company with a 15% discount policy, can be purchased for $85.';
+        const LOOKBACK_TEXT = 'If a company has a lookback policy, this usually means that your ESPP discount will be applied to the price of the stock at the start OR end of the contribution period (details can vary slightly company to company)';
+        const ENROLLMENT_PERIOD_TEXT = 'The amount of time during which your contributed % of salary will be earmarked to purchase discounted company stock, which will be automatically purchased on the end date of the purchase period.';
+        const MAX_CONTRIBUTION_TEXT = 'This is the maximum allowable salary % that your company allows you to contribute. The IRS limits ESPP purchases to $25,000 worth of stock for any calendar year, so depending on how much you make, it is possible to hit the IRS limit before hitting the company-imposed % limit.';
+
         return (
             <Row className='espp-details dashboard-data-container'>
                 { this.renderEditPersonalDetailsModal() }
@@ -167,23 +228,27 @@ export class ESPPDetails extends Component {
                 <Col xs={6} className='border-right'>
                     <h3>Your ESPP: <span className='right'><big>{ company }</big></span></h3>
                     <br />
-                    Discount: { createDetailsTooltip('SOME TEXT') } <strong>{ companyDiscount }</strong>
+                    Discount: { createDetailsTooltip(DISCOUNT_TEXT) } <strong>{ companyDiscount }</strong>
                     <br />
                     <br />
-                    Lookback: { createDetailsTooltip('SOME TEXT') } <strong>{ lookback }</strong>
+                    Lookback: { createDetailsTooltip(LOOKBACK_TEXT) } <strong>{ lookback }</strong>
                     <br />
                     <br />
-                    Enrollment Period Length: { createDetailsTooltip('SOME TEXT') } <strong>{ enrollmentPeriod }</strong>
+                    Enrollment Period Length: { createDetailsTooltip(ENROLLMENT_PERIOD_TEXT) } <strong>{ enrollmentPeriod }</strong>
                     <br />
                     <br />
-                    Max Allowable Annual Contribution: { createDetailsTooltip('SOME TEXT') } <strong>{ maxAllowableContribution }</strong>
+                    Max Allowable Annual Contribution: { createDetailsTooltip(MAX_CONTRIBUTION_TEXT) } <strong>{ maxAllowableContribution }</strong>
                     <div className='center-text bottom-notes'>
                         <small>
-                            <i>{eSPPNotes}</i>
+                            { eSPPNotes ? <i>{eSPPNotes}</i> : null }
                             <br />
-                            <a rel="noopener noreferrer" target="_blank" href={policyLink}>
-                                READ FULL DETAILS OF {company.toUpperCase()} POLICY HERE
-                            </a>
+                            {
+                                policyLink ? (
+                                    <a rel="noopener noreferrer" target="_blank" href={policyLink}>
+                                        READ FULL DETAILS OF {company.toUpperCase()} POLICY HERE
+                                    </a>
+                                ) : null
+                            }
                         </small>
                     </div>
                 </Col>

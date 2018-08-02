@@ -9,13 +9,17 @@ html {
     min-height: 100%;
 }
 
-div.login-form-container {
+div.auth-form-container {
     padding: 60px 0;
 }
 
-div.login-form-container form {
+div.auth-form-container form {
     margin: 0 auto;
     max-width: 320px;
+}
+
+div.auth-form-container .auth-button {
+    margin-bottom: 10px;
 }
 
 div.cake-logo-container {

@@ -54,7 +54,6 @@ div.cake-dashboard-main div.sidenav div.sidenav-option {
     cursor: pointer;
     min-height: 60px;
     max-height: 60px;
-    line-height: 0.95;
 }
 
 div.cake-dashboard-main div.sidenav div.sidenav-option span.small-text {
@@ -81,6 +80,10 @@ div.cake-dashboard-main div.sidenav div.sidenav-option.selected:after {
 div.cake-dashboard-main div.sidenav div.sidenav-option.selected {
     background-color: #a33aff;
     color: white;
+}
+
+div.cake-dashboard-main div.sidenav div.sidenav-option.small-text {
+    line-height: 0.95;
 }
 
 div.cake-dashboard-main div.sidenav div.sidenav-option img {

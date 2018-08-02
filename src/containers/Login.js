@@ -7,7 +7,7 @@ import * as R from 'ramda';
 
 import LoaderButton from '../components/LoaderButton';
 import './Login.css';
-import './LoginSignupStyles.css';
+import './AuthStyles.css';
 import { Auth } from 'aws-amplify';
 import { fetchCurrentUserSession } from '../libs/userState';
 
@@ -55,7 +55,7 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div className="Login login-form-container center-text">
+            <div className="Login auth-form-container center-text">
                 <div className="cake-logo-container"></div>
                 <h1>Cake Financials</h1>
                 <br />
@@ -90,6 +90,7 @@ export default class Login extends Component {
                         <LoaderButton
                             block
                             bsSize="large"
+                            className={'auth-button'}
                             type="submit"
                             isLoading={this.state.isLoading}
                             text="LOGIN"

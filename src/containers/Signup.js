@@ -10,7 +10,7 @@ import queryString from 'query-string';
 
 import LoaderButton from '../components/LoaderButton';
 import './Signup.css';
-import './LoginSignupStyles.css';
+import './AuthStyles.css';
 
 import termsAndConditions from '../public/app/terms_and_conditions.htm';
 import privacyPolicy from '../public/app/privacy_policy.htm';
@@ -105,6 +105,7 @@ export default class Signup extends Component {
                 <LoaderButton
                     block
                     bsSize="large"
+                    className={'auth-button'}
                     type="submit"
                     isLoading={this.state.isLoading}
                     text="Signup"
@@ -116,7 +117,7 @@ export default class Signup extends Component {
 
     render() {
         return (
-            <div className="Signup login-form-container center-text">
+            <div className="Signup auth-form-container center-text">
                 <div className="cake-logo-container"></div>
                 <h1>CREATE ACCOUNT</h1>
                 <p><small>Welcome to Cake! Please sign up below to begin making money with cake</small></p>
