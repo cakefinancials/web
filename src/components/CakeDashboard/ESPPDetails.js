@@ -12,12 +12,16 @@ import cakeImageSrc from '../../public/app/cake.png';
 import './ESPPDetails.css';
 import '../AccountSetup/StepsTooltip.css';
 
+let TOOLTIP_COUNTER = 0;
 const createDetailsTooltip = (tooltipText) => {
     return (
         <OverlayTrigger
             placement='right'
             overlay={
-                <Tooltip className='steps-tooltip'>
+                <Tooltip
+                    id={`ESPP-DETAILS-TOOLTIP-${TOOLTIP_COUNTER++}`}
+                    className='steps-tooltip'
+                >
                     { tooltipText }
                 </Tooltip>
             }
@@ -210,7 +214,7 @@ export class ESPPDetails extends Component {
             company,
             companyDiscount,
             lookback,
-            enrollmentPeriod,
+            purchasePeriod,
             maxAllowableContribution,
             eSPPNotes,
             policyLink,
@@ -218,7 +222,7 @@ export class ESPPDetails extends Component {
 
         const DISCOUNT_TEXT = 'The % discount is the % amount below the company stock price at which your shares can be purchased after the contribution period is ended. For example, a stock worth $100 at a company with a 15% discount policy, can be purchased for $85.';
         const LOOKBACK_TEXT = 'If a company has a lookback policy, this usually means that your ESPP discount will be applied to the price of the stock at the start OR end of the contribution period (details can vary slightly company to company)';
-        const ENROLLMENT_PERIOD_TEXT = 'The amount of time during which your contributed % of salary will be earmarked to purchase discounted company stock, which will be automatically purchased on the end date of the purchase period.';
+        const PURCHASE_PERIOD_TEXT = 'The amount of time during which your contributed % of salary will be earmarked to purchase discounted company stock, which will be automatically purchased on the end date of the purchase period.';
         const MAX_CONTRIBUTION_TEXT = 'This is the maximum allowable salary % that your company allows you to contribute. The IRS limits ESPP purchases to $25,000 worth of stock for any calendar year, so depending on how much you make, it is possible to hit the IRS limit before hitting the company-imposed % limit.';
 
         return (
@@ -234,7 +238,7 @@ export class ESPPDetails extends Component {
                     Lookback: { createDetailsTooltip(LOOKBACK_TEXT) } <strong>{ lookback }</strong>
                     <br />
                     <br />
-                    Enrollment Period Length: { createDetailsTooltip(ENROLLMENT_PERIOD_TEXT) } <strong>{ enrollmentPeriod }</strong>
+                    Purchase Period Length: { createDetailsTooltip(PURCHASE_PERIOD_TEXT) } <strong>{ purchasePeriod }</strong>
                     <br />
                     <br />
                     Max Allowable Annual Contribution: { createDetailsTooltip(MAX_CONTRIBUTION_TEXT) } <strong>{ maxAllowableContribution }</strong>

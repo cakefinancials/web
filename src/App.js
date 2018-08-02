@@ -48,7 +48,7 @@ class App extends Component {
         await Auth.signOut();
 
         clearCurrentUserSession();
-        this.props.history.push('/login');
+        window.location.replace('/login');
     }
 
     renderNavbar() {

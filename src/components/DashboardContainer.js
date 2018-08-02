@@ -4,7 +4,7 @@ import LoadingSpinner from './LoadingSpinner';
 import Walkthrough from './AccountSetup/Walkthrough';
 import Main from './CakeDashboard/Main';
 
-import { fetchUserState, subscribeUserStateChange, userStateActions } from '../libs/userState';
+import { subscribeUserStateChange, userStateActions } from '../libs/userState';
 
 const { CONSTANTS: { WALKTHROUGH } } = userStateActions;
 
@@ -13,16 +13,13 @@ export default class DashboardContainer extends Component {
         super(props);
 
         this.state = {
-            isLoadingUserState: true,
+            loadingUserState: true,
             syncErrors: [],
             syncingUserState: false,
         };
     }
 
     async componentDidMount() {
-        await fetchUserState();
-        this.setState({ isLoadingUserState: false });
-
         this.unsubscribeUserStateChange = subscribeUserStateChange(userStateUpdates => {
             this.setState(userStateUpdates);
         });
@@ -56,7 +53,7 @@ export default class DashboardContainer extends Component {
     }
 
     getRenderBody() {
-        if (this.state.isLoadingUserState) {
+        if (this.state.loadingUserState) {
             return this.renderInitialLoading();
         } else if (this.state.syncingUserState) {
             return this.renderSyncingUserState();

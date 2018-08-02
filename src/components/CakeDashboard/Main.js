@@ -102,24 +102,24 @@ export default class Main extends Component {
                 return (
                     <Fragment>
                         <EstimatedCakeEarnings
-                            estimated2017Earnings={userDashboardData['estimated 2017 earnings']}
-                            enrollmentPeriod={userDashboardData['Enrollment Period']}
+                            estimated2017Earnings={userDashboardData['ESTIMATED 2017 EARNINGS']}
+                            enrollmentPeriod={userDashboardData['ENROLLMENT PERIOD']}
                         />
                         <div className='dashboard-spacing' />
-                        <TickerChart stockTicker={userDashboardData['Stock Ticker']} />
+                        <TickerChart stockTicker={userDashboardData['STOCK TICKER']} />
                         <div className='dashboard-spacing' />
                         <ESPPDetails
-                            salary={userDashboardData['salary']}
-                            currentPaycheckAmount={userDashboardData['current paycheck amount']}
-                            payPeriod={userDashboardData['pay period']}
-                            lastPaycheck={userDashboardData['last paycheck']}
-                            company={userDashboardData['company']}
-                            companyDiscount={userDashboardData['Company Discount']}
-                            lookback={userDashboardData['Lookback']}
-                            enrollmentPeriod={userDashboardData['Enrollment Period']}
-                            maxAllowableContribution={userDashboardData['Max Allowable Contribution']}
-                            eSPPNotes={userDashboardData['ESPP Notes']}
-                            policyLink={userDashboardData['Policy Link']}
+                            salary={userDashboardData['SALARY']}
+                            currentPaycheckAmount={userDashboardData['CURRENT PAYCHECK AMOUNT']}
+                            payPeriod={userDashboardData['PAY PERIOD']}
+                            lastPaycheck={userDashboardData['LAST PAYCHECK']}
+                            company={userDashboardData['COMPANY']}
+                            companyDiscount={userDashboardData['COMPANY DISCOUNT']}
+                            lookback={userDashboardData['LOOKBACK']}
+                            purchasePeriod={userDashboardData['PURCHASE PERIOD']}
+                            maxAllowableContribution={userDashboardData['MAX ALLOWABLE CONTRIBUTION']}
+                            eSPPNotes={userDashboardData['ESPP NOTES']}
+                            policyLink={userDashboardData['POLICY LINK']}
                         />
                     </Fragment>
                 );

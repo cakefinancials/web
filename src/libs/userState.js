@@ -46,38 +46,38 @@ const getSimpleEventListener = () => {
     };
 };
 
-let lastSyncedUserState;
-let localUserState;
-const syncErrors = [];
-let syncingUserState = false;
+const userStateNotificationBlob = {
+    lastSyncedUserState: null,
+    localUserState: null,
+    syncErrors: [],
+    syncingUserState: false,
+    loadingUserState: false,
+};
 
 const userStateChangeHistory = [];
 
 const userStateNotifier = getSimpleEventListener();
 
-const notifyUserStateChange = () => {
-    userStateNotifier.notify({
-        lastSyncedUserState,
-        localUserState,
-        syncErrors,
-        syncingUserState,
-    });
-};
+const notifyUserStateChange = () => userStateNotifier.notify(userStateNotificationBlob);
 
-export const subscribeUserStateChange = userStateNotifier.subscribe;
+const fetchUserState = async () => {
+    userStateNotificationBlob.loadingUserState = true;
+    notifyUserStateChange();
 
-export const fetchUserState = async () => {
     const response = await API.get('cake', '/user/state');
 
-    lastSyncedUserState = Immutable.fromJS(response);
-    localUserState = lastSyncedUserState;
+    userStateNotificationBlob.lastSyncedUserState = Immutable.fromJS(response);
+    userStateNotificationBlob.localUserState = userStateNotificationBlob.lastSyncedUserState;
+    userStateNotificationBlob.loadingUserState = false;
 
     notifyUserStateChange();
 };
 
+export const subscribeUserStateChange = userStateNotifier.subscribeWithInitialization(fetchUserState);
+
 export const updateUserState = async () => {
     try {
-        syncingUserState = true;
+        userStateNotificationBlob.syncingUserState = true;
         notifyUserStateChange();
 
         await API.post(
@@ -85,18 +85,18 @@ export const updateUserState = async () => {
             '/user/state',
             {
                 body: {
-                    previousState: lastSyncedUserState.toJS(),
-                    nextState: localUserState.toJS(),
+                    previousState: userStateNotificationBlob.lastSyncedUserState.toJS(),
+                    nextState: userStateNotificationBlob.localUserState.toJS(),
                 }
             }
         );
 
-        lastSyncedUserState = localUserState;
+        userStateNotificationBlob.lastSyncedUserState = userStateNotificationBlob.localUserState;
     } catch (err) {
-        syncErrors.push(err);
+        userStateNotificationBlob.syncErrors.push(err);
     }
 
-    syncingUserState = false;
+    userStateNotificationBlob.syncingUserState = false;
     notifyUserStateChange();
 };
 
@@ -112,18 +112,18 @@ export const userStateActions = (() => {
     };
 
     const createSetter = (pathInUserStateBag) => (valueToSet) => {
-        const updatedLocalUserState = localUserState.setIn(
+        const updatedLocalUserState = userStateNotificationBlob.localUserState.setIn(
             pathInUserStateBag,
             valueToSet
         );
         userStateChangeHistory.push(updatedLocalUserState);
-        localUserState = updatedLocalUserState;
+        userStateNotificationBlob.localUserState = updatedLocalUserState;
 
         notifyUserStateChange();
     };
 
     const createGetter = (pathInUserStateBag, notSetValue) => () => {
-        const value = localUserState.getIn(pathInUserStateBag, notSetValue);
+        const value = userStateNotificationBlob.localUserState.getIn(pathInUserStateBag, notSetValue);
         if (Immutable.isImmutable(value)) {
             return value.toJS();
         } else {
