@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Row } from 'react-bootstrap';
 import * as R from 'ramda';
 
@@ -39,20 +39,27 @@ export const EstimatedCakeEarnings = ({ estimated2017Earnings, purchasePeriod })
 
 export const EstimatedCakeEarningsDefault = () => {
     return (
-        <Row className='estimated-cake-earnings dashboard-data-container centered-text'>
-            <br />
-            <div>
-                Last year an Intuit employee making $100,000 would have made:
+        <Fragment>
+            <div className='center-text'>
+                <div className='purple-cake-text'>
+                    <big>Welcome to your Cake dashboard! All of your data will populate after your analyst has reviewed your account details.</big>
+                </div>
             </div>
-            <br />
-            <div>
-                <div className='yearly-earnings'>$2,051</div>
-            </div>
-            <br />
-            <div>
-                And received an average quarterly Cake check for <span className='cake-payouts'>$512.75</span>
-            </div>
-            <br />
-        </Row>
+            <Row className='estimated-cake-earnings dashboard-data-container centered-text'>
+                <br />
+                <div>
+                    Last year an Intuit employee making $100,000 would have made:
+                </div>
+                <br />
+                <div>
+                    <div className='yearly-earnings'>$2,051</div>
+                </div>
+                <br />
+                <div>
+                    And received an average quarterly Cake check for <span className='cake-payouts'>$512.75</span>
+                </div>
+                <br />
+            </Row>
+        </Fragment>
     );
 };

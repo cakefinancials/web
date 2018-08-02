@@ -76,12 +76,7 @@ export default class Main extends Component {
     renderDataMissingDashboard() {
         return (
             <Fragment>
-                <div className='center-text'>
-                    <div className='purple-cake-text'>
-                        <big>Welcome to your Cake dashboard! All of your data will populate after your analyst has reviewed your account details.</big>
-                    </div>
-                    <EstimatedCakeEarningsDefault />
-                </div>
+                <EstimatedCakeEarningsDefault />
                 <div className='dashboard-spacing' />
                 <TickerChart stockTicker={null} />
                 <div className='dashboard-spacing' />
@@ -95,29 +90,36 @@ export default class Main extends Component {
             [SIDEBAR_TABS_NAMES.DASHBOARD]: () => {
                 const { userDashboardData } = this.state;
 
-                if (userDashboardData === null || userDashboardData.company === '') {
+                if (userDashboardData === null) {
                     return this.renderDataMissingDashboard();
                 }
 
+                const NAIfEmptyString = (val) => val === '' ? 'N/A' : val;
+
                 return (
                     <Fragment>
-                        <EstimatedCakeEarnings
-                            estimated2017Earnings={userDashboardData['ESTIMATED 2017 EARNINGS']}
-                            purchasePeriod={userDashboardData['PURCHASE PERIOD']}
-                        />
+                        {
+                            userDashboardData['ESTIMATED 2017 EARNINGS'] === '0' ?
+                                <EstimatedCakeEarningsDefault /> : (
+                                    <EstimatedCakeEarnings
+                                        estimated2017Earnings={userDashboardData['ESTIMATED 2017 EARNINGS']}
+                                        purchasePeriod={userDashboardData['PURCHASE PERIOD']}
+                                    />
+                                )
+                        }
                         <div className='dashboard-spacing' />
                         <TickerChart stockTicker={userDashboardData['STOCK TICKER']} />
                         <div className='dashboard-spacing' />
                         <ESPPDetails
-                            salary={userDashboardData['SALARY']}
-                            currentPaycheckAmount={userDashboardData['CURRENT PAYCHECK AMOUNT']}
-                            payPeriod={userDashboardData['PAY PERIOD']}
-                            lastPaycheck={userDashboardData['LAST PAYCHECK']}
-                            company={userDashboardData['COMPANY']}
-                            companyDiscount={userDashboardData['COMPANY DISCOUNT']}
-                            lookback={userDashboardData['LOOKBACK']}
-                            purchasePeriod={userDashboardData['PURCHASE PERIOD']}
-                            maxAllowableContribution={userDashboardData['MAX ALLOWABLE CONTRIBUTION']}
+                            salary={NAIfEmptyString(userDashboardData['SALARY'])}
+                            currentPaycheckAmount={NAIfEmptyString(userDashboardData['CURRENT PAYCHECK AMOUNT'])}
+                            payPeriod={NAIfEmptyString(userDashboardData['PAY PERIOD'])}
+                            lastPaycheck={NAIfEmptyString(userDashboardData['LAST PAYCHECK'])}
+                            company={NAIfEmptyString(userDashboardData['COMPANY'])}
+                            companyDiscount={NAIfEmptyString(userDashboardData['COMPANY DISCOUNT'])}
+                            lookback={NAIfEmptyString(userDashboardData['LOOKBACK'] || 'N/A')}
+                            purchasePeriod={NAIfEmptyString(userDashboardData['PURCHASE PERIOD'])}
+                            maxAllowableContribution={NAIfEmptyString(userDashboardData['MAX ALLOWABLE CONTRIBUTION'])}
                             eSPPNotes={userDashboardData['ESPP NOTES']}
                             policyLink={userDashboardData['POLICY LINK']}
                         />

@@ -18,10 +18,6 @@ div.estimated-earnings {
     padding: 15px 15px 0px 0px;
 }
 
-div.modal.estimated-earnings-modal div.modal-dialog {
-    width: fit-content;
-}
-
 div.estimated-earnings-thumbnail-container {
     cursor: pointer;
     position: relative;

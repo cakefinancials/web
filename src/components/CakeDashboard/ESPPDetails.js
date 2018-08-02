@@ -229,7 +229,7 @@ export class ESPPDetails extends Component {
             <Row className='espp-details dashboard-data-container'>
                 { this.renderEditPersonalDetailsModal() }
                 { this.renderEditFinancialDetailsModal() }
-                <Col xs={6} className='border-right'>
+                <Col xs={6}>
                     <h3>Your ESPP: <span className='right'><big>{ company }</big></span></h3>
                     <br />
                     Discount: { createDetailsTooltip(DISCOUNT_TEXT) } <strong>{ companyDiscount }</strong>
@@ -242,10 +242,11 @@ export class ESPPDetails extends Component {
                     <br />
                     <br />
                     Max Allowable Annual Contribution: { createDetailsTooltip(MAX_CONTRIBUTION_TEXT) } <strong>{ maxAllowableContribution }</strong>
-                    <div className='center-text bottom-notes'>
+                    <br />
+                    <br />
+                    <div className='center-text'>
                         <small>
-                            { eSPPNotes ? <i>{eSPPNotes}</i> : null }
-                            <br />
+                            { eSPPNotes ? <Fragment><i>{eSPPNotes}</i><br /></Fragment> : null }
                             {
                                 policyLink ? (
                                     <a rel="noopener noreferrer" target="_blank" href={policyLink}>
