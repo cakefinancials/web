@@ -103,7 +103,7 @@ export default class Main extends Component {
                     <Fragment>
                         <EstimatedCakeEarnings
                             estimated2017Earnings={userDashboardData['ESTIMATED 2017 EARNINGS']}
-                            enrollmentPeriod={userDashboardData['ENROLLMENT PERIOD']}
+                            purchasePeriod={userDashboardData['PURCHASE PERIOD']}
                         />
                         <div className='dashboard-spacing' />
                         <TickerChart stockTicker={userDashboardData['STOCK TICKER']} />

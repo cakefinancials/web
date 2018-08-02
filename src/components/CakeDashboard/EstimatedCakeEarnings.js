@@ -14,15 +14,16 @@ const ENROLLMENT_PERIOD_DIVISORS = {
     '12 Months': 1,
 };
 
-export const EstimatedCakeEarnings = ({ estimated2017Earnings, enrollmentPeriod }) => {
+export const EstimatedCakeEarnings = ({ estimated2017Earnings, purchasePeriod }) => {
     if (R.isNil(estimated2017Earnings) || estimated2017Earnings === '0') {
         return null;
     }
 
+    console.log(purchasePeriod);
     const parsedEstimated2017Earnings = parseFloat(estimated2017Earnings);
     const estimated2017EarningsDollars = formatDollars(parsedEstimated2017Earnings);
 
-    const cakePayout = parsedEstimated2017Earnings / (ENROLLMENT_PERIOD_DIVISORS[enrollmentPeriod] || 1);
+    const cakePayout = parsedEstimated2017Earnings / (ENROLLMENT_PERIOD_DIVISORS[purchasePeriod] || 1);
     const cakePayoutsDollars = formatDollars(cakePayout);
 
     return (
