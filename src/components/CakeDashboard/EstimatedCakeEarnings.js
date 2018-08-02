@@ -19,7 +19,6 @@ export const EstimatedCakeEarnings = ({ estimated2017Earnings, purchasePeriod })
         return null;
     }
 
-    console.log(purchasePeriod);
     const parsedEstimated2017Earnings = parseFloat(estimated2017Earnings);
     const estimated2017EarningsDollars = formatDollars(parsedEstimated2017Earnings);
 
