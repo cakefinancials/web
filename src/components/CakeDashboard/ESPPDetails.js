@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { Col, Glyphicon, Modal, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
 
-import { ObfuscatedBankAccountInfo, BankAccountInfoEditor } from '../BankAccountInfo';
 import { ObfuscatedBrokerageCredentials, BrokerageCredentialsEditor } from '../BrokerageCredentials';
 import CakeButton from '../helpers/CakeButton';
 import { subscribeSessionChange } from '../../libs/userState';
@@ -41,7 +40,6 @@ export class ESPPDetails extends Component {
             email: null,
             sentDetailsChangedNotification: false,
             editedBrokerageDetails: false,
-            editedBankDetails: false,
         };
     }
 
@@ -69,7 +67,6 @@ export class ESPPDetails extends Component {
     handleCloseEditFinancialDetailsModal() {
         this.setState({
             showEditFinancialDetailsModal: false,
-            editedBankDetails: false,
             editedBrokerageDetails: false
         });
     }
@@ -175,20 +172,6 @@ export class ESPPDetails extends Component {
                 <Modal.Body>
                     <Row>
                         {
-                            this.state.editedBankDetails ? (
-                                <div className='centered-text'>
-                                    <p>Update successfully saved</p>
-                                </div>
-                            ) : (
-                                <BankAccountInfoEditor
-                                    bankAccountInfoSaved={() => this.setState({ editedBankDetails: true }) }
-                                />
-                            )
-                        }
-                    </Row>
-                    <hr />
-                    <Row>
-                        {
                             this.state.editedBrokerageDetails ? (
                                 <div className='centered-text'>
                                     <p>Update successfully saved</p>
@@ -279,8 +262,6 @@ export class ESPPDetails extends Component {
                     </span></h3>
                     <br />
                     <ObfuscatedBrokerageCredentials />
-                    <br />
-                    <ObfuscatedBankAccountInfo />
                 </Col>
             </Row>
         );

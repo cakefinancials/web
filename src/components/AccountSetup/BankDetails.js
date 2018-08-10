@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Button, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
+import CakeButton from '../helpers/CakeButton';
 
-import { BankAccountInfoEditor } from '../BankAccountInfo';
 import { SpeechBubble } from './helpers/SpeechBubble';
 
 import './BrokerageAndBankDetails.css';
 
-const ourCTOSaysSpeechBubbleText = `The credentials below will NOT allow us to access your bank, it
-will only allow us to send money to your specified bank account. That is a great thing, right?!`;
+const ourCTOSaysSpeechBubbleText = `Before we can enroll you in your company's ESPP, Cake will need you to
+authorize us to make deposits and withdrawals from your bank account so that we can transfer your profits to your account while also paying back the loan.
+Cake partners with best-in-class providers that gather this information on Cake's behalf, we do not store any of your data`;
 
 export default class BankDetails extends Component {
     componentDidMount() { }
@@ -37,7 +38,6 @@ export default class BankDetails extends Component {
                     </p>
                 </div>
                 <br />
-                <br />
                 <div className='cto-speech-bubble-container'>
                     <div>
                         <small><i>
@@ -48,19 +48,18 @@ export default class BankDetails extends Component {
                 </div>
                 <br />
                 <br />
-                <BankAccountInfoEditor
-                    bankAccountInfoSaved={() => this.props.navigateToNext()}
-                    saveButtonText='Save & Continue'
-                />
-                <br />
-                <div className='center-text'>
-                    <Button
-                        bsStyle='link'
-                        onClick={ () => this.props.navigateToNext() }
-                    >
-                        { 'SKIP FOR NOW >>' }
-                    </Button>
-                </div>
+                <Row>
+                    <Col xs={6} xsOffset={3}>
+                        <CakeButton
+                            bsSize='large'
+                            onClick={() => {
+                                this.props.navigateToNext();
+                            }}
+                        >
+                            GOT IT, LET'S KEEP GOING
+                        </CakeButton>
+                    </Col>
+                </Row>
             </Col>
         );
     }
