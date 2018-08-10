@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 
 import { BankAccountInfoEditor } from '../BankAccountInfo';
 import { SpeechBubble } from './helpers/SpeechBubble';
@@ -52,6 +52,15 @@ export default class BankDetails extends Component {
                     bankAccountInfoSaved={() => this.props.navigateToNext()}
                     saveButtonText='Save & Continue'
                 />
+                <br />
+                <div className='center-text'>
+                    <Button
+                        bsStyle='link'
+                        onClick={ () => this.props.navigateToNext() }
+                    >
+                        { 'SKIP FOR NOW >>' }
+                    </Button>
+                </div>
             </Col>
         );
     }

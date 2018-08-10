@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, Col, Glyphicon, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { BrokerageCredentialsEditor } from '../BrokerageCredentials';
 import { SpeechBubble } from './helpers/SpeechBubble';
@@ -85,6 +85,15 @@ export default class BrokerageAccess extends Component {
                     brokerageCredentialsSaved={() => this.props.navigateToNext()}
                     saveButtonText='Save & Continue'
                 />
+                <br />
+                <div className='center-text'>
+                    <Button
+                        bsStyle='link'
+                        onClick={ () => this.props.navigateToNext() }
+                    >
+                        { 'SKIP FOR NOW >>' }
+                    </Button>
+                </div>
             </Col>
         );
     }

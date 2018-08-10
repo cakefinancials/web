@@ -7,6 +7,7 @@ import {
     FormControl,
     FormGroup,
     HelpBlock,
+    Row
 } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 import Lock from './helpers/Lock';
@@ -96,7 +97,7 @@ export class BankAccountInfoEditor extends Component {
     renderSaveForm = () => {
         const { routingNumberValidation, accountNumberValidation } = this.validateBankInfoForm();
         return (
-            <div>
+            <Row>
                 <Form horizontal onSubmit={this.handleSubmit}>
                     <FormGroup
                         controlId='routingNumber'
@@ -169,7 +170,7 @@ export class BankAccountInfoEditor extends Component {
                         }
                     </Col>
                 </Form>
-            </div>
+            </Row>
         );
     }
 
@@ -218,10 +219,10 @@ export class ObfuscatedBankAccountInfo extends Component {
     renderLoaded = () => {
         return (
             <Fragment>
-                <span>{`Bank Routing Number: ${this.state.obfuscatedRoutingNumber}`}</span>
+                <span>{`Bank Routing Number: ${this.state.obfuscatedRoutingNumber || 'N/A' }`}</span>
                 <br />
                 <br />
-                <span>{`Bank Account Number: ${this.state.obfuscatedAccountNumber}`}</span>
+                <span>{`Bank Account Number: ${this.state.obfuscatedAccountNumber || 'N/A' }`}</span>
             </Fragment>
         );
     }

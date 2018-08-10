@@ -7,6 +7,7 @@ import {
     FormControl,
     FormGroup,
     HelpBlock,
+    Row
 } from 'react-bootstrap';
 import LoadingSpinner from './LoadingSpinner';
 import Lock from './helpers/Lock';
@@ -85,7 +86,7 @@ export class BrokerageCredentialsEditor extends Component {
     renderSaveForm = () => {
         const { usernameValidation, passwordValidation, brokerageValidation } = this.validateBrokerageCredentialsForm();
         return (
-            <div>
+            <Row>
                 <Form horizontal onSubmit={this.handleSubmit}>
                     <FormGroup
                         controlId='brokerage'
@@ -181,7 +182,7 @@ export class BrokerageCredentialsEditor extends Component {
                         }
                     </Col>
                 </Form>
-            </div>
+            </Row>
         );
     }
 
@@ -229,14 +230,18 @@ export class ObfuscatedBrokerageCredentials extends Component {
     renderLoaded = () => {
         return (
             <Fragment>
-                <span>Brokerage: <strong>{ this.state.obfuscatedBrokerage }</strong></span>
+                <span>Brokerage: <strong>{ this.state.obfuscatedBrokerage || 'N/A' }</strong></span>
                 <br />
                 <br />
-                <span>
-                    Username & Password:
-                    <Lock style={{ marginLeft: '5px', marginRight: '5px' }} />
-                    encrypted
-                </span>
+                {
+                    this.state.obfuscatedBrokerage ? (
+                        <span>
+                            Username & Password:
+                            <Lock style={{ marginLeft: '5px', marginRight: '5px' }} />
+                            encrypted
+                        </span>
+                    ) : null
+                }
             </Fragment>
         );
     }
