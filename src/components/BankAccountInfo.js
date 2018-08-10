@@ -1,237 +1,83 @@
 import React, { Component, Fragment } from 'react';
-import {
-    Button,
-    Col,
-    ControlLabel,
-    Form,
-    FormControl,
-    FormGroup,
-    HelpBlock,
-    Row
-} from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
+import CakeButton from './helpers/CakeButton';
+import Script from 'react-load-script';
 import LoadingSpinner from './LoadingSpinner';
-import Lock from './helpers/Lock';
-import LoaderButton from '../components/LoaderButton';
-import * as R from 'ramda';
+import config from '../config';
 
 import './helpers/FormStyles.css';
 
-import { saveBankDetails, subscribeObfuscatedBankDetails } from '../libs/userState';
+let plaidScriptLoaded = false;
 
-export class BankAccountInfoEditor extends Component {
-    constructor(props) {
-        super(props);
-
-        this.DEFAULT_STATE = {
-            isSaving: false,
-            routingNumber: '',
-            accountNumber: '',
-        };
-
-        this.state = this.DEFAULT_STATE;
-    }
-
-    validateABARoutingNumber = (routingNumber) => {
-        const match = routingNumber.match(/^([\d]{9})$/);
-        if (!match) {
-            return false;
-        }
-
-        const weights = [ 3, 7, 1 ];
-        const aba = match[1];
-
-        var sum = 0;
-        for (var i = 0; i < 9; ++i) {
-            sum += aba.charAt(i) * weights[i % 3];
-        }
-
-        return (sum !== 0 && sum % 10 === 0);
-    }
-
-    validateAccountNumber = (accountNumber) => {
-        const match = accountNumber.match(/^([\d]{4,18})$/);
-
-        return match;
-    }
-
-    validateBankInfoForm = () => {
-        return {
-            routingNumberValidation: this.validateABARoutingNumber(this.state.routingNumber),
-            accountNumberValidation: this.validateAccountNumber(this.state.accountNumber),
-        };
-    }
-
-    handleSubmit = async event => {
-        event.preventDefault();
-
-        this.setState({ isSaving: true });
-
-        try {
-            await this.saveBankInfo({
-                routingNumber: this.state.routingNumber,
-                accountNumber: this.state.accountNumber,
-            });
-
-            this.setState(this.DEFAULT_STATE);
-        } catch (e) {
-            alert(e);
-        }
-
-        this.setState({ isSaving: false });
-
-        if (this.props.bankAccountInfoSaved) {
-            this.props.bankAccountInfoSaved();
-        }
-    }
-
-    saveBankInfo(bankInfo) {
-        return saveBankDetails(bankInfo);
-    }
-
-    handleChange = event => {
-        this.setState({
-            [event.target.id]: event.target.value
-        });
-    }
-
-    renderSaveForm = () => {
-        const { routingNumberValidation, accountNumberValidation } = this.validateBankInfoForm();
-        return (
-            <Row>
-                <Form horizontal onSubmit={this.handleSubmit}>
-                    <FormGroup
-                        controlId='routingNumber'
-                        validationState={routingNumberValidation ? null : 'error'}
-                    >
-                        <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
-                            Routing Number
-                        </Col>
-                        <Col xs={8}>
-                            <FormControl
-                                className={'cake-form-input'}
-                                onChange={this.handleChange}
-                                value={this.state.routingNumber}
-                            />
-                            {
-                                routingNumberValidation ? null :
-                                    <HelpBlock>Routing numbers must be 9 digits long</HelpBlock>
-                            }
-                        </Col>
-                        <Col className='checked-lock-icon' xs={1}>
-                            <Lock check />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup
-                        controlId='accountNumber'
-                        validationState={accountNumberValidation ? null : 'error'}
-                    >
-                        <Col componentClass={ControlLabel} className={'cake-form-label'} xs={3}>
-                            Account Number
-                        </Col>
-                        <Col xs={8}>
-                            <FormControl
-                                className={'cake-form-input'}
-                                onChange={this.handleChange}
-                                value={this.state.accountNumber}
-                            />
-                            {
-                                accountNumberValidation ? null :
-                                    <HelpBlock>Account numbers are between 4 and 18 digits long</HelpBlock>
-                            }
-                        </Col>
-                        <Col className='checked-lock-icon' xs={1}>
-                            <Lock check />
-                        </Col>
-                    </FormGroup>
-                    <br />
-                    <Col xs={6} xsOffset={3}>
-                        <LoaderButton
-                            block
-                            bsSize='large'
-                            disabled={!(routingNumberValidation && accountNumberValidation)}
-                            type='submit'
-                            isLoading={this.state.isSaving}
-                            text={this.props.saveButtonText || 'Save' }
-                            loadingText='Saving…'
-                        />
-                        {
-                            this.props.showCancel ? (
-                                <Button
-                                    block
-                                    bsStyle='warning'
-                                    bsSize='large'
-                                    onClick={() => {
-                                        this.props.onCancelClicked();
-                                    }}
-                                >
-                                    CANCEL
-                                </Button>
-                            ) : null
-                        }
-                    </Col>
-                </Form>
-            </Row>
-        );
-    }
-
-    render = () => {
-        return this.renderSaveForm();
-    }
-}
-
-export class ObfuscatedBankAccountInfo extends Component {
+export class PlaidAccountIntegrator extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            error: false,
-            isLoading: true,
-            obfuscatedRoutingNumber: '',
-            obfuscatedAccountNumber: '',
+            plaidReady: plaidScriptLoaded
         };
     }
 
-    componentDidMount() {
-        this.unsubscribeObfuscatedBankDetails = subscribeObfuscatedBankDetails(
-            ({ obfuscatedBankDetails, loading, error }) => {
-                this.setState({
-                    error,
-                    isLoading: loading,
-                    obfuscatedRoutingNumber: R.prop('routingNumber', obfuscatedBankDetails),
-                    obfuscatedAccountNumber: R.prop('accountNumber', obfuscatedBankDetails)
-                });
-            }
-        );
+    handleScriptLoad() {
+        plaidScriptLoaded = true;
+        this.setState({ plaidReady: true });
     }
 
-    componentWillUnmount() {
-        if (this.unsubscribeObfuscatedBankDetails) {
-            this.unsubscribeObfuscatedBankDetails();
-        }
-    }
-
-    renderLoading = () => {
-        return (
-            <LoadingSpinner bsSize='large' text='Loading existing bank account info...' />
-        );
-    }
-
-    renderLoaded = () => {
+    render() {
         return (
             <Fragment>
-                <span>{`Bank Routing Number: ${this.state.obfuscatedRoutingNumber || 'N/A' }`}</span>
-                <br />
-                <br />
-                <span>{`Bank Account Number: ${this.state.obfuscatedAccountNumber || 'N/A' }`}</span>
-            </Fragment>
-        );
-    }
+                {
+                    this.state.plaidReady ? null :
+                        <Script
+                            url='https://cdn.plaid.com/link/v2/stable/link-initialize.js'
+                            onLoad={this.handleScriptLoad.bind(this)}
+                        />
+                }
+                <Row>
+                    <Col xs={6} xsOffset={3}>
+                        {
+                            this.state.plaidReady ? (
+                                <CakeButton
+                                    bsSize='large'
+                                    onClick={() => {
+                                        const handler = window.Plaid.create({
+                                            clientName: 'Cake Stripe/Plaid Test',
+                                            selectAccount: true,
+                                            env: config.plaid.ENVIRONMENT,
+                                            // Replace with your public_key from the Dashboard
+                                            key: config.plaid.PUBLIC_KEY,
+                                            product: [ 'auth' ],
+                                            onSuccess: function (public_token, metadata) {
+                                                console.log('public_token: ' + public_token);
+                                                console.log('metadata: ', metadata);
+                                                console.log('account ID: ' + metadata.account_id);
+                                            },
+                                            onExit: function (err, metadata) {
+                                                // The user exited the Link flow.
+                                                if (err != null) {
+                                                    // The user encountered a Plaid API error prior to exiting.
+                                                    // rollbar here!!!
+                                                    // metadata contains information about the institution
+                                                    // that the user selected and the most recent API request IDs.
+                                                    // Storing this information can be helpful for support.
+                                                    console.log(err);
+                                                    console.log(metadata);
+                                                }
+                                            },
+                                        });
 
-    render = () => {
-        return (
-            <div>
-                { this.state.isLoading ? this.renderLoading() : this.renderLoaded() }
-            </div>
+                                        handler.open();
+                                    }}
+                                >
+                                    Authorize
+                                </CakeButton>
+                            ) : (
+                                <LoadingSpinner bsSize='large' text='Loading Plaid integration...' />
+                            )
+                        }
+                    </Col>
+                </Row>
+            </Fragment>
         );
     }
 }

@@ -197,28 +197,3 @@ export const saveBrokerageCredentials = async (brokerageCredentials) => {
 };
 
 export const subscribeObfuscatedBrokerageData = obfuscatedBrokerageDataNotifier.subscribeWithInitialization(fetchBrokerageData);
-
-/**
- * Bank Account Data
- */
-
-const obfuscatedBankDetailsNotifier = getSimpleEventListener();
-
-export const fetchBankDetails = async () => {
-    obfuscatedBankDetailsNotifier.notify({ obfuscatedBankDetails: null, loading: true, error: false });
-    try {
-        const obfuscatedBankDetails = (await API.get('cake', '/bank/account_info/obfuscated'));
-        obfuscatedBankDetailsNotifier.notify({ obfuscatedBankDetails, loading: false, error: false });
-    } catch (e) {
-        obfuscatedBankDetailsNotifier.notify({ obfuscatedBankDetails: null, loading: false, error: true });
-    }
-};
-
-export const saveBankDetails = async (bankDetails) => {
-    const result = await API.post('cake', '/bank/account_info', { body: bankDetails });
-    fetchBankDetails();
-
-    return result;
-};
-
-export const subscribeObfuscatedBankDetails = obfuscatedBankDetailsNotifier.subscribeWithInitialization(fetchBankDetails);

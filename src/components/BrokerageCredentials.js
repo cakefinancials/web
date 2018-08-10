@@ -203,7 +203,7 @@ export class ObfuscatedBrokerageCredentials extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribeObfuscatedBankDetails = subscribeObfuscatedBrokerageData(
+        this.unsubscribeObfuscatedBrokerageDetails = subscribeObfuscatedBrokerageData(
             ({ obfuscatedBrokerageData, loading, error }) => {
                 this.setState({
                     error,
@@ -216,8 +216,8 @@ export class ObfuscatedBrokerageCredentials extends Component {
     }
 
     componentWillUnmount() {
-        if (this.unsubscribeObfuscatedBankDetails) {
-            this.unsubscribeObfuscatedBankDetails();
+        if (this.unsubscribeObfuscatedBrokerageDetails) {
+            this.unsubscribeObfuscatedBrokerageDetails();
         }
     }
 

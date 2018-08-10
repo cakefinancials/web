@@ -1,8 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { Col, Glyphicon, Modal, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
+import config from '../../config';
 
 import { ObfuscatedBrokerageCredentials, BrokerageCredentialsEditor } from '../BrokerageCredentials';
+import { PlaidAccountIntegrator } from '../BankAccountInfo';
+
 import CakeButton from '../helpers/CakeButton';
 import { subscribeSessionChange } from '../../libs/userState';
 
@@ -170,6 +173,9 @@ export class ESPPDetails extends Component {
                     closeButton
                 />
                 <Modal.Body>
+                    <Row>
+                        { config.plaid.DISPLAY ? <Fragment><PlaidAccountIntegrator /><hr /></Fragment> : null }
+                    </Row>
                     <Row>
                         {
                             this.state.editedBrokerageDetails ? (
