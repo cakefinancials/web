@@ -7,7 +7,6 @@ button.cake-form-button {
     border: 0px;
     overflow: hidden;
     white-space: nowrap;
-    display: inline-block;
     text-overflow: ellipsis;
 }
 

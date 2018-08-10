@@ -1,3 +1,4 @@
+import { API } from 'aws-amplify';
 import { Auth } from 'aws-amplify';
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
@@ -7,6 +8,7 @@ import {
     FormControl,
 } from 'react-bootstrap';
 import queryString from 'query-string';
+import { fetchCurrentUserSession, userSignupPassword } from '../libs/userState';
 
 import LoaderButton from '../components/LoaderButton';
 import './AuthStyles.css';
@@ -45,7 +47,20 @@ export default class Verify extends Component {
 
         try {
             await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
-            this.setState({ confirmed: true });
+            const password = userSignupPassword.getUserSignupPassword();
+            if (password.length > 0) {
+                try {
+                    await Auth.signIn(this.state.email, password);
+                    // save link, don't wait for result
+                    API.post('cake', '/link_email_to_id', {});
+                    await fetchCurrentUserSession();
+                } catch (e) {
+                    // could not log in for some reason, go to login page
+                    this.setState({ confirmed: true });
+                }
+            } else {
+                this.setState({ confirmed: true });
+            }
         } catch (e) {
             this.setState({ isLoading: false, errorMessage: e.message });
         }

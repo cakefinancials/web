@@ -1,12 +1,13 @@
 import { Auth } from 'aws-amplify';
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {
     FormGroup,
     FormControl,
     HelpBlock,
 } from 'react-bootstrap';
 import queryString from 'query-string';
+import { userSignupPassword } from '../libs/userState';
 
 import LoaderButton from '../components/LoaderButton';
 import './Signup.css';
@@ -25,6 +26,7 @@ export default class Signup extends Component {
             password: '',
             confirmPassword: '',
             errorMessage: undefined,
+            redirectToVerify: false
         };
     }
 
@@ -58,10 +60,8 @@ export default class Signup extends Component {
                 username: this.state.email,
                 password: this.state.password
             });
-            const qs = queryString.stringify({ email: this.state.email });
 
-            this.setState({ isLoading: false });
-            this.props.history.push(`/verify?${qs}`);
+            this.setState({ isLoading: false, redirectToVerify: true });
         } catch (e) {
             let errorMessage = 'Your password must be at least 8 characters long and have a number and a special character';
             if (!e.message.toUpperCase().includes('PASSWORD')) {
@@ -116,6 +116,17 @@ export default class Signup extends Component {
     }
 
     render() {
+        if (this.state.redirectToVerify) {
+            const qs = queryString.stringify({ email: this.state.email });
+            userSignupPassword.setUserSignupPassword(this.state.password);
+            return <Redirect
+                to={{
+                    pathname: '/verify',
+                    search: `?${qs}`,
+                }}
+            />;
+        }
+
         return (
             <div className="Signup auth-form-container center-text">
                 <div className="cake-logo-container"></div>

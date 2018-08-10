@@ -46,6 +46,19 @@ const getSimpleEventListener = () => {
     };
 };
 
+export const userSignupPassword = (() => {
+    let password = '';
+
+    return {
+        setUserSignupPassword: (pswd) => password = pswd,
+        getUserSignupPassword: () => {
+            const passwordCopy = password + '';
+            password = '';
+            return passwordCopy;
+        }
+    };
+})();
+
 const userStateNotificationBlob = {
     lastSyncedUserState: null,
     localUserState: null,
