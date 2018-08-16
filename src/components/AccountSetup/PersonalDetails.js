@@ -61,23 +61,22 @@ export default class PersonalDetails extends Component {
                     />
                 </Row>
                 <br />
-                <Row>
-                    <Col xs={4} xsOffset={4}>
-                        <CakeButton
-                            bsSize='large'
-                            disabled={this.state.submittedTypeform === false}
-                            onClick={() => {
-                                this.props.navigateToNext();
-                            }}
-                        >
-                            {
-                                this.state.submittedTypeform === false ?
-                                    'COMPLETE SURVEY TO PROCEED' :
-                                    'NEXT STEP: BROKERAGE ACCESS'
-                            }
-                        </CakeButton>
-                    </Col>
-                </Row>
+                {
+                    this.state.submittedTypeform === true ? (
+                        <Row>
+                            <Col xs={4} xsOffset={4}>
+                                <CakeButton
+                                    bsSize='large'
+                                    onClick={() => {
+                                        this.props.navigateToNext();
+                                    }}
+                                >
+                                    NEXT STEP: BROKERAGE ACCESS
+                                </CakeButton>
+                            </Col>
+                        </Row>
+                    ) : null
+                }
             </div>
         );
     }
