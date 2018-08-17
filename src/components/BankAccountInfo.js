@@ -1,3 +1,5 @@
+import { API } from 'aws-amplify';
+
 import React, { Component, Fragment } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import CakeButton from './helpers/CakeButton';
@@ -21,6 +23,10 @@ export class PlaidAccountIntegrator extends Component {
     handleScriptLoad() {
         plaidScriptLoaded = true;
         this.setState({ plaidReady: true });
+    }
+
+    sendPlaidCredentials({ plaidAccountId, plaidPublicToken }) {
+        return API.post('cake', '/user/plaid_data', { body: { plaidAccountId, plaidPublicToken } });
     }
 
     render() {
@@ -47,21 +53,28 @@ export class PlaidAccountIntegrator extends Component {
                                             // Replace with your public_key from the Dashboard
                                             key: config.plaid.PUBLIC_KEY,
                                             product: [ 'auth' ],
-                                            onSuccess: function (public_token, metadata) {
-                                                console.log('public_token: ' + public_token);
-                                                console.log('metadata: ', metadata);
-                                                console.log('account ID: ' + metadata.account_id);
+                                            onSuccess: (public_token, metadata) => {
+                                                const plaidAccountId = metadata.account_id;
+                                                const plaidPublicToken = public_token;
+                                                this.sendPlaidCredentials({ plaidAccountId, plaidPublicToken }).catch(error => {
+                                                    window.Rollbar.error(
+                                                        'Error while sending plaid credentials to backend to be stored',
+                                                        { error, metadata, public_token }
+                                                    );
+                                                });
                                             },
-                                            onExit: function (err, metadata) {
+                                            onExit: (error, metadata) => {
                                                 // The user exited the Link flow.
-                                                if (err != null) {
+                                                if (error) {
                                                     // The user encountered a Plaid API error prior to exiting.
                                                     // rollbar here!!!
                                                     // metadata contains information about the institution
                                                     // that the user selected and the most recent API request IDs.
                                                     // Storing this information can be helpful for support.
-                                                    console.log(err);
-                                                    console.log(metadata);
+                                                    window.Rollbar.error(
+                                                        'User encountered plaid api error prior to exiting',
+                                                        { error, metadata }
+                                                    );
                                                 }
                                             },
                                         });
