@@ -174,7 +174,7 @@ export class ESPPDetails extends Component {
                 <Modal.Body>
                     <Row>
                         <Col xsOffset={3} xs={6}>
-                            <DashboardBankInfo />
+                            <DashboardBankInfo showEditButton />
                         </Col>
                     </Row>
                     <hr />

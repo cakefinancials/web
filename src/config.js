@@ -8,9 +8,11 @@ const PLAID_ENVIRONMENT = {
     development: 'sandbox',
 };
 
+const REACT_APP_BUILD_ENV = process.env.REACT_APP_BUILD_ENV || process.env.NODE_ENV;
+
 export default {
     plaid: {
-        ENVIRONMENT: PLAID_ENVIRONMENT[process.env.NODE_ENV],
+        ENVIRONMENT: PLAID_ENVIRONMENT[REACT_APP_BUILD_ENV],
         PUBLIC_KEY: '80a51875e6f2dd59ebd12543360485',
     },
     s3: {
@@ -19,7 +21,7 @@ export default {
     },
     apiGateway: {
         REGION: 'us-east-2',
-        URL: URL_STAGES[process.env.NODE_ENV]
+        URL: URL_STAGES[REACT_APP_BUILD_ENV]
     },
     cognito: {
         REGION: 'us-east-2',

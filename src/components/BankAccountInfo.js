@@ -1,6 +1,7 @@
 import { API } from 'aws-amplify';
 
 import React, { Component, Fragment } from 'react';
+import { Button } from 'react-bootstrap';
 import Script from 'react-load-script';
 import config from '../config';
 import * as R from 'ramda';
@@ -124,6 +125,16 @@ export class DashboardBankInfo extends Component {
                                 <i style={{ color: 'green' }}>{ 'Connected with' }</i>
                             </small>
                             <i>{ ` ${this.state.institutionName}` }</i>
+                            {
+                                this.props.showEditButton ? (
+                                    <Button
+                                        bsStyle='link'
+                                        onClick={ () => this.setState({ showPlaid: true }) }
+                                    >
+                                        { 'Edit' }
+                                    </Button>
+                                ) : null
+                            }
                         </Fragment>
                     ) : (
                         <Fragment>
