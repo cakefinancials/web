@@ -12,13 +12,14 @@ const CakeButton = (props) => {
 
     modifiedProps.style = R.merge(modifiedProps.style || {}, backgroundColorStyle);
     modifiedProps.className = (modifiedProps.className || '') + ' cake-form-button';
+    delete modifiedProps.parentStyle;
 
     if (props.cancelButton) {
         modifiedProps.className += ' cake-form-button-cancel-style';
     }
 
     return (
-        <div className='cake-button-parent'>
+        <div className='cake-button-parent' style={props.parentStyle || {}}>
             <Button { ...modifiedProps }>
                 { modifiedProps.children }
             </Button>

@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Col, Glyphicon, Modal, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
-import config from '../../config';
 
 import { ObfuscatedBrokerageCredentials, BrokerageCredentialsEditor } from '../BrokerageCredentials';
-import { PlaidAccountIntegrator } from '../BankAccountInfo';
+import { DashboardBankInfo } from '../BankAccountInfo';
 
 import CakeButton from '../helpers/CakeButton';
 import { subscribeSessionChange } from '../../libs/userState';
@@ -174,8 +173,11 @@ export class ESPPDetails extends Component {
                 />
                 <Modal.Body>
                     <Row>
-                        { config.plaid.DISPLAY ? <Fragment><PlaidAccountIntegrator /><hr /></Fragment> : null }
+                        <Col xsOffset={3} xs={6}>
+                            <DashboardBankInfo />
+                        </Col>
                     </Row>
+                    <hr />
                     <Row>
                         {
                             this.state.editedBrokerageDetails ? (
@@ -268,6 +270,8 @@ export class ESPPDetails extends Component {
                     </span></h3>
                     <br />
                     <ObfuscatedBrokerageCredentials />
+                    <br />
+                    <DashboardBankInfo />
                 </Col>
             </Row>
         );

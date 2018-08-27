@@ -4,7 +4,7 @@ const URL_STAGES = {
 };
 
 const PLAID_ENVIRONMENT = {
-    production: 'sandbox',
+    production: 'development',
     development: 'sandbox',
 };
 
@@ -12,7 +12,6 @@ export default {
     plaid: {
         ENVIRONMENT: PLAID_ENVIRONMENT[process.env.NODE_ENV],
         PUBLIC_KEY: '80a51875e6f2dd59ebd12543360485',
-        DISPLAY: process.env.NODE_ENV === 'development'
     },
     s3: {
         REGION: 'us-east-2',

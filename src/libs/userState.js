@@ -210,3 +210,21 @@ export const saveBrokerageCredentials = async (brokerageCredentials) => {
 };
 
 export const subscribeObfuscatedBrokerageData = obfuscatedBrokerageDataNotifier.subscribeWithInitialization(fetchBrokerageData);
+
+/**
+ * Bank data
+ */
+
+const bankDataNotifier = getSimpleEventListener();
+
+export const fetchBankData = async () => {
+    bankDataNotifier.notify({ bankData: null, loading: true, error: false });
+    try {
+        const { bankData } = (await API.get('cake', '/bank/account_info/exists'));
+        bankDataNotifier.notify({ bankData, loading: false, error: false });
+    } catch (e) {
+        bankDataNotifier.notify({ bankData: null, loading: false, error: true });
+    }
+};
+
+export const subscribeBankData = bankDataNotifier.subscribeWithInitialization(fetchBankData);
