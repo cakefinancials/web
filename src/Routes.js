@@ -10,16 +10,17 @@ import ForgotPassword from './containers/ForgotPassword';
 //import AuthenticatedRoute from './components/AuthenticatedRoute';
 import UnauthenticatedRoute from './components/UnauthenticatedRoute';
 
-const Router = ({ childProps }) =>
-    <Switch>
-        <AppliedRoute path='/' exact component={Home} props={childProps} />
-        <UnauthenticatedRoute path='/login' exact component={Login} props={childProps} />
-        <UnauthenticatedRoute path='/signup' exact component={Signup} props={childProps} />
-        <UnauthenticatedRoute path='/verify' exact component={Verify} props={childProps} />
-        <UnauthenticatedRoute path='/forgot-password' exact component={ForgotPassword} props={childProps} />
-        { /* Finally, catch all unmatched routes */}
-        <Route component={NotFound} />
-    </Switch>;
+const Router = ({ childProps }) => (
+  <Switch>
+    <AppliedRoute path="/" exact component={Home} props={childProps} />
+    <UnauthenticatedRoute path="/login" exact component={Login} props={childProps} />
+    <UnauthenticatedRoute path="/signup" exact component={Signup} props={childProps} />
+    <UnauthenticatedRoute path="/verify" exact component={Verify} props={childProps} />
+    <UnauthenticatedRoute path="/forgot-password" exact component={ForgotPassword} props={childProps} />
+    {/* Finally, catch all unmatched routes */}
+    <Route component={NotFound} />
+  </Switch>
+);
 
 export default Router;
 

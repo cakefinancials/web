@@ -5,19 +5,15 @@ import './Home.css';
 import DashboardContainer from '../components/DashboardContainer';
 
 export default class Home extends Component {
-    renderLander() {
-        return <Redirect to='/login' />;
-    }
+  renderLander() {
+    return <Redirect to="/login" />;
+  }
 
-    renderAuthedHome() {
-        return ( <DashboardContainer /> );
-    }
+  renderAuthedHome() {
+    return <DashboardContainer />;
+  }
 
-    render() {
-        return (
-            <div className='Home'>
-                {this.props.isAuthenticated ? this.renderAuthedHome() : this.renderLander()}
-            </div>
-        );
-    }
+  render() {
+    return <div className="Home">{this.props.isAuthenticated ? this.renderAuthedHome() : this.renderLander()}</div>;
+  }
 }

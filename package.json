@@ -24,6 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
+    "build_deploy_test": "REACT_APP_BUILD_ENV=development yarn build && aws s3 sync build/ s3://cake-financials-app-client --delete",
     "build_deploy": "yarn build && yarn deploy",
     "deploy": "aws s3 sync build/ s3://my.cakefinancials.com --delete",
     "postdeploy": "aws cloudfront create-invalidation --distribution-id E11EYR8WRKE9LO --paths '/*'"

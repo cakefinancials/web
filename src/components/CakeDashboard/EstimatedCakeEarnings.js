@@ -4,62 +4,65 @@ import * as R from 'ramda';
 
 import './EstimatedCakeEarnings.css';
 
-const formatDollars = (dollars) => `$${(dollars).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+const formatDollars = dollars => `$${dollars.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
 
 const ENROLLMENT_PERIOD_DIVISORS = {
-    '1 Months': 12,
-    '2 Months': 6,
-    '3 Months': 4,
-    '6 Months': 2,
-    '12 Months': 1,
+  '1 Months': 12,
+  '2 Months': 6,
+  '3 Months': 4,
+  '6 Months': 2,
+  '12 Months': 1,
 };
 
 export const EstimatedCakeEarnings = ({ estimated2017Earnings, purchasePeriod }) => {
-    if (R.isNil(estimated2017Earnings) || estimated2017Earnings === '0') {
-        return null;
-    }
+  if (R.isNil(estimated2017Earnings) || estimated2017Earnings === '0') {
+    return null;
+  }
 
-    const parsedEstimated2017Earnings = parseFloat(estimated2017Earnings);
-    const estimated2017EarningsDollars = formatDollars(parsedEstimated2017Earnings);
+  const parsedEstimated2017Earnings = parseFloat(estimated2017Earnings);
+  const estimated2017EarningsDollars = formatDollars(parsedEstimated2017Earnings);
 
-    const cakePayout = parsedEstimated2017Earnings / (ENROLLMENT_PERIOD_DIVISORS[purchasePeriod] || 1);
-    const cakePayoutsDollars = formatDollars(cakePayout);
+  const cakePayout = parsedEstimated2017Earnings / (ENROLLMENT_PERIOD_DIVISORS[purchasePeriod] || 1);
+  const cakePayoutsDollars = formatDollars(cakePayout);
 
-    return (
-        <Row className='estimated-cake-earnings dashboard-data-container centered-text'>
-            <h2>CAKE ESTIMATED EARNINGS</h2>
-            <div className='text'> Last year you would have made: </div>
-            <div className='yearly-earnings'>{ estimated2017EarningsDollars }</div>
-            <div className='text'>, for an average Cake payout of <span className='cake-payouts'>{ cakePayoutsDollars }</span></div>
-            <br />
-            <br />
-        </Row>
-    );
+  return (
+    <Row className="estimated-cake-earnings dashboard-data-container centered-text">
+      <h2>CAKE ESTIMATED EARNINGS</h2>
+      <div className="text"> Last year you would have made: </div>
+      <div className="yearly-earnings">{estimated2017EarningsDollars}</div>
+      <div className="text">
+        , for an average Cake payout of <span className="cake-payouts">{cakePayoutsDollars}</span>
+      </div>
+      <br />
+      <br />
+    </Row>
+  );
 };
 
 export const EstimatedCakeEarningsDefault = () => {
-    return (
-        <Fragment>
-            <div className='center-text'>
-                <div className='purple-cake-text'>
-                    <big>Welcome to your Cake dashboard! All of your data will populate after your analyst has reviewed your account details.</big>
-                </div>
-            </div>
-            <Row className='estimated-cake-earnings dashboard-data-container centered-text'>
-                <br />
-                <div>
-                    Last year an Intuit employee making $100,000 would have made:
-                </div>
-                <br />
-                <div>
-                    <div className='yearly-earnings'>$2,051</div>
-                </div>
-                <br />
-                <div>
-                    And received an average quarterly Cake check for <span className='cake-payouts'>$512.75</span>
-                </div>
-                <br />
-            </Row>
-        </Fragment>
-    );
+  return (
+    <Fragment>
+      <div className="center-text">
+        <div className="purple-cake-text">
+          <big>
+            Welcome to your Cake dashboard! All of your data will populate after your analyst has reviewed your account
+            details.
+          </big>
+        </div>
+      </div>
+      <Row className="estimated-cake-earnings dashboard-data-container centered-text">
+        <br />
+        <div>Last year an Intuit employee making $100,000 would have made:</div>
+        <br />
+        <div>
+          <div className="yearly-earnings">$2,051</div>
+        </div>
+        <br />
+        <div>
+          And received an average quarterly Cake check for <span className="cake-payouts">$512.75</span>
+        </div>
+        <br />
+      </Row>
+    </Fragment>
+  );
 };
